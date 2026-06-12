@@ -1,0 +1,193 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Surfaces — clean white with charcoal text */
+    --background: 0 0% 100%;
+    --foreground: 200 12% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 200 12% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 200 12% 12%;
+
+    /* Deep emerald green — the single brand accent */
+    --primary: 159 75% 26%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 160 30% 96%;
+    --secondary-foreground: 159 60% 18%;
+
+    --muted: 210 16% 96%;
+    --muted-foreground: 215 12% 42%;
+
+    --accent: 160 40% 94%;
+    --accent-foreground: 159 60% 18%;
+
+    --destructive: 0 72% 48%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 18% 90%;
+    --input: 214 18% 90%;
+    --ring: 159 75% 26%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 200 14% 7%;
+    --foreground: 0 0% 98%;
+
+    --card: 200 14% 9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 200 14% 9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 158 64% 44%;
+    --primary-foreground: 200 14% 7%;
+
+    --secondary: 200 12% 14%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 200 12% 14%;
+    --muted-foreground: 215 14% 62%;
+
+    --accent: 200 12% 16%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62% 46%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 200 10% 18%;
+    --input: 200 10% 18%;
+    --ring: 158 64% 44%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    @apply bg-primary/15 text-primary;
+  }
+}
+
+@layer utilities {
+  /* Subtle glass effect used in nav + cards */
+  .glass {
+    @apply bg-white/70 backdrop-blur-xl backdrop-saturate-150;
+  }
+  .glass-dark {
+    @apply bg-background/70 backdrop-blur-xl backdrop-saturate-150;
+  }
+
+  /* Faint emerald → transparent gradient background blobs */
+  .bg-grid {
+    background-image: linear-gradient(
+        to right,
+        hsl(var(--border) / 0.4) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, hsl(var(--border) / 0.4) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 50%, transparent 100%);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-br from-foreground via-foreground to-primary bg-clip-text text-transparent;
+  }
+}
+
+/* Custom scrollbar — quiet, premium feel */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 9999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.4);
+  background-clip: content-box;
+}
+
+/* Markdown rendering inside chat bubbles */
+.prose-chat {
+  @apply text-[15px] leading-7;
+}
+.prose-chat p {
+  @apply my-3 first:mt-0 last:mb-0;
+}
+.prose-chat ul {
+  @apply my-3 list-disc space-y-1 pl-5;
+}
+.prose-chat ol {
+  @apply my-3 list-decimal space-y-1 pl-5;
+}
+.prose-chat h1,
+.prose-chat h2,
+.prose-chat h3 {
+  @apply mb-2 mt-4 font-semibold first:mt-0;
+}
+.prose-chat code {
+  @apply rounded bg-muted px-1.5 py-0.5 font-mono text-[13px];
+}
+.prose-chat pre {
+  @apply my-3 overflow-x-auto rounded-lg bg-neutral-950 p-4 text-[13px] text-neutral-100;
+}
+.prose-chat pre code {
+  @apply bg-transparent p-0 text-inherit;
+}
+.prose-chat a {
+  @apply font-medium text-primary underline underline-offset-2;
+}
+.prose-chat table {
+  @apply my-3 w-full border-collapse text-sm;
+}
+.prose-chat th,
+.prose-chat td {
+  @apply border border-border px-3 py-1.5 text-left;
+}
+
+.typing-dot {
+  @apply inline-block h-1.5 w-1.5 rounded-full bg-muted-foreground/60;
+  animation: typing 1.2s infinite ease-in-out;
+}
+.typing-dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.typing-dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+@keyframes typing {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-3px);
+    opacity: 1;
+  }
+}
