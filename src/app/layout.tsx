@@ -64,7 +64,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0b7a4b",
+  themeColor: "#1c825b",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -78,7 +78,7 @@ export default function RootLayout({
       localization={esMX}
       appearance={{
         variables: {
-          colorPrimary: "#0b7a4b",
+          colorPrimary: "#1c825b",
           borderRadius: "0.75rem",
         },
       }}

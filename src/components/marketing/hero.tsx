@@ -9,16 +9,12 @@ import { ChatPreview } from "@/components/marketing/chat-preview";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      {/* Background grid + emerald glow */}
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-grid" />
-      <div className="pointer-events-none absolute left-1/2 top-[-10%] -z-10 h-[480px] w-[820px] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
-
+    <section className="relative overflow-hidden bg-secondary/30">
       <div className="container pb-16 pt-16 sm:pt-24 lg:pb-24">
         <div className="mx-auto max-w-3xl text-center">
           <Link
             href="/pricing"
-            className="mx-auto inline-flex items-center gap-2 rounded-full border border-border bg-white/60 px-4 py-1.5 text-sm font-medium text-foreground shadow-sm backdrop-blur transition-colors hover:bg-white"
+            className="mx-auto inline-flex items-center gap-2 rounded-full border border-border bg-white px-4 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
           >
             <Sparkles className="h-3.5 w-3.5 text-primary" />
             Nuevo: 4 asistentes especializados para México
@@ -30,8 +26,8 @@ export function Hero() {
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-balance text-lg leading-relaxed text-muted-foreground sm:text-xl">
-            Preguntas, contenido, traducciones y ayuda para negocios, turismo y
-            vida diaria. En español mexicano, al instante.
+            Respuestas, traducciones, ayuda con tareas escolares y contenido
+            para redes sociales. En español mexicano, al instante.
           </p>
 
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">

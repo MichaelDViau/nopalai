@@ -38,7 +38,8 @@ export function Footer() {
             <Logo />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
               {SITE.tagline} El asistente de inteligencia artificial creado para
-              México: negocios, turismo, bienes raíces y vida diaria.
+              México: respuestas, traducciones, tareas escolares y contenido
+              para redes.
             </p>
           </div>
 

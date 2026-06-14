@@ -6,33 +6,34 @@
   :root {
     /* Surfaces — clean white with charcoal text */
     --background: 0 0% 100%;
-    --foreground: 200 12% 12%;
+    --foreground: 200 10% 13%;
 
     --card: 0 0% 100%;
-    --card-foreground: 200 12% 12%;
+    --card-foreground: 200 10% 13%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 200 12% 12%;
+    --popover-foreground: 200 10% 13%;
 
-    /* Deep emerald green — the single brand accent */
-    --primary: 159 75% 26%;
+    /* Fresh, lighter green brand accent (matches the logo) */
+    --primary: 157 64% 31%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 160 30% 96%;
-    --secondary-foreground: 159 60% 18%;
+    /* Soft light-green surfaces */
+    --secondary: 150 40% 96%;
+    --secondary-foreground: 157 40% 22%;
 
-    --muted: 210 16% 96%;
-    --muted-foreground: 215 12% 42%;
+    --muted: 160 18% 96%;
+    --muted-foreground: 200 8% 45%;
 
-    --accent: 160 40% 94%;
-    --accent-foreground: 159 60% 18%;
+    --accent: 150 46% 93%;
+    --accent-foreground: 157 42% 20%;
 
     --destructive: 0 72% 48%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 214 18% 90%;
-    --input: 214 18% 90%;
-    --ring: 159 75% 26%;
+    --border: 152 22% 91%;
+    --input: 152 22% 91%;
+    --ring: 157 64% 31%;
 
     --radius: 0.75rem;
   }
@@ -83,32 +84,13 @@
 }
 
 @layer utilities {
-  /* Subtle glass effect used in nav + cards */
+  /* Flat translucent surface for the sticky nav. */
   .glass {
-    @apply bg-white/70 backdrop-blur-xl backdrop-saturate-150;
-  }
-  .glass-dark {
-    @apply bg-background/70 backdrop-blur-xl backdrop-saturate-150;
-  }
-
-  /* Faint emerald → transparent gradient background blobs */
-  .bg-grid {
-    background-image: linear-gradient(
-        to right,
-        hsl(var(--border) / 0.4) 1px,
-        transparent 1px
-      ),
-      linear-gradient(to bottom, hsl(var(--border) / 0.4) 1px, transparent 1px);
-    background-size: 56px 56px;
-    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 50%, transparent 100%);
+    @apply bg-white/85 backdrop-blur-md;
   }
 
   .text-balance {
     text-wrap: balance;
-  }
-
-  .gradient-text {
-    @apply bg-gradient-to-br from-foreground via-foreground to-primary bg-clip-text text-transparent;
   }
 }
 

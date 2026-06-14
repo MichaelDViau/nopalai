@@ -8,7 +8,7 @@ import {
 export const FAQS = [
   {
     q: "¿Qué es NopalAI?",
-    a: "NopalAI es un asistente de inteligencia artificial creado específicamente para México. Entiende el español mexicano y te ayuda con negocios, turismo, bienes raíces, contenido para redes, traducciones, atención al cliente y la vida diaria.",
+    a: "NopalAI es un asistente de inteligencia artificial creado específicamente para México. Entiende el español mexicano y te ayuda con preguntas del día a día, traducciones, tareas escolares y de estudio, y creación de contenido para redes sociales y marketing.",
   },
   {
     q: "¿Es gratis?",
@@ -16,7 +16,7 @@ export const FAQS = [
   },
   {
     q: "¿En qué se diferencia de ChatGPT?",
-    a: "NopalAI está afinado para el contexto mexicano: modismos, pesos, instituciones y formas de comunicación locales. Además incluye asistentes especializados por industria (negocios, turismo, bienes raíces) listos para usar desde el primer mensaje.",
+    a: "NopalAI está afinado para el contexto mexicano: modismos, pesos, instituciones y formas de comunicación locales. Además incluye asistentes especializados (General, Traducción, Escuela y Tareas, y Contenido y Marketing) listos para usar desde el primer mensaje.",
   },
   {
     q: "¿Qué incluye el plan Premium?",

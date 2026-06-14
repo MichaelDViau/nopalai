@@ -19,7 +19,7 @@ daily usage limits, a Stripe-powered Premium plan, analytics and full SEO.
 ## ✨ Features
 
 - **World-class landing page** — hero, features, assistants, pricing, testimonials, FAQ, structured data.
-- **4 specialized assistants** — General, Negocios, Turismo, Bienes Raíces, each with a unique system prompt.
+- **4 specialized assistants** — General, Traducción, Escuela y Tareas, Contenido y Marketing, each with a unique system prompt.
 - **Streaming AI chat** — ChatGPT-quality UX with markdown, copy, typing indicator, auto-titling.
 - **Chat management** — new chat, history, rename, delete, responsive sidebar, full mobile support.
 - **Auth** — sign up / login / logout / protected dashboard via Clerk.

@@ -25,7 +25,7 @@ const FEATURES: Feature[] = [
     icon: Sparkles,
     title: "4 asistentes especializados",
     description:
-      "General, Negocios, Turismo y Bienes Raíces. Cada uno con conocimiento experto de su sector.",
+      "General, Traducción, Escuela y Tareas, y Contenido para redes. Cada uno experto en lo suyo.",
   },
   {
     icon: Rocket,
@@ -74,9 +74,9 @@ export function Features() {
           {FEATURES.map((feature) => (
             <div
               key={feature.title}
-              className="group rounded-2xl border border-border bg-card p-7 transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-[0_12px_40px_-16px_rgba(11,122,75,0.25)]"
+              className="group rounded-2xl border border-border bg-card p-7 transition-colors hover:border-primary/40"
             >
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-secondary text-primary">
                 <feature.icon className="h-5 w-5" />
               </div>
               <h3 className="mt-5 text-lg font-semibold">{feature.title}</h3>

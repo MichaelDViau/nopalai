@@ -22,10 +22,10 @@ export function Assistants() {
           {MODE_LIST.map((mode) => (
             <div
               key={mode.id}
-              className="group relative overflow-hidden rounded-2xl border border-border bg-card p-8 transition-all hover:border-primary/30 hover:shadow-[0_16px_50px_-20px_rgba(11,122,75,0.3)]"
+              className="group relative overflow-hidden rounded-2xl border border-border bg-card p-8 transition-colors hover:border-primary/40"
             >
               <div className="flex items-start justify-between">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary text-primary">
                   <mode.icon className="h-6 w-6" />
                 </div>
                 <ArrowUpRight className="h-5 w-5 text-muted-foreground/40 transition-colors group-hover:text-primary" />

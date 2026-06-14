@@ -12,8 +12,7 @@ export const metadata: Metadata = {
 
 export default function SignInPage() {
   return (
-    <main className="relative flex min-h-dvh flex-col items-center justify-center px-4 py-12">
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-grid" />
+    <main className="relative flex min-h-dvh flex-col items-center justify-center bg-secondary/30 px-4 py-12">
       <Link href="/" className="mb-8">
         <Logo />
       </Link>
