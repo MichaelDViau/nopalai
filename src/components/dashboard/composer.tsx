@@ -46,7 +46,7 @@ export function Composer({
     <div className="mx-auto w-full max-w-3xl">
       <div
         className={cn(
-          "relative flex items-end gap-2 rounded-2xl border border-border bg-card p-2 transition-colors focus-within:border-primary/60",
+          "relative flex items-end gap-2 rounded-xl border border-border bg-card p-2 transition-colors focus-within:border-primary/60",
           disabled && "opacity-60",
         )}
       >

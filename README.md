@@ -198,10 +198,21 @@ npm run typecheck  # TypeScript (no emit)
 
 - Server-only secrets (`server-only` import guard on Supabase/Stripe clients).
 - Zod validation on every API route; chat ownership checks before reads/writes.
-- Daily rate limiting via an atomic Postgres function.
-- XSS-safe markdown rendering; security headers in `next.config.mjs`.
-- Code-split, lazy analytics, optimized fonts and package imports for a fast,
-  high-Lighthouse experience.
+- **Race-free daily limit** — atomic increment-then-check, so concurrent
+  requests can never slip past 20 messages/day.
+- **CSRF protection** — same-origin check on every mutating endpoint, on top
+  of Clerk's SameSite session cookies.
+- **Security headers** — HSTS, a conservative CSP (`frame-ancestors`,
+  `base-uri`, `object-src`), `X-Frame-Options`, `X-Content-Type-Options`,
+  `Referrer-Policy`, `Permissions-Policy`.
+- Parameterized Supabase queries (no SQL injection); XSS-safe markdown
+  rendering (no raw HTML, sanitized URLs).
+- Stripe webhooks verified by signature; the service-role key never reaches
+  the browser.
+- **AI latency** — parallelized pre-stream queries, request abort on client
+  disconnect, and automatic retries on transient provider errors.
+- Long-cached immutable static assets, code-splitting, lazy analytics and
+  optimized fonts/package imports for a fast, high-Lighthouse experience.
 
 ---
 

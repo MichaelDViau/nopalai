@@ -12,7 +12,7 @@ export function Hero() {
     <section className="bg-secondary/30">
       <div className="container pb-14 pt-12 sm:pb-20 sm:pt-20">
         <div className="mx-auto max-w-2xl text-center">
-          <span className="mx-auto inline-flex items-center gap-2 rounded-full border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-foreground sm:text-sm">
+          <span className="mx-auto inline-flex items-center gap-2 rounded-md border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-foreground sm:text-sm">
             <Sparkles className="h-3.5 w-3.5 text-primary" />
             4 asistentes de IA para México
           </span>

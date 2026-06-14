@@ -1,13 +1,18 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 
+import { isSameOrigin } from "@/lib/http";
 import { getStripe } from "@/lib/stripe";
 import { getOrCreateProfile } from "@/lib/profile";
 import { SITE } from "@/lib/constants";
 
 export const runtime = "nodejs";
 
-export async function POST() {
+export async function POST(req: Request) {
+  if (!isSameOrigin(req)) {
+    return NextResponse.json({ error: "Origen no permitido" }, { status: 403 });
+  }
+
   const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });

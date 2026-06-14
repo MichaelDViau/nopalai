@@ -56,3 +56,19 @@ export async function incrementUsage(userId: string): Promise<number> {
   if (error) throw error;
   return data ?? 0;
 }
+
+/**
+ * Consume one message against the daily limit, race-free.
+ *
+ * We increment first (an atomic DB operation) and then compare, so two
+ * concurrent requests can never both slip past the limit — the counter is
+ * the single source of truth. Returns whether the message is allowed and
+ * the resulting count.
+ */
+export async function consumeDailyMessage(
+  userId: string,
+  limit: number,
+): Promise<{ allowed: boolean; used: number }> {
+  const newCount = await incrementUsage(userId);
+  return { allowed: newCount <= limit, used: newCount };
+}

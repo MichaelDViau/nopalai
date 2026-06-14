@@ -34,7 +34,7 @@ export function UsageMeter({ usage, onUpgrade }: UsageMeterProps) {
       <div className="flex items-center justify-between text-xs">
         <span className="font-medium text-foreground">Uso de hoy</span>
         <span className={cn("tabular-nums", low ? "text-destructive" : "text-muted-foreground")}>
-          {usage.used}/{usage.limit}
+          {Math.min(usage.used, usage.limit)}/{usage.limit}
         </span>
       </div>
       <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-secondary">

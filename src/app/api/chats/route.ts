@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 
+import { isSameOrigin } from "@/lib/http";
 import { createChatSchema } from "@/lib/validation";
 import { createChat, listChats } from "@/lib/chats";
 
@@ -16,6 +17,10 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  if (!isSameOrigin(req)) {
+    return NextResponse.json({ error: "Origen no permitido" }, { status: 403 });
+  }
+
   const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });

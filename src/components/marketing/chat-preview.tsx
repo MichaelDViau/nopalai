@@ -48,7 +48,7 @@ export function ChatPreview() {
   const tab = TABS[active];
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-border bg-white">
+    <div className="overflow-hidden rounded-xl border border-border bg-white">
       {/* window chrome */}
       <div className="flex items-center gap-2 border-b border-border bg-secondary/60 px-4 py-3">
         <span className="h-3 w-3 rounded-full bg-neutral-300" />
@@ -66,7 +66,7 @@ export function ChatPreview() {
             key={t.id}
             onClick={() => setActive(i)}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors",
+              "inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
               i === active
                 ? "bg-primary/10 text-primary"
                 : "text-muted-foreground hover:bg-accent",
@@ -81,7 +81,7 @@ export function ChatPreview() {
       {/* conversation */}
       <div className="space-y-5 p-5 sm:p-7">
         <div className="flex justify-end">
-          <div className="max-w-[80%] rounded-2xl rounded-br-md bg-secondary px-4 py-2.5 text-[15px] text-foreground">
+          <div className="max-w-[80%] rounded-lg rounded-br-sm bg-secondary px-4 py-2.5 text-[15px] text-foreground">
             {tab.q}
           </div>
         </div>
@@ -91,7 +91,7 @@ export function ChatPreview() {
           </div>
           <div
             key={tab.id}
-            className="max-w-[85%] animate-fade-in rounded-2xl rounded-tl-md bg-secondary/70 px-4 py-3 text-[15px] leading-7 text-foreground"
+            className="max-w-[85%] animate-fade-in rounded-lg rounded-tl-sm bg-secondary/70 px-4 py-3 text-[15px] leading-7 text-foreground"
           >
             {tab.a}
           </div>
