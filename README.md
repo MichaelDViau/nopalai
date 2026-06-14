@@ -102,12 +102,7 @@ function, and enables Row Level Security.
 npm run dev
 ```
 
-Open [http://localhecho "--- node ---"; node --version
-echo "--- npm ---"; npm --version
-echo "--- folder ---"; pwd
-echo "--- is this the project? ---"; ls package.json 2>/dev/null && echo "YES" || echo "NO - wrong folder"
-echo "--- deps installed? ---"; ls node_modules >/dev/null 2>&1 && echo "YES" || echo "NO - run npm install"
-echo "--- env file? ---"; ls .env.local 2>/dev/null && echo "YES" || echo "NO - missing .env.local"ost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000).
 
 ## 🔑 Environment Variables
 
