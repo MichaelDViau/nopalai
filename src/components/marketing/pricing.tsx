@@ -71,7 +71,7 @@ export function Pricing({ showComparison = true }: { showComparison?: boolean })
           </div>
 
           {/* Premium */}
-          <div className="relative flex flex-col rounded-3xl border-2 border-primary bg-card p-8 shadow-[0_24px_70px_-30px_rgba(11,122,75,0.45)]">
+          <div className="relative flex flex-col rounded-3xl border-2 border-primary bg-card p-8">
             <Badge className="absolute -top-3 left-8 bg-primary text-primary-foreground">
               Más popular
             </Badge>

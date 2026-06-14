@@ -1,39 +1,39 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Briefcase, Building2, MessageSquare, Palmtree } from "lucide-react";
+import { GraduationCap, Languages, Megaphone, MessageSquare } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { LogoMark } from "@/components/brand/logo";
 
 const TABS = [
   {
-    id: "business",
-    label: "Negocios",
-    icon: Briefcase,
-    q: "Escríbeme una promoción de fin de semana para mi taquería en Guadalajara.",
-    a: "¡Claro! 🌮 *Fin de Semana Taquero* — 3x2 en tacos al pastor, viernes a domingo de 7 a 11 pm. Etiqueta a 2 amigos en nuestra publicación y llévate un agua fresca gratis. ¿Quieres que te arme el copy para Instagram y WhatsApp?",
-  },
-  {
-    id: "tourism",
-    label: "Turismo",
-    icon: Palmtree,
-    q: "Itinerario de 3 días en Tulum para una pareja.",
-    a: "Día 1: cenote Dos Ojos por la mañana y atardecer en la zona arqueológica. Día 2: playa Paraíso + cena en la zona hotelera. Día 3: Sian Ka'an y mercado local. ¿Lo adapto a un presupuesto en MXN?",
-  },
-  {
-    id: "realestate",
-    label: "Bienes Raíces",
-    icon: Building2,
-    q: "Descripción para un depa en venta en la Roma, CDMX.",
-    a: "Departamento de 2 recámaras en el corazón de la Roma Norte: 92 m², luz natural todo el día, a pasos de cafés y del metro. Ideal para vivir o invertir. ¿Agrego precio y datos de contacto?",
-  },
-  {
     id: "general",
     label: "General",
     icon: MessageSquare,
-    q: "Tradúceme 'la cuenta, por favor' al inglés para un turista.",
-    a: "“The check, please.” Y si quieres sonar más natural: “Could we get the check, please?” ¿Te preparo más frases para atender turistas?",
+    q: "Ayúdame a redactar un correo formal para pedir una cotización.",
+    a: "Claro. Asunto: Solicitud de cotización. “Estimado/a [Nombre]: Le escribo para solicitar una cotización de [producto/servicio], con entrega en [lugar/fecha]. Quedo atento/a a su respuesta. Saludos, [Tu nombre].” ¿Quieres que lo haga más breve o más detallado?",
+  },
+  {
+    id: "translation",
+    label: "Traducción",
+    icon: Languages,
+    q: "Traduce 'la cuenta, por favor' al inglés para un turista.",
+    a: "“The check, please.” Y para sonar más natural: “Could we get the check, please?” ¿Te preparo más frases para atender turistas?",
+  },
+  {
+    id: "school",
+    label: "Escuela",
+    icon: GraduationCap,
+    q: "Explícame el teorema de Pitágoras con un ejemplo.",
+    a: "En un triángulo rectángulo, a² + b² = c², donde c es la hipotenusa. Ejemplo: si a = 3 y b = 4, entonces c = √(9 + 16) = √25 = 5. ¿Quieres que lo resolvamos con tus propios números?",
+  },
+  {
+    id: "content",
+    label: "Contenido",
+    icon: Megaphone,
+    q: "Dame una idea de contenido para Instagram esta semana.",
+    a: "Reel: “3 errores que cometes al [tu tema]”. Hook: “El #2 te está costando clientes.” Termina con un CTA: “Guarda este Reel para no olvidarlo.” ¿Te armo el guion completo?",
   },
 ];
 
@@ -48,12 +48,12 @@ export function ChatPreview() {
   const tab = TABS[active];
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-[0_24px_80px_-24px_rgba(11,122,75,0.25)]">
+    <div className="overflow-hidden rounded-2xl border border-border bg-white">
       {/* window chrome */}
-      <div className="flex items-center gap-2 border-b border-border bg-secondary/50 px-4 py-3">
-        <span className="h-3 w-3 rounded-full bg-red-400/80" />
-        <span className="h-3 w-3 rounded-full bg-amber-400/80" />
-        <span className="h-3 w-3 rounded-full bg-emerald-400/80" />
+      <div className="flex items-center gap-2 border-b border-border bg-secondary/60 px-4 py-3">
+        <span className="h-3 w-3 rounded-full bg-neutral-300" />
+        <span className="h-3 w-3 rounded-full bg-neutral-300" />
+        <span className="h-3 w-3 rounded-full bg-neutral-300" />
         <div className="ml-3 hidden text-xs text-muted-foreground sm:block">
           nopalai.mx/dashboard
         </div>
@@ -91,7 +91,7 @@ export function ChatPreview() {
           </div>
           <div
             key={tab.id}
-            className="max-w-[85%] animate-fade-in rounded-2xl rounded-tl-md bg-primary/[0.06] px-4 py-3 text-[15px] leading-7 text-foreground"
+            className="max-w-[85%] animate-fade-in rounded-2xl rounded-tl-md bg-secondary/70 px-4 py-3 text-[15px] leading-7 text-foreground"
           >
             {tab.a}
           </div>

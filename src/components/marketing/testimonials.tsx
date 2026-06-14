@@ -61,7 +61,7 @@ export function Testimonials() {
             Testimonios
           </span>
           <h2 className="mt-3 text-balance text-4xl font-bold tracking-tight sm:text-5xl">
-            Querido por negocios en todo México
+            Querido por miles de personas en México
           </h2>
           <div className="mt-4 flex items-center justify-center gap-1.5">
             {Array.from({ length: 5 }).map((_, i) => (
@@ -77,7 +77,7 @@ export function Testimonials() {
           {TESTIMONIALS.map((t) => (
             <figure
               key={t.name}
-              className="flex flex-col rounded-2xl border border-border bg-card p-7 shadow-sm"
+              className="flex flex-col rounded-2xl border border-border bg-card p-7"
             >
               <div className="flex gap-0.5">
                 {Array.from({ length: 5 }).map((_, i) => (
