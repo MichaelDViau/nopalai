@@ -46,7 +46,7 @@ export function Composer({
     <div className="mx-auto w-full max-w-3xl">
       <div
         className={cn(
-          "relative flex items-end gap-2 rounded-2xl border border-border bg-card p-2 shadow-sm transition-shadow focus-within:border-primary/40 focus-within:shadow-md",
+          "relative flex items-end gap-2 rounded-2xl border border-border bg-card p-2 transition-colors focus-within:border-primary/60",
           disabled && "opacity-60",
         )}
       >
@@ -58,7 +58,7 @@ export function Composer({
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          className="max-h-[200px] flex-1 resize-none bg-transparent px-3 py-2.5 text-[15px] leading-6 outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
+          className="max-h-[200px] flex-1 resize-none bg-transparent px-3 py-2.5 text-base leading-6 outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
         />
         {isLoading ? (
           <Button

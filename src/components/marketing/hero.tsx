@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Play, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { track, EVENTS } from "@/lib/analytics";
@@ -9,34 +9,31 @@ import { ChatPreview } from "@/components/marketing/chat-preview";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden bg-secondary/30">
-      <div className="container pb-16 pt-16 sm:pt-24 lg:pb-24">
-        <div className="mx-auto max-w-3xl text-center">
-          <Link
-            href="/pricing"
-            className="mx-auto inline-flex items-center gap-2 rounded-full border border-border bg-white px-4 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
-          >
+    <section className="bg-secondary/30">
+      <div className="container pb-14 pt-12 sm:pb-20 sm:pt-20">
+        <div className="mx-auto max-w-2xl text-center">
+          <span className="mx-auto inline-flex items-center gap-2 rounded-full border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-foreground sm:text-sm">
             <Sparkles className="h-3.5 w-3.5 text-primary" />
-            Nuevo: 4 asistentes especializados para México
-            <ArrowRight className="h-3.5 w-3.5 text-muted-foreground" />
-          </Link>
+            4 asistentes de IA para México
+          </span>
 
-          <h1 className="mt-7 text-balance text-5xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+          <h1 className="mt-6 text-balance text-[2.5rem] font-bold leading-[1.08] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
             La IA que entiende <span className="text-primary">México</span>.
           </h1>
 
-          <p className="mx-auto mt-6 max-w-2xl text-balance text-lg leading-relaxed text-muted-foreground sm:text-xl">
-            Respuestas, traducciones, ayuda con tareas escolares y contenido
-            para redes sociales. En español mexicano, al instante.
+          <p className="mx-auto mt-5 max-w-xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg">
+            Respuestas, traducciones, ayuda con tareas y contenido para redes.
+            En español mexicano, al instante.
           </p>
 
-          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Button
               size="lg"
               asChild
+              className="w-full sm:w-auto"
               onClick={() => track(EVENTS.CTA_CLICKED, { cta: "hero_primary" })}
             >
-              <Link href="/sign-up">
+              <Link href="/dashboard">
                 Comenzar gratis
                 <ArrowRight className="h-4 w-4" />
               </Link>
@@ -45,22 +42,18 @@ export function Hero() {
               size="lg"
               variant="outline"
               asChild
-              onClick={() => track(EVENTS.CTA_CLICKED, { cta: "hero_demo" })}
+              className="w-full sm:w-auto"
             >
-              <Link href="#demo">
-                <Play className="h-4 w-4" />
-                Ver demo
-              </Link>
+              <Link href="#demo">Ver demo</Link>
             </Button>
           </div>
 
-          <p className="mt-4 text-sm text-muted-foreground">
-            Gratis para siempre · Sin tarjeta de crédito · 20 mensajes al día
+          <p className="mt-4 text-xs text-muted-foreground sm:text-sm">
+            Gratis · Sin tarjeta · 20 mensajes al día
           </p>
         </div>
 
-        {/* Product preview */}
-        <div id="demo" className="mx-auto mt-16 max-w-4xl scroll-mt-24">
+        <div id="demo" className="mx-auto mt-12 max-w-3xl scroll-mt-20 sm:mt-16">
           <ChatPreview />
         </div>
       </div>

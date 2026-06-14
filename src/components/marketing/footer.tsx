@@ -2,75 +2,39 @@ import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
 import { SITE } from "@/lib/constants";
 
-const COLS = [
-  {
-    title: "Producto",
-    links: [
-      { href: "/#features", label: "Funciones" },
-      { href: "/#assistants", label: "Asistentes" },
-      { href: "/pricing", label: "Precios" },
-      { href: "/dashboard", label: "Panel" },
-    ],
-  },
-  {
-    title: "Empresa",
-    links: [
-      { href: "/#testimonials", label: "Testimonios" },
-      { href: "/#faq", label: "Preguntas frecuentes" },
-      { href: "mailto:hola@nopalai.mx", label: "Contacto" },
-    ],
-  },
-  {
-    title: "Legal",
-    links: [
-      { href: "/legal/privacidad", label: "Privacidad" },
-      { href: "/legal/terminos", label: "Términos" },
-    ],
-  },
+const LINKS = [
+  { href: "/#assistants", label: "Asistentes" },
+  { href: "/pricing", label: "Precios" },
+  { href: "/legal/privacidad", label: "Privacidad" },
+  { href: "/legal/terminos", label: "Términos" },
 ];
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-secondary/40">
-      <div className="container py-16">
-        <div className="grid grid-cols-2 gap-10 md:grid-cols-5">
-          <div className="col-span-2">
+    <footer className="border-t border-border bg-secondary/30">
+      <div className="container py-10">
+        <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:justify-between sm:text-left">
+          <Link href="/" aria-label="NopalAI inicio">
             <Logo />
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
-              {SITE.tagline} El asistente de inteligencia artificial creado para
-              México: respuestas, traducciones, tareas escolares y contenido
-              para redes.
-            </p>
-          </div>
+          </Link>
 
-          {COLS.map((col) => (
-            <div key={col.title}>
-              <h4 className="text-sm font-semibold text-foreground">
-                {col.title}
-              </h4>
-              <ul className="mt-4 space-y-3">
-                {col.links.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+            {LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
         </div>
 
-        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 text-sm text-muted-foreground sm:flex-row">
-          <p>
-            © {new Date().getFullYear()} {SITE.name}. Hecho con orgullo para
-            México 🇲🇽
-          </p>
-          <p>{SITE.tagline}</p>
-        </div>
+        <p className="mt-8 text-center text-xs text-muted-foreground sm:text-left">
+          © {new Date().getFullYear()} {SITE.name} · {SITE.tagline} · Hecho para
+          México 🇲🇽
+        </p>
       </div>
     </footer>
   );

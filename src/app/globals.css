@@ -4,38 +4,40 @@
 
 @layer base {
   :root {
-    /* Surfaces — clean white with charcoal text */
-    --background: 0 0% 100%;
-    --foreground: 200 10% 13%;
+    /* Sage-green palette
+       #DCE8D5 #AFC7A8 #7B9B78 #3F5B45 #1C2620 */
+    --background: 96 28% 99%;
+    --foreground: 144 16% 13%; /* #1C2620 */
 
     --card: 0 0% 100%;
-    --card-foreground: 200 10% 13%;
+    --card-foreground: 144 16% 13%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 200 10% 13%;
+    --popover-foreground: 144 16% 13%;
 
-    /* Fresh, lighter green brand accent (matches the logo) */
-    --primary: 157 64% 31%;
-    --primary-foreground: 0 0% 100%;
+    /* Deep forest green accent — #3F5B45 */
+    --primary: 133 19% 30%;
+    --primary-foreground: 96 30% 97%;
 
-    /* Soft light-green surfaces */
-    --secondary: 150 40% 96%;
-    --secondary-foreground: 157 40% 22%;
+    /* Light sage surfaces — #DCE8D5 */
+    --secondary: 98 30% 87%;
+    --secondary-foreground: 144 20% 18%;
 
-    --muted: 160 18% 96%;
-    --muted-foreground: 200 8% 45%;
+    --muted: 100 28% 94%;
+    --muted-foreground: 134 11% 38%;
 
-    --accent: 150 46% 93%;
-    --accent-foreground: 157 42% 20%;
+    /* #AFC7A8 */
+    --accent: 105 25% 82%;
+    --accent-foreground: 144 20% 16%;
 
-    --destructive: 0 72% 48%;
+    --destructive: 0 65% 48%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 152 22% 91%;
-    --input: 152 22% 91%;
-    --ring: 157 64% 31%;
+    --border: 105 24% 87%;
+    --input: 105 24% 87%;
+    --ring: 133 19% 30%;
 
-    --radius: 0.75rem;
+    --radius: 0.875rem;
   }
 
   .dark {

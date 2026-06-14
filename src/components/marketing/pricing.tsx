@@ -31,22 +31,19 @@ function Cell({ value }: { value: string | boolean }) {
 
 export function Pricing({ showComparison = true }: { showComparison?: boolean }) {
   return (
-    <section id="pricing" className="scroll-mt-20 py-24">
+    <section id="pricing" className="scroll-mt-16 bg-secondary/30 py-16 sm:py-24">
       <div className="container">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="text-sm font-semibold uppercase tracking-wider text-primary">
-            Precios
-          </span>
-          <h2 className="mt-3 text-balance text-4xl font-bold tracking-tight sm:text-5xl">
+        <div className="mx-auto max-w-xl text-center">
+          <h2 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">
             Simple y transparente
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground">
-            Empieza gratis. Mejora a Premium cuando lo necesites. Cancela cuando
+          <p className="mt-3 text-muted-foreground">
+            Empieza gratis. Mejora a Premium cuando quieras. Cancela cuando
             quieras.
           </p>
         </div>
 
-        <div className="mx-auto mt-16 grid max-w-4xl gap-6 lg:grid-cols-2">
+        <div className="mx-auto mt-10 grid max-w-4xl gap-5 sm:mt-14 md:grid-cols-2">
           {/* Free */}
           <div className="flex flex-col rounded-3xl border border-border bg-card p-8">
             <h3 className="text-lg font-semibold">{PLANS.free.name}</h3>
@@ -96,8 +93,8 @@ export function Pricing({ showComparison = true }: { showComparison?: boolean })
         </div>
 
         {showComparison && (
-          <div className="mx-auto mt-16 max-w-4xl overflow-hidden rounded-2xl border border-border">
-            <table className="w-full border-collapse text-sm">
+          <div className="mx-auto mt-12 max-w-4xl overflow-x-auto rounded-2xl border border-border">
+            <table className="w-full min-w-[480px] border-collapse text-sm">
               <thead>
                 <tr className="bg-secondary/60">
                   <th className="px-6 py-4 text-left font-semibold">

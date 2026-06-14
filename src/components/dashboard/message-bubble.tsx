@@ -5,7 +5,6 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Check, Copy } from "lucide-react";
 
-import { cn } from "@/lib/utils";
 import { LogoMark } from "@/components/brand/logo";
 
 export interface ChatMessage {
@@ -58,17 +57,13 @@ function MessageBubbleImpl({ message }: { message: ChatMessage }) {
         <LogoMark className="h-8 w-8" />
       </div>
       <div className="min-w-0 flex-1">
-        <div
-          className={cn(
-            "prose-chat max-w-none rounded-2xl rounded-tl-md bg-primary/[0.05] px-4 py-3 text-foreground",
-          )}
-        >
+        <div className="prose-chat max-w-none pt-0.5 text-foreground">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
             {message.content}
           </ReactMarkdown>
         </div>
         {message.content.length > 0 && (
-          <div className="mt-1 pl-1">
+          <div className="mt-1">
             <CopyButton text={message.content} />
           </div>
         )}
@@ -85,7 +80,7 @@ export function TypingIndicator() {
       <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center">
         <LogoMark className="h-8 w-8" />
       </div>
-      <div className="flex items-center gap-1.5 rounded-2xl rounded-tl-md bg-primary/[0.05] px-4 py-4">
+      <div className="flex items-center gap-1.5 rounded-2xl rounded-tl-md bg-secondary/60 px-4 py-4">
         <span className="typing-dot" />
         <span className="typing-dot" />
         <span className="typing-dot" />

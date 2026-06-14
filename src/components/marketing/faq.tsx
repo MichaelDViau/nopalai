@@ -8,48 +8,39 @@ import {
 export const FAQS = [
   {
     q: "¿Qué es NopalAI?",
-    a: "NopalAI es un asistente de inteligencia artificial creado específicamente para México. Entiende el español mexicano y te ayuda con preguntas del día a día, traducciones, tareas escolares y de estudio, y creación de contenido para redes sociales y marketing.",
+    a: "Un asistente de inteligencia artificial creado para México. Entiende el español mexicano y te ayuda con respuestas del día a día, traducciones, tareas escolares y contenido para redes sociales.",
   },
   {
     q: "¿Es gratis?",
-    a: "Sí. El plan Gratis te da 20 mensajes al día con acceso a los 4 asistentes especializados, sin tarjeta de crédito. Si necesitas más, el plan Premium cuesta 99 MXN al mes.",
+    a: "Sí. El plan Gratis te da 20 mensajes al día, sin tarjeta de crédito. Si necesitas más, el plan Premium cuesta 99 MXN al mes.",
   },
   {
     q: "¿En qué se diferencia de ChatGPT?",
-    a: "NopalAI está afinado para el contexto mexicano: modismos, pesos, instituciones y formas de comunicación locales. Además incluye asistentes especializados (General, Traducción, Escuela y Tareas, y Contenido y Marketing) listos para usar desde el primer mensaje.",
+    a: "NopalAI está afinado para el contexto mexicano y trae 4 asistentes especializados listos para usar: General, Traducción, Escuela y Tareas, y Contenido y Marketing.",
   },
   {
-    q: "¿Qué incluye el plan Premium?",
-    a: "Por 99 MXN al mes obtienes mensajes prácticamente ilimitados, sin anuncios, respuestas más rápidas con modelos más potentes, acceso prioritario y soporte preferente. Puedes cancelar cuando quieras.",
-  },
-  {
-    q: "¿Mis conversaciones son privadas?",
-    a: "Sí. Tu cuenta está protegida con autenticación segura y tus conversaciones son privadas. No vendemos tus datos.",
-  },
-  {
-    q: "¿Puedo cancelar en cualquier momento?",
-    a: "Por supuesto. Puedes cancelar tu suscripción Premium en cualquier momento desde tu panel y seguirás teniendo acceso hasta el final del periodo pagado.",
+    q: "¿Puedo cancelar cuando quiera?",
+    a: "Claro. Puedes cancelar tu suscripción Premium en cualquier momento y seguirás teniendo acceso hasta el final del periodo pagado.",
   },
 ];
 
 export function FAQ() {
   return (
-    <section id="faq" className="scroll-mt-20 bg-secondary/40 py-24">
+    <section id="faq" className="scroll-mt-16 py-16 sm:py-24">
       <div className="container">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="text-sm font-semibold uppercase tracking-wider text-primary">
+        <div className="mx-auto max-w-xl text-center">
+          <h2 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">
             Preguntas frecuentes
-          </span>
-          <h2 className="mt-3 text-balance text-4xl font-bold tracking-tight sm:text-5xl">
-            ¿Tienes dudas? Aquí están las respuestas
           </h2>
         </div>
 
-        <div className="mx-auto mt-12 max-w-3xl">
+        <div className="mx-auto mt-8 max-w-2xl">
           <Accordion type="single" collapsible className="w-full">
             {FAQS.map((faq, i) => (
               <AccordionItem key={i} value={`item-${i}`}>
-                <AccordionTrigger>{faq.q}</AccordionTrigger>
+                <AccordionTrigger className="text-left text-[15px] sm:text-base">
+                  {faq.q}
+                </AccordionTrigger>
                 <AccordionContent>{faq.a}</AccordionContent>
               </AccordionItem>
             ))}
