@@ -27,8 +27,8 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 w-full transition-colors",
-        scrolled ? "glass border-b border-border" : "border-b border-transparent",
+        "sticky top-0 z-50 w-full bg-background transition-colors",
+        scrolled ? "border-b border-border" : "border-b border-transparent",
       )}
     >
       <div className="container flex h-16 items-center justify-between gap-3">

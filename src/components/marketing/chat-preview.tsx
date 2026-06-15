@@ -48,19 +48,9 @@ export function ChatPreview() {
   const tab = TABS[active];
 
   return (
-    <div className="overflow-hidden rounded-xl border border-border bg-white">
-      {/* window chrome */}
-      <div className="flex items-center gap-2 border-b border-border bg-secondary/60 px-4 py-3">
-        <span className="h-3 w-3 rounded-full bg-neutral-300" />
-        <span className="h-3 w-3 rounded-full bg-neutral-300" />
-        <span className="h-3 w-3 rounded-full bg-neutral-300" />
-        <div className="ml-3 hidden text-xs text-muted-foreground sm:block">
-          nopalai.mx/dashboard
-        </div>
-      </div>
-
+    <div className="overflow-hidden rounded-lg border border-border bg-card">
       {/* mode tabs */}
-      <div className="flex flex-wrap gap-2 border-b border-border px-4 py-3">
+      <div className="flex flex-wrap gap-2 border-b border-border p-3">
         {TABS.map((t, i) => (
           <button
             key={t.id}
@@ -68,8 +58,8 @@ export function ChatPreview() {
             className={cn(
               "inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
               i === active
-                ? "bg-primary/10 text-primary"
-                : "text-muted-foreground hover:bg-accent",
+                ? "bg-primary text-primary-foreground"
+                : "text-muted-foreground hover:bg-secondary",
             )}
           >
             <t.icon className="h-3.5 w-3.5" />
@@ -79,19 +69,17 @@ export function ChatPreview() {
       </div>
 
       {/* conversation */}
-      <div className="space-y-5 p-5 sm:p-7">
+      <div className="space-y-4 p-5 sm:p-6">
         <div className="flex justify-end">
-          <div className="max-w-[80%] rounded-lg rounded-br-sm bg-secondary px-4 py-2.5 text-[15px] text-foreground">
+          <div className="max-w-[80%] rounded-lg bg-secondary px-4 py-2.5 text-[15px] text-foreground">
             {tab.q}
           </div>
         </div>
         <div className="flex gap-3">
-          <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center">
-            <LogoMark className="h-8 w-8" />
-          </div>
+          <LogoMark className="mt-0.5 h-8 w-8 shrink-0" />
           <div
             key={tab.id}
-            className="max-w-[85%] animate-fade-in rounded-lg rounded-tl-sm bg-secondary/70 px-4 py-3 text-[15px] leading-7 text-foreground"
+            className="max-w-[85%] animate-fade-in rounded-lg border border-border px-4 py-3 text-[15px] leading-7 text-foreground"
           >
             {tab.a}
           </div>

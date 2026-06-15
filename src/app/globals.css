@@ -86,11 +86,6 @@
 }
 
 @layer utilities {
-  /* Flat translucent surface for the sticky nav. */
-  .glass {
-    @apply bg-white/85 backdrop-blur-md;
-  }
-
   .text-balance {
     text-wrap: balance;
   }

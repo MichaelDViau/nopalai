@@ -2,10 +2,10 @@
 
 # 🌵 NopalAI
 
-### La IA que entiende México.
+### La IA que entiende Latam.
 
 El asistente de inteligencia artificial creado para México: negocios, turismo,
-bienes raíces y vida diaria — en español mexicano.
+bienes raíces y vida diaria.
 
 </div>
 

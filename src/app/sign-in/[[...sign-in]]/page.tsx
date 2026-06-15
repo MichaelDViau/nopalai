@@ -6,7 +6,7 @@ import { Logo } from "@/components/brand/logo";
 
 export const metadata: Metadata = {
   title: "Iniciar sesión",
-  description: "Inicia sesión en NopalAI, la IA que entiende México.",
+  description: "Inicia sesión en NopalAI, la IA que entiende Latam.",
   robots: { index: false, follow: true },
 };
 

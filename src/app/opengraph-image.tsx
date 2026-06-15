@@ -17,8 +17,7 @@ export default function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "center",
           padding: "80px",
-          background:
-            "linear-gradient(135deg, #ffffff 0%, #f1faf5 55%, #e3f4ec 100%)",
+          background: "#eef4ea",
           fontFamily: "sans-serif",
         }}
       >
@@ -53,10 +52,10 @@ export default function OpengraphImage() {
             maxWidth: 920,
           }}
         >
-          La IA que entiende México.
+          La IA que entiende Latam.
         </div>
         <div style={{ marginTop: 28, fontSize: 32, color: "#4b5852", maxWidth: 880 }}>
-          Traducciones, tareas, contenido para redes y vida diaria — en español mexicano.
+          Respuestas, traducciones y tareas. Al instante.
         </div>
       </div>
     ),

@@ -8,7 +8,7 @@ import {
 export const FAQS = [
   {
     q: "¿Qué es NopalAI?",
-    a: "Un asistente de inteligencia artificial creado para México. Entiende el español mexicano y te ayuda con respuestas del día a día, traducciones, tareas escolares y contenido para redes sociales.",
+    a: "Un asistente de inteligencia artificial creado para México. Te ayuda con respuestas del día a día, traducciones, tareas escolares y contenido para redes sociales.",
   },
   {
     q: "¿Es gratis?",

@@ -45,10 +45,10 @@ export function Pricing({ showComparison = true }: { showComparison?: boolean })
 
         <div className="mx-auto mt-10 grid max-w-4xl gap-5 sm:mt-14 md:grid-cols-2">
           {/* Free */}
-          <div className="flex flex-col rounded-2xl border border-border bg-card p-8">
+          <div className="flex flex-col rounded-lg border border-border bg-card p-8">
             <h3 className="text-lg font-semibold">{PLANS.free.name}</h3>
             <p className="mt-2 text-sm text-muted-foreground">
-              Para empezar a explorar la IA mexicana.
+              Para empezar a explorar.
             </p>
             <div className="mt-6 flex items-baseline gap-1">
               <span className="text-5xl font-bold tracking-tight">$0</span>
@@ -68,7 +68,7 @@ export function Pricing({ showComparison = true }: { showComparison?: boolean })
           </div>
 
           {/* Premium */}
-          <div className="relative flex flex-col rounded-2xl border-2 border-primary bg-card p-8">
+          <div className="relative flex flex-col rounded-lg border-2 border-primary bg-card p-8">
             <Badge className="absolute -top-3 left-8 bg-primary text-primary-foreground">
               Más popular
             </Badge>
@@ -93,7 +93,7 @@ export function Pricing({ showComparison = true }: { showComparison?: boolean })
         </div>
 
         {showComparison && (
-          <div className="mx-auto mt-12 max-w-4xl overflow-x-auto rounded-xl border border-border">
+          <div className="mx-auto mt-12 max-w-4xl overflow-x-auto rounded-lg border border-border">
             <table className="w-full min-w-[480px] border-collapse text-sm">
               <thead>
                 <tr className="bg-secondary/60">
