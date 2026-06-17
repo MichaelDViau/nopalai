@@ -7,9 +7,10 @@ const nextConfig = {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [{ protocol: "https", hostname: "img.clerk.com" }],
   },
-  experimental: {
-    optimizePackageImports: ["lucide-react"],
-  },
+  // Note: lucide-react is already on Next's default `optimizePackageImports`
+  // list (and Turbopack optimizes barrel imports natively), so we don't list
+  // it explicitly — doing so triggered "module factory not available"
+  // lucide-react HMR errors under Turbopack.
   async headers() {
     return [
       {
