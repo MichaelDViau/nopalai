@@ -58,6 +58,7 @@ export function Composer({
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
+          aria-label="Mensaje"
           className="max-h-[200px] flex-1 resize-none bg-transparent px-3 py-2.5 text-base leading-6 outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
         />
         {isLoading ? (

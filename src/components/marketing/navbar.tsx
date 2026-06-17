@@ -8,6 +8,7 @@ import { MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/brand/logo";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 
 const NAV_LINKS = [
   { href: "/#assistants", label: "Asistentes" },
@@ -48,8 +49,9 @@ export function Navbar() {
           ))}
         </nav>
 
-        {/* Right side — direct access to the AI chat */}
-        <div className="flex items-center gap-2">
+        {/* Right side — theme switch + direct access to the AI chat */}
+        <div className="flex items-center gap-1.5">
+          <ThemeToggle />
           <SignedOut>
             <Button
               variant="ghost"

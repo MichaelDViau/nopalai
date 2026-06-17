@@ -5,13 +5,15 @@ import { useChat } from "@ai-sdk/react";
 import { Menu, Plus } from "lucide-react";
 import { toast } from "sonner";
 
-import { deriveChatTitle } from "@/lib/utils";
+/** localStorage key for the desktop sidebar pin preference. */
+const SIDEBAR_PIN_KEY = "nopalai:sidebar-pinned";
+
+import { cn, deriveChatTitle } from "@/lib/utils";
 import { getMode, type ModeId } from "@/lib/modes";
 import { track, EVENTS } from "@/lib/analytics";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
-import { Logo } from "@/components/brand/logo";
 import { Sidebar } from "@/components/dashboard/sidebar";
 import { Composer } from "@/components/dashboard/composer";
 import { EmptyState } from "@/components/dashboard/empty-state";
@@ -37,10 +39,28 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
   const [input, setInput] = useState("");
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [pinned, setPinned] = useState(false);
+  const [hovered, setHovered] = useState(false);
   const [upgrade, setUpgrade] = useState<{
     open: boolean;
     reason: "limit" | "manual";
   }>({ open: false, reason: "manual" });
+
+  // Restore the pinned-sidebar preference (desktop only).
+  useEffect(() => {
+    setPinned(localStorage.getItem(SIDEBAR_PIN_KEY) === "1");
+  }, []);
+
+  const togglePin = useCallback(() => {
+    setPinned((prev) => {
+      const next = !prev;
+      localStorage.setItem(SIDEBAR_PIN_KEY, next ? "1" : "0");
+      return next;
+    });
+  }, []);
+
+  // The rail expands when pinned or while the pointer is over it.
+  const expanded = pinned || hovered;
 
   const activeChatIdRef = useRef<string | null>(null);
   activeChatIdRef.current = activeChatId;
@@ -139,32 +159,32 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
     }
   }
 
-  const send = useCallback(
-    async (raw?: string) => {
-      const text = (raw ?? input).trim();
-      if (!text || isStreaming || loadingMessages) return;
+  // Defined as a plain function (not memoized) so it always closes over the
+  // latest state — its consumers (Composer, EmptyState) don't rely on a
+  // stable identity, which avoids the stale-closure hazard a useCallback
+  // here would introduce.
+  async function send(raw?: string) {
+    const text = (raw ?? input).trim();
+    if (!text || isStreaming || loadingMessages) return;
 
-      if (usage.plan === "free" && usage.used >= usage.limit) {
-        setUpgrade({ open: true, reason: "limit" });
-        return;
-      }
+    if (usage.plan === "free" && usage.used >= usage.limit) {
+      setUpgrade({ open: true, reason: "limit" });
+      return;
+    }
 
-      setInput("");
-      const id = await ensureChat(text);
-      if (!id) return;
+    setInput("");
+    const id = await ensureChat(text);
+    if (!id) return;
 
-      setUsage((u) => ({
-        ...u,
-        used: u.used + 1,
-        remaining: Math.max(0, u.remaining - 1),
-      }));
-      track(EVENTS.MESSAGE_SENT, { mode });
+    setUsage((u) => ({
+      ...u,
+      used: u.used + 1,
+      remaining: Math.max(0, u.remaining - 1),
+    }));
+    track(EVENTS.MESSAGE_SENT, { mode });
 
-      append({ role: "user", content: text }, { body: { chatId: id, mode } });
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [input, isStreaming, loadingMessages, usage, mode, activeChatId],
-  );
+    append({ role: "user", content: text }, { body: { chatId: id, mode } });
+  }
 
   async function selectChat(id: string) {
     if (id === activeChatId || loadingMessages) return;
@@ -239,31 +259,54 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
   const activeMode = useMemo(() => getMode(mode), [mode]);
   const hasMessages = messages.length > 0;
 
-  const sidebar = (
-    <Sidebar
-      chats={chats}
-      activeChatId={activeChatId}
-      usage={usage}
-      onSelect={selectChat}
-      onNewChat={newChat}
-      onRename={renameChat}
-      onDelete={deleteChat}
-      onUpgrade={openUpgrade}
-    />
-  );
+  const sidebarProps = {
+    chats,
+    activeChatId,
+    usage,
+    onSelect: selectChat,
+    onNewChat: newChat,
+    onRename: renameChat,
+    onDelete: deleteChat,
+    onUpgrade: openUpgrade,
+  };
 
   return (
     <div className="flex h-dvh overflow-hidden">
-      {/* Desktop sidebar */}
-      <aside className="hidden w-[280px] shrink-0 border-r border-border md:block">
-        {sidebar}
+      {/* Desktop sidebar — icon rail that expands on hover, or stays open
+          when pinned. The outer <aside> only reserves the rail's width so
+          the hover-expanded panel overlays the conversation instead of
+          shoving it sideways. */}
+      <aside
+        className={cn(
+          "relative z-30 hidden shrink-0 md:block",
+          pinned ? "w-[280px]" : "w-16",
+        )}
+      >
+        <div
+          onMouseEnter={() => !pinned && setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          className={cn(
+            "absolute inset-y-0 left-0 transition-[width] duration-300 ease-out",
+            expanded ? "w-[280px]" : "w-16",
+            !pinned && expanded
+              ? "bg-background shadow-2xl"
+              : "border-r border-border",
+          )}
+        >
+          <Sidebar
+            {...sidebarProps}
+            collapsed={!expanded}
+            pinned={pinned}
+            onTogglePin={togglePin}
+          />
+        </div>
       </aside>
 
-      {/* Mobile sidebar */}
+      {/* Mobile sidebar — full panel inside a slide-over sheet */}
       <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
         <SheetContent side="left" className="w-[300px] p-0">
           <SheetTitle className="sr-only">Menú de chats</SheetTitle>
-          {sidebar}
+          <Sidebar {...sidebarProps} collapsed={false} />
         </SheetContent>
       </Sheet>
 
@@ -295,9 +338,6 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
             <Plus className="h-4 w-4" />
             Nuevo
           </Button>
-          <div className="hidden md:block">
-            <Logo showText={false} />
-          </div>
         </header>
 
         {/* Conversation */}

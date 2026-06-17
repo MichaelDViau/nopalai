@@ -8,13 +8,6 @@ export interface ChatSummary {
   updated_at: string;
 }
 
-export interface StoredMessage {
-  id: string;
-  role: "user" | "assistant";
-  content: string;
-  created_at: string;
-}
-
 export interface UsageState {
   plan: "free" | "premium";
   used: number;

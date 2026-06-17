@@ -1,23 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Sora } from "next/font/google";
+import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { esMX } from "@clerk/localizations";
 
 import { SITE } from "@/lib/constants";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/theme/theme-provider";
 import { PostHogProvider } from "@/components/analytics/posthog-provider";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import "./globals.css";
 
+// A single, well-tuned typeface — like Claude/Linear/Stripe — keeps the UI
+// cohesive and the font payload light.
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
-  display: "swap",
-});
-
-const sora = Sora({
-  subsets: ["latin"],
-  variable: "--font-display",
   display: "swap",
 });
 
@@ -64,7 +61,12 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1c825b",
+  // Match the page background in each scheme so the mobile browser chrome
+  // blends with the app instead of flashing a mismatched color.
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fbfdfa" },
+    { media: "(prefers-color-scheme: dark)", color: "#121514" },
+  ],
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -78,15 +80,21 @@ export default function RootLayout({
       localization={esMX}
       appearance={{
         variables: {
-          colorPrimary: "#1c825b",
-          borderRadius: "0.75rem",
+          colorPrimary: "#3f5b45", // brand forest green
+          borderRadius: "0.5rem",
         },
       }}
     >
-      <html lang="es-MX" className={`${inter.variable} ${sora.variable}`}>
+      <html
+        lang="es-MX"
+        className={inter.variable}
+        suppressHydrationWarning
+      >
         <body className="min-h-dvh bg-background font-sans">
-          <PostHogProvider>{children}</PostHogProvider>
-          <Toaster position="top-center" richColors />
+          <ThemeProvider>
+            <PostHogProvider>{children}</PostHogProvider>
+            <Toaster position="top-center" richColors />
+          </ThemeProvider>
           <GoogleAnalytics />
         </body>
       </html>
