@@ -5,10 +5,12 @@
   "description": "NopalAI — La IA que entiende Latinoamérica.",
   "scripts": {
     "dev": "next dev --turbopack",
+    "dev:clean": "npm run clean && next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "clean": "node -e \"require('fs').rmSync('.next',{recursive:true,force:true})\""
   },
   "dependencies": {
     "@ai-sdk/react": "1.2.12",

@@ -196,6 +196,8 @@ See [`supabase/schema.sql`](./supabase/schema.sql). Tables:
 
 ```bash
 npm run dev        # Start dev server (Turbopack)
+npm run dev:clean  # Clear the cache first, then start dev (fixes stale-cache errors)
+npm run clean      # Just delete the .next cache
 npm run build      # Production build (Webpack)
 npm run start      # Start production server
 npm run lint       # ESLint
@@ -204,18 +206,20 @@ npm run typecheck  # TypeScript (no emit)
 
 ## 🛠️ Troubleshooting
 
-**`TypeError: Cannot read properties of undefined (reading 'call')` in dev.**
-This is a stale bundler cache, usually after switching branches or pulling new
-dependencies (it does not happen on a clean build). Fix it with:
+**Stale dev-cache errors** such as
+`Cannot read properties of undefined (reading 'call')` or
+`...module factory is not available. It might have been deleted in an HMR update`
+(often naming a `lucide-react` icon). These come from a stale bundler/HMR cache
+— typically after switching branches or pulling new code while a dev server was
+running — and never happen on a clean build. The dev server persists its module
+graph to `.next/cache` and restores it on restart, so a plain restart is not
+enough. Fix it by fully stopping the dev server, then:
 
 ```bash
-rm -rf .next      # clear the build cache
-npm install       # ensure dependencies (e.g. next-themes) are present
-npm run dev
+npm run dev:clean   # deletes .next, then starts dev fresh
 ```
 
-Dev runs on Turbopack, which avoids the Webpack dev-cache corruption that
-triggers this error.
+If it still appears, also reinstall deps: `npm install && npm run dev:clean`.
 
 ## 🔒 Security & Performance
 
