@@ -117,9 +117,10 @@ Open [http://localhost:3000](http://localhost:3000).
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | ✅ | Supabase anon key |
 | `SUPABASE_SERVICE_ROLE_KEY` | ✅ | Supabase service role (server only) |
 | `OPENROUTER_API_KEY` | ✅ | OpenRouter API key |
-| `OPENROUTER_MODEL_FREE` | – | Free-tier model (default `deepseek/deepseek-chat`) |
+| `OPENROUTER_MODEL_FREE` | – | Free-tier / default model (default `google/gemma-4-26b-a4b-it:free`) |
 | `OPENROUTER_MODEL_PLUS` | – | Plus model (default `qwen/qwen-2.5-72b-instruct`) |
 | `OPENROUTER_MODEL_PRO` | – | Pro model (default `deepseek/deepseek-r1`) |
+| `OPENROUTER_MODEL_FALLBACK` | – | Auto-fallback if the primary fails (default `meta-llama/llama-3.1-70b-instruct`) |
 | `STRIPE_SECRET_KEY` | ✅ | Stripe secret key |
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | ✅ | Stripe publishable key |
 | `STRIPE_PLUS_PRICE_ID` | ✅ | Price ID for the Plus plan (69 MXN) |
@@ -147,9 +148,10 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ### OpenRouter (AI)
 1. Create a key at [openrouter.ai/keys](https://openrouter.ai/keys).
-2. Models are configurable via env. Defaults route Free → **DeepSeek**,
+2. Models are configurable via env. Defaults route Free → **Gemma 4 (free)**,
    Plus → **Qwen 72B** and Pro → **DeepSeek R1** (point `OPENROUTER_MODEL_PRO`
-   at your strongest model), with **Llama 3.1 70B** as a fallback family.
+   at your strongest model). If a primary model fails, OpenRouter automatically
+   falls back to **Llama 3.1 70B** (`OPENROUTER_MODEL_FALLBACK`).
 
 ### Stripe (Payments)
 1. Create two **recurring** Products/Prices — **69 MXN / month** (Plus) and
