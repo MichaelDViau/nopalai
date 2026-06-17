@@ -1,6 +1,6 @@
 "use client";
 
-import { Sparkles } from "lucide-react";
+import { Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -21,7 +21,7 @@ export function AdPlaceholder({ className }: { className?: string }) {
         Publicidad
       </p>
       <div className="mt-2 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
-        <Sparkles className="h-3.5 w-3.5 text-primary" />
+        <Zap className="h-3.5 w-3.5 text-primary" />
         Quita los anuncios con Plus
       </div>
     </div>

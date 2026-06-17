@@ -195,8 +195,8 @@ See [`supabase/schema.sql`](./supabase/schema.sql). Tables:
 ## 🧪 Scripts
 
 ```bash
-npm run dev        # Start dev server (Turbopack)
-npm run dev:clean  # Clear the cache first, then start dev (fixes stale-cache errors)
+npm run dev        # Clears .next, then starts the dev server (Turbopack)
+npm run dev:fast   # Start dev WITHOUT clearing the cache (faster restarts)
 npm run clean      # Just delete the .next cache
 npm run build      # Production build (Webpack)
 npm run start      # Start production server
@@ -204,22 +204,31 @@ npm run lint       # ESLint
 npm run typecheck  # TypeScript (no emit)
 ```
 
+> `npm run dev` deletes `.next` first on purpose, so a stale Turbopack/HMR
+> cache can never break startup. Use `npm run dev:fast` once things are stable
+> if you want quicker restarts.
+
 ## 🛠️ Troubleshooting
 
 **Stale dev-cache errors** such as
 `Cannot read properties of undefined (reading 'call')` or
 `...module factory is not available. It might have been deleted in an HMR update`
 (often naming a `lucide-react` icon). These come from a stale bundler/HMR cache
-— typically after switching branches or pulling new code while a dev server was
-running — and never happen on a clean build. The dev server persists its module
-graph to `.next/cache` and restores it on restart, so a plain restart is not
-enough. Fix it by fully stopping the dev server, then:
+— typically after pulling new code while a dev server was running — and never
+happen on a clean build. The dev server persists its module graph to
+`.next/cache` and restores it on restart, so a plain restart is not enough.
+
+`npm run dev` now wipes `.next` automatically, so this should not recur. If you
+still see it, a previous dev server is probably still running — **stop every
+`next`/`node` dev process first**, then run `npm run dev` again:
 
 ```bash
-npm run dev:clean   # deletes .next, then starts dev fresh
-```
+# macOS / Linux
+pkill -f "next dev"; npm run dev
 
-If it still appears, also reinstall deps: `npm install && npm run dev:clean`.
+# Windows (PowerShell)
+taskkill /F /IM node.exe; npm run dev
+```
 
 ## 🔒 Security & Performance
 
