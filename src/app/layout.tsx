@@ -86,7 +86,7 @@ export default function RootLayout({
       }}
     >
       <html
-        lang="es-MX"
+        lang={SITE.htmlLang}
         className={inter.variable}
         suppressHydrationWarning
       >

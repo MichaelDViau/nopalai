@@ -33,7 +33,7 @@ export function Footer() {
 
         <p className="mt-8 text-center text-xs text-muted-foreground sm:text-left">
           © {new Date().getFullYear()} {SITE.name} · {SITE.tagline} · Hecho para
-          México 🇲🇽
+          Latinoamérica
         </p>
       </div>
     </footer>

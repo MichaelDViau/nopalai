@@ -1,8 +1,9 @@
 "use client";
 
-import { Zap } from "lucide-react";
+import { Sparkles, Zap } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { PLANS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import type { UsageState } from "@/types/chat";
 
@@ -12,15 +13,20 @@ interface UsageMeterProps {
 }
 
 export function UsageMeter({ usage, onUpgrade }: UsageMeterProps) {
-  if (usage.plan === "premium") {
+  // Paid tiers: show an "active plan" card instead of a usage bar.
+  if (usage.plan !== "free") {
+    const plan = PLANS[usage.plan];
+    const Icon = usage.plan === "pro" ? Sparkles : Zap;
     return (
       <div className="rounded-xl border border-primary/20 bg-primary/5 p-3">
         <div className="flex items-center gap-2 text-sm font-medium text-primary">
-          <Zap className="h-4 w-4 fill-primary" />
-          Premium activo
+          <Icon className="h-4 w-4 fill-primary" />
+          {plan.name} activo
         </div>
         <p className="mt-1 text-xs text-muted-foreground">
-          Mensajes ilimitados y respuestas más rápidas.
+          {usage.plan === "pro"
+            ? "Modelos premium y mensajes ilimitados."
+            : "Mensajes ilimitados y sin anuncios."}
         </p>
       </div>
     );
@@ -33,7 +39,12 @@ export function UsageMeter({ usage, onUpgrade }: UsageMeterProps) {
     <div className="rounded-xl border border-border bg-card p-3">
       <div className="flex items-center justify-between text-xs">
         <span className="font-medium text-foreground">Uso de hoy</span>
-        <span className={cn("tabular-nums", low ? "text-destructive" : "text-muted-foreground")}>
+        <span
+          className={cn(
+            "tabular-nums",
+            low ? "text-destructive" : "text-muted-foreground",
+          )}
+        >
           {Math.min(usage.used, usage.limit)}/{usage.limit}
         </span>
       </div>
@@ -46,13 +57,9 @@ export function UsageMeter({ usage, onUpgrade }: UsageMeterProps) {
           style={{ width: `${pct}%` }}
         />
       </div>
-      <Button
-        size="sm"
-        className="mt-3 w-full"
-        onClick={onUpgrade}
-      >
+      <Button size="sm" className="mt-3 w-full" onClick={onUpgrade}>
         <Zap className="h-3.5 w-3.5" />
-        Mejorar a Premium
+        Mejorar plan
       </Button>
     </div>
   );

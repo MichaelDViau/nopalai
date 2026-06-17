@@ -1,18 +1,22 @@
 import "server-only";
 import { getSupabaseAdmin } from "@/lib/supabase";
-import { FREE_DAILY_LIMIT, PREMIUM_DAILY_LIMIT } from "@/lib/constants";
+import { PLANS } from "@/lib/constants";
 import type { Plan } from "@/types/database";
 
-/** Mexico City day boundary (UTC-6, no DST since 2023) used for daily limits. */
-export function mxToday(): string {
+/**
+ * Region day boundary (UTC-6) used for daily limits. We use a single
+ * reference offset so the "messages per day" window is consistent for every
+ * user across Latin America without per-user timezone bookkeeping.
+ */
+export function regionToday(): string {
   const now = new Date();
-  // Shift to America/Mexico_City (UTC-6) then take the date portion.
-  const mx = new Date(now.getTime() - 6 * 60 * 60 * 1000);
-  return mx.toISOString().slice(0, 10);
+  const shifted = new Date(now.getTime() - 6 * 60 * 60 * 1000);
+  return shifted.toISOString().slice(0, 10);
 }
 
+/** Daily message allowance for a plan (paid tiers use a fair-use cap). */
 export function limitForPlan(plan: Plan): number {
-  return plan === "premium" ? PREMIUM_DAILY_LIMIT : FREE_DAILY_LIMIT;
+  return PLANS[plan].dailyMessageLimit;
 }
 
 export interface UsageStatus {
@@ -25,7 +29,7 @@ export interface UsageStatus {
 /** Read today's usage without mutating it (for the dashboard meter). */
 export async function getUsage(userId: string, plan: Plan): Promise<UsageStatus> {
   const supabase = getSupabaseAdmin();
-  const day = mxToday();
+  const day = regionToday();
   const limit = limitForPlan(plan);
 
   const { data } = await supabase
@@ -46,7 +50,7 @@ export async function getUsage(userId: string, plan: Plan): Promise<UsageStatus>
  */
 export async function incrementUsage(userId: string): Promise<number> {
   const supabase = getSupabaseAdmin();
-  const day = mxToday();
+  const day = regionToday();
 
   const { data, error } = await supabase.rpc("increment_usage", {
     p_user_id: userId,

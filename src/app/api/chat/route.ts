@@ -70,9 +70,9 @@ export async function POST(req: Request) {
       {
         error: "limit_reached",
         message:
-          plan === "premium"
-            ? "Alcanzaste el límite diario de uso justo."
-            : "Alcanzaste tu límite gratuito de 20 mensajes hoy. Mejora a Premium para continuar.",
+          plan === "free"
+            ? "Alcanzaste tu límite gratuito de 20 mensajes hoy. Mejora a Plus para continuar."
+            : "Alcanzaste el límite diario de uso justo.",
         limit,
       },
       { status: 429 },
@@ -95,7 +95,7 @@ export async function POST(req: Request) {
     system: assistant.systemPrompt,
     messages: coreMessages,
     temperature: 0.6,
-    maxTokens: plan === "premium" ? 2048 : 1024,
+    maxTokens: plan === "free" ? 1024 : 2048,
     maxRetries: 2,
     // Stop generating (and stop paying) if the user navigates away.
     abortSignal: req.signal,

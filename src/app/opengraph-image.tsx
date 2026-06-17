@@ -28,7 +28,7 @@ export default function OpengraphImage() {
               width: 72,
               height: 72,
               borderRadius: 18,
-              background: "#1c825b",
+              background: "#3f5b45",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -40,7 +40,7 @@ export default function OpengraphImage() {
             N
           </div>
           <div style={{ fontSize: 40, fontWeight: 700, color: "#16201c" }}>
-            Nopal<span style={{ color: "#1c825b" }}>AI</span>
+            Nopal<span style={{ color: "#3f5b45" }}>AI</span>
           </div>
         </div>
         <div
@@ -53,10 +53,11 @@ export default function OpengraphImage() {
             maxWidth: 920,
           }}
         >
-          La IA que entiende México.
+          {SITE.tagline}
         </div>
         <div style={{ marginTop: 28, fontSize: 32, color: "#4b5852", maxWidth: 880 }}>
-          Traducciones, tareas, contenido para redes y vida diaria — en español mexicano.
+          Traducciones, tareas, contenido para redes y vida diaria — en el
+          español de tu país.
         </div>
       </div>
     ),

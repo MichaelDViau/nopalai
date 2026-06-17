@@ -1,8 +1,13 @@
-import { SITE } from "@/lib/constants";
+import { SITE, PLANS } from "@/lib/constants";
 import { FAQS } from "@/components/marketing/faq";
 
 /** JSON-LD structured data for rich results (Organization, Product, FAQ). */
 export function StructuredData() {
+  const areaServed = SITE.countries.map((code) => ({
+    "@type": "Country",
+    identifier: code,
+  }));
+
   const data = [
     {
       "@context": "https://schema.org",
@@ -12,6 +17,7 @@ export function StructuredData() {
       slogan: SITE.tagline,
       description: SITE.description,
       logo: `${SITE.url}/icon.svg`,
+      areaServed,
       sameAs: ["https://twitter.com/nopalai"],
     },
     {
@@ -21,26 +27,14 @@ export function StructuredData() {
       applicationCategory: "BusinessApplication",
       operatingSystem: "Web",
       description: SITE.description,
-      inLanguage: "es-MX",
-      offers: [
-        {
-          "@type": "Offer",
-          name: "Gratis",
-          price: "0",
-          priceCurrency: "MXN",
-        },
-        {
-          "@type": "Offer",
-          name: "Premium",
-          price: "99",
-          priceCurrency: "MXN",
-        },
-      ],
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: "4.9",
-        ratingCount: "2000",
-      },
+      inLanguage: "es",
+      areaServed,
+      offers: Object.values(PLANS).map((plan) => ({
+        "@type": "Offer",
+        name: plan.name,
+        price: String(plan.priceMXN),
+        priceCurrency: "MXN",
+      })),
     },
     {
       "@context": "https://schema.org",

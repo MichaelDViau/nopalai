@@ -10,7 +10,7 @@
 create table if not exists public.profiles (
   id                    text primary key,            -- Clerk user id
   email                 text,
-  plan                  text not null default 'free' check (plan in ('free','premium')),
+  plan                  text not null default 'free' check (plan in ('free','plus','pro')),
   stripe_customer_id    text unique,
   stripe_subscription_id text,
   subscription_status   text,
@@ -18,6 +18,17 @@ create table if not exists public.profiles (
   created_at            timestamptz not null default now(),
   updated_at            timestamptz not null default now()
 );
+
+-- Migration for existing deployments: widen the plan check from the old
+-- ('free','premium') model to the Free/Plus/Pro tiers. Safe to re-run.
+do $$
+begin
+  alter table public.profiles drop constraint if exists profiles_plan_check;
+  -- Carry any legacy 'premium' rows over to the new 'pro' tier.
+  update public.profiles set plan = 'pro' where plan = 'premium';
+  alter table public.profiles
+    add constraint profiles_plan_check check (plan in ('free','plus','pro'));
+end $$;
 
 create index if not exists profiles_stripe_customer_idx
   on public.profiles (stripe_customer_id);

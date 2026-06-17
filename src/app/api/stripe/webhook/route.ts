@@ -1,17 +1,26 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 
-import { getStripe } from "@/lib/stripe";
+import { getStripe, planForPriceId } from "@/lib/stripe";
 import { getSupabaseAdmin } from "@/lib/supabase";
+import type { Plan } from "@/types/database";
 
 export const runtime = "nodejs";
 // Stripe needs the raw body to verify the signature.
 export const dynamic = "force-dynamic";
 
+/** Resolve which paid tier a subscription represents, from its price. */
+function planFromSubscription(sub: Stripe.Subscription): "plus" | "pro" {
+  const byPrice = planForPriceId(sub.items.data[0]?.price?.id);
+  if (byPrice) return byPrice;
+  const meta = sub.metadata?.plan;
+  return meta === "pro" || meta === "plus" ? meta : "plus";
+}
+
 async function setPlanByCustomer(
   customerId: string,
   data: {
-    plan: "free" | "premium";
+    plan: Plan;
     subscription_status: string | null;
     stripe_subscription_id: string | null;
     current_period_end: string | null;
@@ -58,7 +67,7 @@ export async function POST(req: Request) {
             session.subscription as string,
           );
           await setPlanByCustomer(sub.customer as string, {
-            plan: "premium",
+            plan: planFromSubscription(sub),
             subscription_status: sub.status,
             stripe_subscription_id: sub.id,
             current_period_end: new Date(
@@ -74,7 +83,7 @@ export async function POST(req: Request) {
         const sub = event.data.object as Stripe.Subscription;
         const active = sub.status === "active" || sub.status === "trialing";
         await setPlanByCustomer(sub.customer as string, {
-          plan: active ? "premium" : "free",
+          plan: active ? planFromSubscription(sub) : "free",
           subscription_status: sub.status,
           stripe_subscription_id: sub.id,
           current_period_end: new Date(

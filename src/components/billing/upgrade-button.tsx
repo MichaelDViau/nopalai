@@ -12,11 +12,14 @@ import { track, EVENTS } from "@/lib/analytics";
 interface UpgradeButtonProps extends ButtonProps {
   label?: string;
   source?: string;
+  /** Which paid tier to start checkout for. */
+  plan?: "plus" | "pro";
 }
 
 export function UpgradeButton({
-  label = "Obtener Premium",
+  label = "Obtener Plus",
   source = "pricing",
+  plan = "plus",
   ...props
 }: UpgradeButtonProps) {
   const { isSignedIn } = useAuth();
@@ -24,7 +27,7 @@ export function UpgradeButton({
   const [loading, setLoading] = useState(false);
 
   async function handleUpgrade() {
-    track(EVENTS.UPGRADE_CLICKED, { source });
+    track(EVENTS.UPGRADE_CLICKED, { source, plan });
 
     if (!isSignedIn) {
       router.push("/sign-up?redirect_url=/pricing");
@@ -33,8 +36,12 @@ export function UpgradeButton({
 
     try {
       setLoading(true);
-      track(EVENTS.CHECKOUT_STARTED, { source });
-      const res = await fetch("/api/stripe/checkout", { method: "POST" });
+      track(EVENTS.CHECKOUT_STARTED, { source, plan });
+      const res = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan }),
+      });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error || "No se pudo iniciar el pago");

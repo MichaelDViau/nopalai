@@ -8,7 +8,7 @@
  * typed client collapses query results to `never`.
  */
 
-export type Plan = "free" | "premium";
+export type Plan = "free" | "plus" | "pro";
 export type MessageRole = "user" | "assistant";
 
 type ProfileInsert = {

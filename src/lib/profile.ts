@@ -43,17 +43,28 @@ export async function getOrCreateProfile(
   return created;
 }
 
-/** Is this profile on an active Premium subscription? */
-export function isPremium(profile: Pick<Profile, "plan" | "subscription_status">): boolean {
+/** Does this profile have an active (or trialing) paid subscription? */
+export function hasActiveSubscription(
+  profile: Pick<Profile, "subscription_status">,
+): boolean {
   return (
-    profile.plan === "premium" &&
-    (profile.subscription_status === "active" ||
-      profile.subscription_status === "trialing")
+    profile.subscription_status === "active" ||
+    profile.subscription_status === "trialing"
   );
 }
 
+/**
+ * The plan to grant right now. The stored plan ('plus' | 'pro') only counts
+ * while the subscription is active; otherwise the user falls back to free.
+ */
 export function planOf(
   profile: Pick<Profile, "plan" | "subscription_status">,
 ): Plan {
-  return isPremium(profile) ? "premium" : "free";
+  if (
+    hasActiveSubscription(profile) &&
+    (profile.plan === "plus" || profile.plan === "pro")
+  ) {
+    return profile.plan;
+  }
+  return "free";
 }

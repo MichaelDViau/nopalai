@@ -8,19 +8,19 @@ import {
 export const FAQS = [
   {
     q: "¿Qué es NopalAI?",
-    a: "Un asistente de inteligencia artificial creado para México. Entiende el español mexicano y te ayuda con respuestas del día a día, traducciones, tareas escolares y contenido para redes sociales.",
+    a: "Un asistente de inteligencia artificial creado para Latinoamérica. Entiende el español de cada país y te ayuda con respuestas del día a día, traducciones, tareas escolares y contenido para redes sociales.",
   },
   {
     q: "¿Es gratis?",
-    a: "Sí. El plan Gratis te da 20 mensajes al día, sin tarjeta de crédito. Si necesitas más, el plan Premium cuesta 99 MXN al mes.",
+    a: "Sí. El plan Gratis te da 20 mensajes al día, sin tarjeta de crédito. Si necesitas más, Plus cuesta 69 MXN al mes con uso ilimitado, y Pro 199 MXN al mes con acceso a los modelos de IA premium.",
   },
   {
     q: "¿En qué se diferencia de ChatGPT?",
-    a: "NopalAI está afinado para el contexto mexicano y trae 4 asistentes especializados listos para usar: General, Traducción, Escuela y Tareas, y Contenido y Marketing.",
+    a: "NopalAI está afinado para el español de Latinoamérica y trae 4 asistentes especializados listos para usar: General, Traducción, Escuela y Tareas, y Contenido y Marketing.",
   },
   {
     q: "¿Puedo cancelar cuando quiera?",
-    a: "Claro. Puedes cancelar tu suscripción Premium en cualquier momento y seguirás teniendo acceso hasta el final del periodo pagado.",
+    a: "Claro. Puedes cancelar tu suscripción de pago en cualquier momento y seguirás teniendo acceso hasta el final del periodo pagado.",
   },
 ];
 

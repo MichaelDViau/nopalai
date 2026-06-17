@@ -202,8 +202,8 @@ export function Sidebar({
               <button
                 type="button"
                 onClick={onUpgrade}
-                aria-label="Mejorar a Premium"
-                title="Mejorar a Premium"
+                aria-label="Mejorar plan"
+                title="Mejorar plan"
                 className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors hover:bg-primary/15"
               >
                 <Zap className="h-4 w-4 fill-current" />

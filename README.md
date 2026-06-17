@@ -2,10 +2,10 @@
 
 # 🌵 NopalAI
 
-### La IA que entiende México.
+### La IA que entiende Latinoamérica.
 
-El asistente de inteligencia artificial creado para México: negocios, turismo,
-bienes raíces y vida diaria — en español mexicano.
+El asistente de inteligencia artificial creado para Latinoamérica: respuestas,
+traducciones, tareas y contenido — en el español de cada país.
 
 </div>
 
@@ -14,7 +14,8 @@ bienes raíces y vida diaria — en español mexicano.
 NopalAI is a production-ready SaaS chat application built with Next.js 15, with a
 premium, minimalist design inspired by OpenAI, Linear and Stripe. It ships with
 authentication, a streaming AI chat dashboard, four specialized assistants,
-daily usage limits, a Stripe-powered Premium plan, analytics and full SEO.
+daily usage limits, Stripe-powered Plus & Pro plans, light/dark themes,
+analytics and full SEO.
 
 ## ✨ Features
 
@@ -24,9 +25,11 @@ daily usage limits, a Stripe-powered Premium plan, analytics and full SEO.
 - **Chat management** — new chat, history, rename, delete, responsive sidebar, full mobile support.
 - **Auth** — sign up / login / logout / protected dashboard via Clerk.
 - **Free plan** — 20 messages/day tracked in the database, with ad placeholders.
-- **Premium plan** — 99 MXN/month via Stripe: no ads, faster responses, premium models, higher limits.
+- **Plus plan** — 69 MXN/month via Stripe: unlimited usage on the standard model, no ads, faster responses.
+- **Pro plan** — 199 MXN/month via Stripe: everything in Plus plus access to premium AI models.
+- **Light / dark mode** — system-aware, persisted, smooth transitions.
 - **Analytics** — PostHog + Google Analytics 4 (signups, chats, conversions, upgrades).
-- **SEO** — metadata, sitemap, robots, JSON-LD, dynamic OG image, optimized for "IA México".
+- **SEO** — metadata, sitemap, robots, JSON-LD, dynamic OG image, pan-LatAm targeting (`es-419`).
 - **Security** — rate limiting (daily usage), Zod input validation, XSS-safe rendering, secure server-only secrets, security headers.
 
 ## 🧱 Tech Stack
@@ -115,11 +118,12 @@ Open [http://localhost:3000](http://localhost:3000).
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | ✅ | Supabase anon key |
 | `SUPABASE_SERVICE_ROLE_KEY` | ✅ | Supabase service role (server only) |
 | `OPENROUTER_API_KEY` | ✅ | OpenRouter API key |
-| `OPENROUTER_MODEL_FREE` | – | Free-tier model (default `deepseek/deepseek-chat`) |
-| `OPENROUTER_MODEL_PREMIUM` | – | Premium model (default `qwen/qwen-2.5-72b-instruct`) |
+| `OPENROUTER_MODEL_STANDARD` | – | Standard model for Free & Plus (default `deepseek/deepseek-chat`) |
+| `OPENROUTER_MODEL_PRO` | – | Premium model for Pro (default `qwen/qwen-2.5-72b-instruct`) |
 | `STRIPE_SECRET_KEY` | ✅ | Stripe secret key |
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | ✅ | Stripe publishable key |
-| `STRIPE_PREMIUM_PRICE_ID` | ✅ | Price ID for the 99 MXN plan |
+| `STRIPE_PLUS_PRICE_ID` | ✅ | Price ID for the Plus plan (69 MXN/mo) |
+| `STRIPE_PRO_PRICE_ID` | ✅ | Price ID for the Pro plan (199 MXN/mo) |
 | `STRIPE_WEBHOOK_SECRET` | ✅ | Stripe webhook signing secret |
 | `NEXT_PUBLIC_POSTHOG_KEY` | – | PostHog project key |
 | `NEXT_PUBLIC_POSTHOG_HOST` | – | PostHog host (default US cloud) |
@@ -143,12 +147,14 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ### OpenRouter (AI)
 1. Create a key at [openrouter.ai/keys](https://openrouter.ai/keys).
-2. Models are configurable via env. Defaults route Free users to **DeepSeek** and
-   Premium users to **Qwen 72B**, with **Llama 3.1 70B** as a fallback family.
+2. Models are configurable via env. Defaults route Free & Plus users to
+   **DeepSeek** and Pro users to **Qwen 72B**, with **Llama 3.1 70B** as a
+   fallback family.
 
 ### Stripe (Payments)
-1. Create a **recurring** Product/Price of **99 MXN / month**; copy its price ID
-   to `STRIPE_PREMIUM_PRICE_ID`.
+1. Create two **recurring** Products/Prices — **Plus, 69 MXN / month** and
+   **Pro, 199 MXN / month** — and copy their price IDs to `STRIPE_PLUS_PRICE_ID`
+   and `STRIPE_PRO_PRICE_ID`.
 2. Add a webhook endpoint pointing to `/api/stripe/webhook` and subscribe to:
    `checkout.session.completed`, `customer.subscription.created`,
    `customer.subscription.updated`, `customer.subscription.deleted`.
@@ -217,5 +223,5 @@ npm run typecheck  # TypeScript (no emit)
 ---
 
 <div align="center">
-Hecho con orgullo para México 🇲🇽
+Hecho con orgullo para Latinoamérica
 </div>
