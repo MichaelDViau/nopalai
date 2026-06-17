@@ -18,9 +18,9 @@ export function Assistants() {
           {MODE_LIST.map((mode) => (
             <div
               key={mode.id}
-              className="flex items-start gap-4 rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/40 sm:p-6"
+              className="flex items-start gap-4 rounded-2xl border border-border bg-card p-5 shadow-soft transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-elevated sm:p-6"
             >
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-secondary text-primary">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-secondary text-primary">
                 <mode.icon className="h-5 w-5" />
               </span>
               <div className="min-w-0">

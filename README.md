@@ -12,7 +12,8 @@ turismo, bienes raíces y vida diaria — en el español de la región.
 ---
 
 NopalAI is a production-ready SaaS chat application built with Next.js 15, with a
-premium, minimalist design inspired by OpenAI, Linear and Stripe. It ships with
+premium, soft design: sage-green brand on warm cream surfaces, generous rounding
+and floating cards, inspired by OpenAI, Linear and Stripe. It ships with
 authentication, a streaming AI chat dashboard, four specialized assistants,
 daily usage limits, a Stripe-powered Premium plan, analytics and full SEO.
 
@@ -24,7 +25,7 @@ daily usage limits, a Stripe-powered Premium plan, analytics and full SEO.
 - **Collapsible icon-rail sidebar** — icons-only by default, expands on hover, pin to keep open (pinned state persisted locally); full panel on mobile.
 - **Light & dark mode** — system-aware theme via `next-themes`, smooth transitions, sage-green brand in both, preference saved locally.
 - **Chat management** — new chat, history, rename, delete, responsive sidebar, full mobile support.
-- **Auth** — sign up / login / logout / protected dashboard via Clerk.
+- **Auth** — split-screen sign up / login with a sage brand panel; protected dashboard via Clerk.
 - **Free plan** — 20 messages/day tracked in the database, with ad placeholders.
 - **Premium plan** — 99 MXN/month via Stripe: no ads, faster responses, premium models, higher limits.
 - **Analytics** — PostHog + Google Analytics 4 (signups, chats, conversions, upgrades).

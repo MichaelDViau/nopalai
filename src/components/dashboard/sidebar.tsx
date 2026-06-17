@@ -29,17 +29,20 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Logo } from "@/components/brand/logo";
+import { LogoMark } from "@/components/brand/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { UsageMeter } from "@/components/dashboard/usage-meter";
-import { AdPlaceholder } from "@/components/dashboard/ad-placeholder";
 import type { ChatSummary, UsageState } from "@/types/chat";
 
 const PIN_STORAGE_KEY = "nopalai:sidebar-pinned";
 
-/** Square icon button used by the collapsed rail (new chat, pin, upgrade). */
+/** Square icon button used on the colored rail (new chat, pin, upgrade). */
 const railIconClass =
-  "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
+  "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-sidebar-foreground/80 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-active/70";
+
+/** Theme toggle recolored to sit on the colored rail. */
+const sidebarToggleClass =
+  "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground";
 
 interface SidebarProps {
   chats: ChatSummary[];
@@ -103,8 +106,17 @@ export function Sidebar({
           expanded ? "justify-between" : "justify-center",
         )}
       >
-        <Link href="/" aria-label="Inicio" className="flex items-center">
-          <Logo showText={expanded} />
+        <Link
+          href="/"
+          aria-label="NopalAI inicio"
+          className="flex items-center gap-2"
+        >
+          <LogoMark className="h-8 w-8" />
+          {expanded && (
+            <span className="whitespace-nowrap text-base font-semibold tracking-tight text-sidebar-foreground">
+              Nopal<span className="text-sidebar-muted">AI</span>
+            </span>
+          )}
         </Link>
         {collapsible && expanded && (
           <button
@@ -123,13 +135,13 @@ export function Sidebar({
         )}
       </div>
 
-      {/* New chat */}
+      {/* New chat — cream pill that pops on the colored rail */}
       <div className={cn("pb-2", expanded ? "px-3" : "flex justify-center px-2")}>
         <Button
           onClick={onNewChat}
           aria-label="Nuevo chat"
           className={cn(
-            "gap-2",
+            "gap-2 bg-sidebar-active text-sidebar-active-foreground shadow-sm hover:bg-sidebar-active/90",
             expanded ? "w-full justify-start" : "h-10 w-10 justify-center p-0",
           )}
         >
@@ -142,7 +154,7 @@ export function Sidebar({
       {expanded ? (
         <div className="flex-1 overflow-y-auto px-2 py-2">
           {chats.length === 0 ? (
-            <p className="px-3 py-8 text-center text-sm text-muted-foreground">
+            <p className="px-3 py-8 text-center text-sm text-sidebar-muted">
               Tus conversaciones aparecerán aquí.
             </p>
           ) : (
@@ -153,13 +165,13 @@ export function Sidebar({
                     className={cn(
                       "group flex items-center gap-1 rounded-lg pr-1 transition-colors",
                       activeChatId === chat.id
-                        ? "bg-accent"
-                        : "hover:bg-accent/60",
+                        ? "bg-sidebar-active text-sidebar-active-foreground"
+                        : "text-sidebar-foreground/90 hover:bg-sidebar-accent",
                     )}
                   >
                     <button
                       onClick={() => onSelect(chat.id)}
-                      className="flex-1 truncate px-3 py-2 text-left text-sm text-foreground"
+                      className="flex-1 truncate px-3 py-2 text-left text-sm"
                       title={chat.title}
                     >
                       {chat.title || "Nuevo chat"}
@@ -167,7 +179,12 @@ export function Sidebar({
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <button
-                          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-opacity hover:bg-background group-hover:opacity-100 data-[state=open]:opacity-100"
+                          className={cn(
+                            "flex h-7 w-7 shrink-0 items-center justify-center rounded-md opacity-0 transition-opacity group-hover:opacity-100 data-[state=open]:opacity-100",
+                            activeChatId === chat.id
+                              ? "text-sidebar-active-foreground/70 hover:bg-black/5"
+                              : "text-sidebar-foreground/70 hover:bg-sidebar-accent",
+                          )}
                           aria-label="Opciones del chat"
                         >
                           <MoreHorizontal className="h-4 w-4" />
@@ -204,30 +221,29 @@ export function Sidebar({
 
       {/* Footer */}
       {expanded ? (
-        <div className="space-y-3 border-t border-border p-3">
+        <div className="space-y-3 border-t border-sidebar-border p-3">
           <UsageMeter usage={usage} onUpgrade={onUpgrade} />
-          {isFree && <AdPlaceholder />}
           <div className="flex items-center justify-between gap-2 px-1">
             <div className="flex min-w-0 items-center gap-2">
               <UserButton
                 appearance={{ elements: { avatarBox: "h-8 w-8" } }}
                 afterSignOutUrl="/"
               />
-              <span className="truncate text-sm font-medium text-muted-foreground">
+              <span className="truncate text-sm font-medium text-sidebar-muted">
                 Mi cuenta
               </span>
             </div>
-            <ThemeToggle />
+            <ThemeToggle className={sidebarToggleClass} />
           </div>
         </div>
       ) : (
-        <div className="flex flex-col items-center gap-2 border-t border-border p-2">
-          <ThemeToggle />
+        <div className="flex flex-col items-center gap-2 border-t border-sidebar-border p-2">
+          <ThemeToggle className={sidebarToggleClass} />
           {isFree && (
             <button
               type="button"
               onClick={onUpgrade}
-              className={cn(railIconClass, "text-primary hover:text-primary")}
+              className={railIconClass}
               aria-label="Mejorar a Premium"
               title="Mejorar a Premium"
             >
@@ -306,9 +322,13 @@ export function Sidebar({
     </>
   );
 
-  // Mobile / sheet: a plain, always-expanded panel.
+  // Mobile / sheet: a plain, always-expanded colored panel.
   if (!collapsible) {
-    return <div className="flex h-full flex-col bg-secondary/30">{body}</div>;
+    return (
+      <div className="flex h-full flex-col bg-sidebar text-sidebar-foreground">
+        {body}
+      </div>
+    );
   }
 
   // Desktop: a width-reserving spacer holds the layout while the panel
@@ -323,8 +343,8 @@ export function Sidebar({
         onMouseEnter={() => !pinned && setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         className={cn(
-          "absolute inset-y-0 left-0 z-30 flex h-full flex-col overflow-hidden border-r border-border bg-secondary/30 transition-[width] duration-300 ease-out",
-          expanded && !pinned && "shadow-xl",
+          "absolute inset-y-0 left-0 z-30 flex h-full flex-col overflow-hidden bg-sidebar text-sidebar-foreground transition-[width] duration-300 ease-out",
+          expanded && !pinned && "shadow-elevated",
         )}
         style={{ width: expanded ? 280 : 68 }}
       >

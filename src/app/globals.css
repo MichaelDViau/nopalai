@@ -4,27 +4,28 @@
 
 @layer base {
   :root {
-    /* Sage-green palette
-       #DCE8D5 #AFC7A8 #7B9B78 #3F5B45 #1C2620 */
-    --background: 96 28% 99%;
+    /* Sage-green brand palette
+       #DCE8D5 #AFC7A8 #7B9B78 #3F5B45 #1C2620
+       paired with warm cream surfaces for a soft, premium feel. */
+    --background: 40 33% 98%; /* warm cream */
     --foreground: 144 16% 13%; /* #1C2620 */
 
-    --card: 0 0% 100%;
+    --card: 42 40% 99%; /* near-white warm */
     --card-foreground: 144 16% 13%;
 
-    --popover: 0 0% 100%;
+    --popover: 42 40% 99%;
     --popover-foreground: 144 16% 13%;
 
     /* Deep forest green accent — #3F5B45 */
     --primary: 133 19% 30%;
-    --primary-foreground: 96 30% 97%;
+    --primary-foreground: 40 33% 98%;
 
     /* Light sage surfaces — #DCE8D5 */
     --secondary: 98 30% 87%;
     --secondary-foreground: 144 20% 18%;
 
-    --muted: 100 28% 94%;
-    --muted-foreground: 134 11% 38%;
+    --muted: 42 28% 95%; /* warm muted */
+    --muted-foreground: 134 10% 40%;
 
     /* #AFC7A8 */
     --accent: 105 25% 82%;
@@ -33,11 +34,20 @@
     --destructive: 0 65% 48%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 105 24% 87%;
-    --input: 105 24% 87%;
+    --border: 60 14% 89%; /* soft warm-neutral hairline */
+    --input: 60 14% 89%;
     --ring: 133 19% 30%;
 
-    --radius: 0.5rem;
+    /* Colored navigation rail — deep sage with cream content. */
+    --sidebar: 134 20% 25%;
+    --sidebar-foreground: 96 22% 90%;
+    --sidebar-muted: 110 14% 72%;
+    --sidebar-accent: 134 17% 32%; /* hover */
+    --sidebar-active: 42 38% 96%; /* cream pill */
+    --sidebar-active-foreground: 144 22% 18%;
+    --sidebar-border: 134 16% 34%;
+
+    --radius: 0.75rem;
   }
 
   .dark {
@@ -71,6 +81,15 @@
     --border: 150 7% 18%;
     --input: 150 7% 18%;
     --ring: 122 26% 62%;
+
+    /* Rail blends into the dark surface rather than staying bright. */
+    --sidebar: 150 10% 10%;
+    --sidebar-foreground: 120 8% 88%;
+    --sidebar-muted: 120 6% 58%;
+    --sidebar-accent: 150 8% 16%;
+    --sidebar-active: 150 9% 20%;
+    --sidebar-active-foreground: 120 10% 95%;
+    --sidebar-border: 150 7% 18%;
   }
 }
 

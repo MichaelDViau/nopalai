@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SignUp } from "@clerk/nextjs";
 
-import { Logo } from "@/components/brand/logo";
+import { AuthShell } from "@/components/auth/auth-shell";
 
 export const metadata: Metadata = {
   title: "Crear cuenta gratis",
@@ -13,24 +13,27 @@ export const metadata: Metadata = {
 
 export default function SignUpPage() {
   return (
-    <main className="relative flex min-h-dvh flex-col items-center justify-center bg-secondary/30 px-4 py-12">
-      <Link href="/" className="mb-8">
-        <Logo />
-      </Link>
+    <AuthShell
+      footer={
+        <>
+          ¿Ya tienes cuenta?{" "}
+          <Link
+            href="/sign-in"
+            className="font-medium text-primary hover:underline"
+          >
+            Inicia sesión
+          </Link>
+        </>
+      }
+    >
       <SignUp
         appearance={{
           elements: {
-            rootBox: "mx-auto",
-            card: "shadow-lg border border-border rounded-xl",
+            rootBox: "mx-auto w-full max-w-sm",
+            card: "shadow-none border-0 bg-transparent",
           },
         }}
       />
-      <p className="mt-8 text-sm text-muted-foreground">
-        ¿Ya tienes cuenta?{" "}
-        <Link href="/sign-in" className="font-medium text-primary hover:underline">
-          Inicia sesión
-        </Link>
-      </p>
-    </main>
+    </AuthShell>
   );
 }

@@ -38,7 +38,7 @@ export function EmptyState({ mode, onModeChange, onPick }: EmptyStateProps) {
             <button
               key={s}
               onClick={() => onPick(s)}
-              className="rounded-xl border border-border bg-card p-3 text-left text-sm text-foreground transition-all hover:border-primary/40 hover:bg-accent/50"
+              className="rounded-2xl border border-border bg-card p-4 text-left text-sm text-foreground shadow-soft transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-elevated"
             >
               {s}
             </button>

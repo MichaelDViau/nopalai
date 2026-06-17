@@ -18,7 +18,7 @@ export default function OpengraphImage() {
           justifyContent: "center",
           padding: "80px",
           background:
-            "linear-gradient(135deg, #ffffff 0%, #f3f6f0 55%, #e6ede0 100%)",
+            "linear-gradient(135deg, #fdfbf7 0%, #f4f0e8 55%, #e9efe2 100%)",
           fontFamily: "sans-serif",
         }}
       >

@@ -51,11 +51,27 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        sidebar: {
+          DEFAULT: "hsl(var(--sidebar))",
+          foreground: "hsl(var(--sidebar-foreground))",
+          muted: "hsl(var(--sidebar-muted))",
+          accent: "hsl(var(--sidebar-accent))",
+          active: "hsl(var(--sidebar-active))",
+          "active-foreground": "hsl(var(--sidebar-active-foreground))",
+          border: "hsl(var(--sidebar-border))",
+        },
       },
       borderRadius: {
+        "2xl": "calc(var(--radius) + 6px)",
+        xl: "calc(var(--radius) + 4px)",
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      boxShadow: {
+        soft: "0 1px 2px hsl(144 16% 13% / 0.04), 0 8px 24px hsl(144 16% 13% / 0.06)",
+        elevated:
+          "0 4px 12px hsl(144 16% 13% / 0.06), 0 24px 48px -12px hsl(144 16% 13% / 0.14)",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],

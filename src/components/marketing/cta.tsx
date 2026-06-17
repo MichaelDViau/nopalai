@@ -6,7 +6,7 @@ export function FinalCTA() {
   return (
     <section className="px-4 py-16 sm:py-24">
       <div className="container">
-        <div className="rounded-2xl bg-primary px-6 py-16 text-center sm:px-16 sm:py-20">
+        <div className="rounded-3xl bg-primary px-6 py-16 text-center shadow-elevated sm:px-16 sm:py-20">
           <div className="mx-auto max-w-xl">
             <h2 className="text-balance text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl">
               Prueba la IA que entiende Latinoamérica

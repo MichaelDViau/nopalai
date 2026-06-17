@@ -29,10 +29,10 @@ export function ModeSelector({ value, onChange, className }: ModeSelectorProps) 
             aria-checked={active}
             onClick={() => onChange(mode.id)}
             className={cn(
-              "flex items-center gap-2.5 rounded-xl border p-3 text-left transition-all",
+              "flex items-center gap-2.5 rounded-2xl border p-3 text-left transition-all",
               active
-                ? "border-primary bg-primary/5 shadow-sm"
-                : "border-border bg-card hover:border-primary/40 hover:bg-accent/50",
+                ? "border-primary/60 bg-primary/5 shadow-soft"
+                : "border-border bg-card hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-soft",
             )}
           >
             <span
