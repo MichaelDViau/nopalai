@@ -80,9 +80,17 @@ supabase/schema.sql             # Database schema + RLS + RPC
 
 ### 1. Install
 
+Use the Node version pinned in [`.nvmrc`](./.nvmrc) (Node 22 LTS) so a future
+Node upgrade can't break the install:
+
 ```bash
+nvm use      # or: nvm install (first time)
 npm install
 ```
+
+> Not using nvm? Just make sure `node -v` is **≥ 18.18** (Node 22 LTS
+> recommended). If you ever hit `Couldn't find a 'pages' directory`, your
+> `node_modules` is stale — run `rm -rf node_modules package-lock.json .next && npm install`.
 
 ### 2. Configure environment
 
