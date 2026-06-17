@@ -21,7 +21,7 @@ export function StructuredData() {
       applicationCategory: "BusinessApplication",
       operatingSystem: "Web",
       description: SITE.description,
-      inLanguage: "es-MX",
+      inLanguage: "es-419",
       offers: [
         {
           "@type": "Offer",

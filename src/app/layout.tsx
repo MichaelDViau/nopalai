@@ -5,6 +5,7 @@ import { esMX } from "@clerk/localizations";
 
 import { SITE } from "@/lib/constants";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/theme-provider";
 import { PostHogProvider } from "@/components/analytics/posthog-provider";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import "./globals.css";
@@ -64,7 +65,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1c825b",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f7faf5" },
+    { media: "(prefers-color-scheme: dark)", color: "#13160f" },
+  ],
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -78,15 +82,26 @@ export default function RootLayout({
       localization={esMX}
       appearance={{
         variables: {
-          colorPrimary: "#1c825b",
-          borderRadius: "0.75rem",
+          colorPrimary: "#3f5b45",
+          borderRadius: "0.5rem",
         },
       }}
     >
-      <html lang="es-MX" className={`${inter.variable} ${sora.variable}`}>
+      <html
+        lang="es-419"
+        className={`${inter.variable} ${sora.variable}`}
+        suppressHydrationWarning
+      >
         <body className="min-h-dvh bg-background font-sans">
-          <PostHogProvider>{children}</PostHogProvider>
-          <Toaster position="top-center" richColors />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange={false}
+          >
+            <PostHogProvider>{children}</PostHogProvider>
+            <Toaster position="top-center" richColors />
+          </ThemeProvider>
           <GoogleAnalytics />
         </body>
       </html>

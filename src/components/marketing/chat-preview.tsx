@@ -48,12 +48,12 @@ export function ChatPreview() {
   const tab = TABS[active];
 
   return (
-    <div className="overflow-hidden rounded-xl border border-border bg-white">
+    <div className="overflow-hidden rounded-xl border border-border bg-card">
       {/* window chrome */}
       <div className="flex items-center gap-2 border-b border-border bg-secondary/60 px-4 py-3">
-        <span className="h-3 w-3 rounded-full bg-neutral-300" />
-        <span className="h-3 w-3 rounded-full bg-neutral-300" />
-        <span className="h-3 w-3 rounded-full bg-neutral-300" />
+        <span className="h-3 w-3 rounded-full bg-muted-foreground/25" />
+        <span className="h-3 w-3 rounded-full bg-muted-foreground/25" />
+        <span className="h-3 w-3 rounded-full bg-muted-foreground/25" />
         <div className="ml-3 hidden text-xs text-muted-foreground sm:block">
           nopalai.mx/dashboard
         </div>

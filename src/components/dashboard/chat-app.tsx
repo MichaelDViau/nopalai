@@ -11,7 +11,6 @@ import { track, EVENTS } from "@/lib/analytics";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
-import { Logo } from "@/components/brand/logo";
 import { Sidebar } from "@/components/dashboard/sidebar";
 import { Composer } from "@/components/dashboard/composer";
 import { EmptyState } from "@/components/dashboard/empty-state";
@@ -239,31 +238,27 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
   const activeMode = useMemo(() => getMode(mode), [mode]);
   const hasMessages = messages.length > 0;
 
-  const sidebar = (
-    <Sidebar
-      chats={chats}
-      activeChatId={activeChatId}
-      usage={usage}
-      onSelect={selectChat}
-      onNewChat={newChat}
-      onRename={renameChat}
-      onDelete={deleteChat}
-      onUpgrade={openUpgrade}
-    />
-  );
+  const sidebarProps = {
+    chats,
+    activeChatId,
+    usage,
+    onSelect: selectChat,
+    onNewChat: newChat,
+    onRename: renameChat,
+    onDelete: deleteChat,
+    onUpgrade: openUpgrade,
+  };
 
   return (
     <div className="flex h-dvh overflow-hidden">
-      {/* Desktop sidebar */}
-      <aside className="hidden w-[280px] shrink-0 border-r border-border md:block">
-        {sidebar}
-      </aside>
+      {/* Desktop sidebar — collapsible icon rail (hover to expand, pin to keep open) */}
+      <Sidebar {...sidebarProps} collapsible />
 
       {/* Mobile sidebar */}
       <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
         <SheetContent side="left" className="w-[300px] p-0">
           <SheetTitle className="sr-only">Menú de chats</SheetTitle>
-          {sidebar}
+          <Sidebar {...sidebarProps} />
         </SheetContent>
       </Sheet>
 
@@ -295,9 +290,6 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
             <Plus className="h-4 w-4" />
             Nuevo
           </Button>
-          <div className="hidden md:block">
-            <Logo showText={false} />
-          </div>
         </header>
 
         {/* Conversation */}

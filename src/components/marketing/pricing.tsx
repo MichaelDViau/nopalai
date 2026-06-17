@@ -48,7 +48,7 @@ export function Pricing({ showComparison = true }: { showComparison?: boolean })
           <div className="flex flex-col rounded-2xl border border-border bg-card p-8">
             <h3 className="text-lg font-semibold">{PLANS.free.name}</h3>
             <p className="mt-2 text-sm text-muted-foreground">
-              Para empezar a explorar la IA mexicana.
+              Para empezar a explorar la IA en tu idioma.
             </p>
             <div className="mt-6 flex items-baseline gap-1">
               <span className="text-5xl font-bold tracking-tight">$0</span>
@@ -129,8 +129,9 @@ export function Pricing({ showComparison = true }: { showComparison?: boolean })
         )}
 
         <p className="mx-auto mt-6 max-w-2xl text-center text-xs text-muted-foreground">
-          *Uso justo: hasta 1,000 mensajes al día para evitar abuso. Precios en
-          pesos mexicanos (MXN). Puedes cancelar en cualquier momento.
+          *Uso justo: hasta 1,000 mensajes al día para evitar abuso. La
+          facturación se realiza en pesos mexicanos (MXN). Puedes cancelar en
+          cualquier momento.
         </p>
       </div>
     </section>

@@ -2,10 +2,10 @@
 
 # 🌵 NopalAI
 
-### La IA que entiende México.
+### La IA que entiende Latinoamérica.
 
-El asistente de inteligencia artificial creado para México: negocios, turismo,
-bienes raíces y vida diaria — en español mexicano.
+El asistente de inteligencia artificial creado para Latinoamérica: negocios,
+turismo, bienes raíces y vida diaria — en el español de la región.
 
 </div>
 
@@ -19,14 +19,16 @@ daily usage limits, a Stripe-powered Premium plan, analytics and full SEO.
 ## ✨ Features
 
 - **World-class landing page** — hero, features, assistants, pricing, testimonials, FAQ, structured data.
-- **4 specialized assistants** — General, Traducción, Escuela y Tareas, Contenido y Marketing, each with a unique system prompt.
+- **4 specialized assistants** — General, Traducción, Escuela y Tareas, Contenido y Marketing, each with a unique system prompt tuned for Latin America.
 - **Streaming AI chat** — ChatGPT-quality UX with markdown, copy, typing indicator, auto-titling.
+- **Collapsible icon-rail sidebar** — icons-only by default, expands on hover, pin to keep open (pinned state persisted locally); full panel on mobile.
+- **Light & dark mode** — system-aware theme via `next-themes`, smooth transitions, sage-green brand in both, preference saved locally.
 - **Chat management** — new chat, history, rename, delete, responsive sidebar, full mobile support.
 - **Auth** — sign up / login / logout / protected dashboard via Clerk.
 - **Free plan** — 20 messages/day tracked in the database, with ad placeholders.
 - **Premium plan** — 99 MXN/month via Stripe: no ads, faster responses, premium models, higher limits.
 - **Analytics** — PostHog + Google Analytics 4 (signups, chats, conversions, upgrades).
-- **SEO** — metadata, sitemap, robots, JSON-LD, dynamic OG image, optimized for "IA México".
+- **SEO** — metadata, sitemap, robots, JSON-LD, dynamic OG image, optimized for "IA Latinoamérica".
 - **Security** — rate limiting (daily usage), Zod input validation, XSS-safe rendering, secure server-only secrets, security headers.
 
 ## 🧱 Tech Stack
@@ -49,7 +51,7 @@ src/
 ├── app/
 │   ├── layout.tsx              # Root layout: Clerk, fonts, analytics, SEO
 │   ├── page.tsx                # Landing page
-│   ├── globals.css             # Theme tokens (emerald) + base styles
+│   ├── globals.css             # Theme tokens (sage-green, light + dark) + base styles
 │   ├── robots.ts · sitemap.ts · manifest.ts · opengraph-image.tsx
 │   ├── pricing/                # Pricing page + comparison table
 │   ├── legal/                  # Privacy & Terms
@@ -217,5 +219,5 @@ npm run typecheck  # TypeScript (no emit)
 ---
 
 <div align="center">
-Hecho con orgullo para México 🇲🇽
+Hecho con orgullo para Latinoamérica 🌎
 </div>

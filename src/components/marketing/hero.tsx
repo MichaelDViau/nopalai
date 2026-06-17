@@ -14,16 +14,17 @@ export function Hero() {
         <div className="mx-auto max-w-2xl text-center">
           <span className="mx-auto inline-flex items-center gap-2 rounded-md border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-foreground sm:text-sm">
             <Sparkles className="h-3.5 w-3.5 text-primary" />
-            4 asistentes de IA para México
+            4 asistentes de IA para Latinoamérica
           </span>
 
           <h1 className="mt-6 text-balance text-[2.5rem] font-bold leading-[1.08] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
-            La IA que entiende <span className="text-primary">México</span>.
+            La IA que entiende{" "}
+            <span className="text-primary">Latinoamérica</span>.
           </h1>
 
           <p className="mx-auto mt-5 max-w-xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg">
             Respuestas, traducciones, ayuda con tareas y contenido para redes.
-            En español mexicano, al instante.
+            En tu español, al instante.
           </p>
 
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">

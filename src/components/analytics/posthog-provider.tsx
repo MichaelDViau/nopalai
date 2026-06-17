@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import posthog from "posthog-js";
 import { PostHogProvider as Provider } from "posthog-js/react";
@@ -36,7 +36,11 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
   if (!key) return <>{children}</>;
   return (
     <Provider client={posthog}>
-      <PageViews />
+      {/* `useSearchParams` must sit under Suspense, otherwise it opts the
+          whole tree out of static rendering / streaming. */}
+      <Suspense fallback={null}>
+        <PageViews />
+      </Suspense>
       {children}
     </Provider>
   );
