@@ -2,10 +2,10 @@ import { NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 
 import { isSameOrigin } from "@/lib/http";
-import { getStripe, PREMIUM_PRICE_ID } from "@/lib/stripe";
+import { getStripe, priceIdForPlan } from "@/lib/stripe";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import { getOrCreateProfile } from "@/lib/profile";
-import { SITE } from "@/lib/constants";
+import { SITE, type PaidPlanId } from "@/lib/constants";
 
 export const runtime = "nodejs";
 
@@ -19,9 +19,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 
-  if (!PREMIUM_PRICE_ID) {
+  // Which paid plan to check out (defaults to Plus). Body is optional.
+  const body = await req.json().catch(() => ({}));
+  const plan: PaidPlanId = body?.plan === "pro" ? "pro" : "plus";
+  const priceId = priceIdForPlan(plan);
+
+  if (!priceId) {
     return NextResponse.json(
-      { error: "El pago no está configurado." },
+      { error: "El pago de este plan no está configurado." },
       { status: 500 },
     );
   }
@@ -49,13 +54,15 @@ export async function POST(req: Request) {
   const session = await stripe.checkout.sessions.create({
     mode: "subscription",
     customer: customerId,
-    line_items: [{ price: PREMIUM_PRICE_ID, quantity: 1 }],
+    line_items: [{ price: priceId, quantity: 1 }],
     allow_promotion_codes: true,
     locale: "es",
     success_url: `${SITE.url}/dashboard?upgraded=1`,
     cancel_url: `${SITE.url}/pricing?canceled=1`,
-    subscription_data: { metadata: { clerk_user_id: userId } },
-    metadata: { clerk_user_id: userId },
+    // Persist the chosen tier on the subscription so the webhook can map
+    // it back to plus/pro for every future subscription event.
+    subscription_data: { metadata: { clerk_user_id: userId, plan } },
+    metadata: { clerk_user_id: userId, plan },
   });
 
   return NextResponse.json({ url: session.url });

@@ -43,17 +43,28 @@ export async function getOrCreateProfile(
   return created;
 }
 
-/** Is this profile on an active Premium subscription? */
-export function isPremium(profile: Pick<Profile, "plan" | "subscription_status">): boolean {
+/** Does this profile have a currently-active paid subscription? */
+export function hasActiveSubscription(
+  profile: Pick<Profile, "subscription_status">,
+): boolean {
   return (
-    profile.plan === "premium" &&
-    (profile.subscription_status === "active" ||
-      profile.subscription_status === "trialing")
+    profile.subscription_status === "active" ||
+    profile.subscription_status === "trialing"
   );
 }
 
+/**
+ * Resolve the effective plan a user is entitled to right now. Falls back to
+ * "free" unless an active subscription is present. The legacy "premium"
+ * value (pre 3-tier pricing) is treated as "plus".
+ */
 export function planOf(
   profile: Pick<Profile, "plan" | "subscription_status">,
 ): Plan {
-  return isPremium(profile) ? "premium" : "free";
+  if (!hasActiveSubscription(profile)) return "free";
+  if (profile.plan === "pro") return "pro";
+  if (profile.plan === "plus" || (profile.plan as string) === "premium") {
+    return "plus";
+  }
+  return "free";
 }

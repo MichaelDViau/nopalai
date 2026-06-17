@@ -10,11 +10,6 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/brand/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 
-const NAV_LINKS = [
-  { href: "/#assistants", label: "Asistentes" },
-  { href: "/pricing", label: "Precios" },
-];
-
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
@@ -36,18 +31,6 @@ export function Navbar() {
         <Link href="/" aria-label="NopalAI inicio">
           <Logo />
         </Link>
-
-        <nav className="hidden items-center gap-8 md:flex">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
 
         {/* Right side — theme switch + direct access to the AI chat */}
         <div className="flex items-center gap-1.5">

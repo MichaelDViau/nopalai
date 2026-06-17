@@ -7,9 +7,9 @@ import { FAQ } from "@/components/marketing/faq";
 import { FinalCTA } from "@/components/marketing/cta";
 
 export const metadata: Metadata = {
-  title: "Precios — Gratis y Premium 99 MXN",
+  title: "Precios — Gratis, Plus y Pro",
   description:
-    "Empieza gratis con 20 mensajes al día. Mejora a Premium por 99 MXN al mes: mensajes ilimitados, sin anuncios, respuestas más rápidas y modelos premium.",
+    "Empieza gratis con 20 mensajes al día. Plus por 69 MXN al mes con mensajes ilimitados y sin anuncios, o Pro por 199 MXN con nuestra IA más potente. Precios para Latinoamérica.",
   alternates: { canonical: "/pricing" },
 };
 

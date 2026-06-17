@@ -12,12 +12,13 @@ interface UsageMeterProps {
 }
 
 export function UsageMeter({ usage, onUpgrade }: UsageMeterProps) {
-  if (usage.plan === "premium") {
+  if (usage.plan !== "free") {
+    const planName = usage.plan === "pro" ? "Pro" : "Plus";
     return (
       <div className="rounded-xl border border-primary/20 bg-primary/5 p-3">
         <div className="flex items-center gap-2 text-sm font-medium text-primary">
           <Zap className="h-4 w-4 fill-primary" />
-          Premium activo
+          Plan {planName} activo
         </div>
         <p className="mt-1 text-xs text-muted-foreground">
           Mensajes ilimitados y respuestas más rápidas.
@@ -52,7 +53,7 @@ export function UsageMeter({ usage, onUpgrade }: UsageMeterProps) {
         onClick={onUpgrade}
       >
         <Zap className="h-3.5 w-3.5" />
-        Mejorar a Premium
+        Mejorar plan
       </Button>
     </div>
   );

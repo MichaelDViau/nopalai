@@ -31,8 +31,14 @@ export function StructuredData() {
         },
         {
           "@type": "Offer",
-          name: "Premium",
-          price: "99",
+          name: "Plus",
+          price: "69",
+          priceCurrency: "MXN",
+        },
+        {
+          "@type": "Offer",
+          name: "Pro",
+          price: "199",
           priceCurrency: "MXN",
         },
       ],

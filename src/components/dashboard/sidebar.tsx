@@ -244,8 +244,8 @@ export function Sidebar({
               type="button"
               onClick={onUpgrade}
               className={railIconClass}
-              aria-label="Mejorar a Premium"
-              title="Mejorar a Premium"
+              aria-label="Mejorar plan"
+              title="Mejorar plan"
             >
               <Zap className="h-4 w-4" />
             </button>

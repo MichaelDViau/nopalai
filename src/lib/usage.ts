@@ -1,6 +1,10 @@
 import "server-only";
 import { getSupabaseAdmin } from "@/lib/supabase";
-import { FREE_DAILY_LIMIT, PREMIUM_DAILY_LIMIT } from "@/lib/constants";
+import {
+  FREE_DAILY_LIMIT,
+  PLUS_DAILY_LIMIT,
+  PRO_DAILY_LIMIT,
+} from "@/lib/constants";
 import type { Plan } from "@/types/database";
 
 /**
@@ -16,7 +20,14 @@ export function regionToday(): string {
 }
 
 export function limitForPlan(plan: Plan): number {
-  return plan === "premium" ? PREMIUM_DAILY_LIMIT : FREE_DAILY_LIMIT;
+  switch (plan) {
+    case "pro":
+      return PRO_DAILY_LIMIT;
+    case "plus":
+      return PLUS_DAILY_LIMIT;
+    default:
+      return FREE_DAILY_LIMIT;
+  }
 }
 
 export interface UsageStatus {

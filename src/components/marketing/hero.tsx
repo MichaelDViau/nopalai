@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { track, EVENTS } from "@/lib/analytics";
@@ -12,12 +12,7 @@ export function Hero() {
     <section className="bg-secondary/30">
       <div className="container pb-14 pt-12 sm:pb-20 sm:pt-20">
         <div className="mx-auto max-w-2xl text-center">
-          <span className="mx-auto inline-flex items-center gap-2 rounded-md border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-foreground sm:text-sm">
-            <Sparkles className="h-3.5 w-3.5 text-primary" />
-            4 asistentes de IA para Latinoamérica
-          </span>
-
-          <h1 className="mt-6 text-balance text-[2.5rem] font-bold leading-[1.08] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+          <h1 className="text-balance text-[2.5rem] font-bold leading-[1.08] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
             La IA que entiende{" "}
             <span className="text-primary">Latinoamérica</span>.
           </h1>
@@ -50,7 +45,7 @@ export function Hero() {
           </div>
 
           <p className="mt-4 text-xs text-muted-foreground sm:text-sm">
-            Gratis · Sin tarjeta · 20 mensajes al día
+            Gratis* · Sin tarjeta**
           </p>
         </div>
 

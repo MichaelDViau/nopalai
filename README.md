@@ -26,8 +26,7 @@ daily usage limits, a Stripe-powered Premium plan, analytics and full SEO.
 - **Light & dark mode** — system-aware theme via `next-themes`, smooth transitions, sage-green brand in both, preference saved locally.
 - **Chat management** — new chat, history, rename, delete, responsive sidebar, full mobile support.
 - **Auth** — split-screen sign up / login with a sage brand panel; protected dashboard via Clerk.
-- **Free plan** — 20 messages/day tracked in the database, with ad placeholders.
-- **Premium plan** — 99 MXN/month via Stripe: no ads, faster responses, premium models, higher limits.
+- **Three plans** — Gratis (20 messages/day, with ads), Plus (69 MXN/month, unlimited\*, no ads, advanced model) and Pro (199 MXN/month, our most powerful model, longer answers, priority). Billed via Stripe in each user's local currency.
 - **Analytics** — PostHog + Google Analytics 4 (signups, chats, conversions, upgrades).
 - **SEO** — metadata, sitemap, robots, JSON-LD, dynamic OG image, optimized for "IA Latinoamérica".
 - **Security** — rate limiting (daily usage), Zod input validation, XSS-safe rendering, secure server-only secrets, security headers.
@@ -119,10 +118,12 @@ Open [http://localhost:3000](http://localhost:3000).
 | `SUPABASE_SERVICE_ROLE_KEY` | ✅ | Supabase service role (server only) |
 | `OPENROUTER_API_KEY` | ✅ | OpenRouter API key |
 | `OPENROUTER_MODEL_FREE` | – | Free-tier model (default `deepseek/deepseek-chat`) |
-| `OPENROUTER_MODEL_PREMIUM` | – | Premium model (default `qwen/qwen-2.5-72b-instruct`) |
+| `OPENROUTER_MODEL_PLUS` | – | Plus model (default `qwen/qwen-2.5-72b-instruct`) |
+| `OPENROUTER_MODEL_PRO` | – | Pro model (default `deepseek/deepseek-r1`) |
 | `STRIPE_SECRET_KEY` | ✅ | Stripe secret key |
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | ✅ | Stripe publishable key |
-| `STRIPE_PREMIUM_PRICE_ID` | ✅ | Price ID for the 99 MXN plan |
+| `STRIPE_PLUS_PRICE_ID` | ✅ | Price ID for the Plus plan (69 MXN) |
+| `STRIPE_PRO_PRICE_ID` | ✅ | Price ID for the Pro plan (199 MXN) |
 | `STRIPE_WEBHOOK_SECRET` | ✅ | Stripe webhook signing secret |
 | `NEXT_PUBLIC_POSTHOG_KEY` | – | PostHog project key |
 | `NEXT_PUBLIC_POSTHOG_HOST` | – | PostHog host (default US cloud) |
@@ -146,12 +147,14 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ### OpenRouter (AI)
 1. Create a key at [openrouter.ai/keys](https://openrouter.ai/keys).
-2. Models are configurable via env. Defaults route Free users to **DeepSeek** and
-   Premium users to **Qwen 72B**, with **Llama 3.1 70B** as a fallback family.
+2. Models are configurable via env. Defaults route Free → **DeepSeek**,
+   Plus → **Qwen 72B** and Pro → **DeepSeek R1** (point `OPENROUTER_MODEL_PRO`
+   at your strongest model), with **Llama 3.1 70B** as a fallback family.
 
 ### Stripe (Payments)
-1. Create a **recurring** Product/Price of **99 MXN / month**; copy its price ID
-   to `STRIPE_PREMIUM_PRICE_ID`.
+1. Create two **recurring** Products/Prices — **69 MXN / month** (Plus) and
+   **199 MXN / month** (Pro) — and copy their price IDs to
+   `STRIPE_PLUS_PRICE_ID` and `STRIPE_PRO_PRICE_ID`.
 2. Add a webhook endpoint pointing to `/api/stripe/webhook` and subscribe to:
    `checkout.session.completed`, `customer.subscription.created`,
    `customer.subscription.updated`, `customer.subscription.deleted`.

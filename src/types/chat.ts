@@ -1,3 +1,4 @@
+import type { PlanId } from "@/lib/constants";
 import type { ModeId } from "@/lib/modes";
 
 export interface ChatSummary {
@@ -16,7 +17,7 @@ export interface StoredMessage {
 }
 
 export interface UsageState {
-  plan: "free" | "premium";
+  plan: PlanId;
   used: number;
   limit: number;
   remaining: number;

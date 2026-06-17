@@ -15,7 +15,7 @@ export default function HomePage() {
       <main>
         <Hero />
         <Assistants />
-        <Pricing showComparison={false} />
+        <Pricing />
         <FAQ />
         <FinalCTA />
       </main>

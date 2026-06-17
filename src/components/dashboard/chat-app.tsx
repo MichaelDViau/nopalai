@@ -104,7 +104,7 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
     const params = new URLSearchParams(window.location.search);
     if (params.get("upgraded") === "1") {
       track(EVENTS.PREMIUM_UPGRADED);
-      toast.success("¡Bienvenido a Premium! 🎉 Disfruta sin límites.");
+      toast.success("¡Listo! 🎉 Disfruta tu nuevo plan sin límites.");
       refreshUsage();
       window.history.replaceState({}, "", "/dashboard");
     }

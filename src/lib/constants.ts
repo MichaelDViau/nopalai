@@ -24,24 +24,40 @@ export const PLANS = {
     name: "Gratis",
     priceMXN: 0,
     dailyMessageLimit: 20,
+    tagline: "Para empezar a explorar la IA en tu idioma.",
     features: [
       "20 mensajes por día",
       "Los 4 asistentes especializados",
       "Historial de conversaciones",
-      "Modelo DeepSeek",
     ],
     limitations: ["Con anuncios", "Velocidad estándar"],
   },
-  premium: {
-    id: "premium",
-    name: "Premium",
-    priceMXN: 99,
+  plus: {
+    id: "plus",
+    name: "Plus",
+    priceMXN: 69,
     dailyMessageLimit: 1000,
+    tagline: "Para quienes usan la IA todos los días.",
     features: [
       "Mensajes ilimitados*",
       "Sin anuncios",
       "Respuestas más rápidas",
-      "Modelos premium (Qwen 72B)",
+      "Modelo avanzado (Qwen 72B)",
+      "Historial de conversaciones",
+    ],
+    limitations: [],
+  },
+  pro: {
+    id: "pro",
+    name: "Pro",
+    priceMXN: 199,
+    dailyMessageLimit: 2000,
+    tagline: "Nuestra IA más potente, para trabajo serio.",
+    features: [
+      "Todo lo de Plus",
+      "Mensajes ilimitados*",
+      "Nuestra IA más potente",
+      "Respuestas más largas y detalladas",
       "Acceso prioritario",
       "Soporte preferente",
     ],
@@ -51,5 +67,9 @@ export const PLANS = {
 
 export type PlanId = keyof typeof PLANS;
 
+/** Plans that require a paid Stripe subscription. */
+export type PaidPlanId = Exclude<PlanId, "free">;
+
 export const FREE_DAILY_LIMIT = PLANS.free.dailyMessageLimit;
-export const PREMIUM_DAILY_LIMIT = PLANS.premium.dailyMessageLimit;
+export const PLUS_DAILY_LIMIT = PLANS.plus.dailyMessageLimit;
+export const PRO_DAILY_LIMIT = PLANS.pro.dailyMessageLimit;
