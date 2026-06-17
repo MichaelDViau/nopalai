@@ -190,12 +190,27 @@ See [`supabase/schema.sql`](./supabase/schema.sql). Tables:
 ## 🧪 Scripts
 
 ```bash
-npm run dev        # Start dev server
-npm run build      # Production build
+npm run dev        # Start dev server (Turbopack)
+npm run build      # Production build (Webpack)
 npm run start      # Start production server
 npm run lint       # ESLint
 npm run typecheck  # TypeScript (no emit)
 ```
+
+## 🛠️ Troubleshooting
+
+**`TypeError: Cannot read properties of undefined (reading 'call')` in dev.**
+This is a stale bundler cache, usually after switching branches or pulling new
+dependencies (it does not happen on a clean build). Fix it with:
+
+```bash
+rm -rf .next      # clear the build cache
+npm install       # ensure dependencies (e.g. next-themes) are present
+npm run dev
+```
+
+Dev runs on Turbopack, which avoids the Webpack dev-cache corruption that
+triggers this error.
 
 ## 🔒 Security & Performance
 
