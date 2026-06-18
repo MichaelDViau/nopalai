@@ -4,11 +4,9 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { esMX } from "@clerk/localizations";
 
 import { SITE } from "@/lib/constants";
+import { AppProviders } from "@/components/app-providers";
 import { Toaster } from "@/components/ui/sonner";
-import { PostHogProvider } from "@/components/analytics/posthog-provider";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
-import { ThemeProvider } from "@/components/theme-provider";
-import { LanguageProvider } from "@/components/language-provider";
 import "./globals.css";
 
 const inter = Inter({
@@ -87,11 +85,7 @@ export default function RootLayout({
     >
       <html lang="es-MX" className={`${inter.variable} ${sora.variable}`} suppressHydrationWarning>
         <body className="min-h-dvh bg-background font-sans">
-          <ThemeProvider>
-            <LanguageProvider>
-              <PostHogProvider>{children}</PostHogProvider>
-            </LanguageProvider>
-          </ThemeProvider>
+          <AppProviders>{children}</AppProviders>
           <Toaster position="top-center" richColors />
           <GoogleAnalytics />
         </body>
