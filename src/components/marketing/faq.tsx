@@ -16,7 +16,7 @@ export function FAQ() {
             {t.faq.items.map(([q, a], i) => (
               <AccordionItem key={q} value={`item-${i}`}>
                 <AccordionTrigger className="text-left text-[15px] sm:text-base">{q}</AccordionTrigger>
-                <AccordionContent>{a}</AccordionContent>
+                <AccordionContent className="whitespace-pre-line">{a}</AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>

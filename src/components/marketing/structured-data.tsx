@@ -3,15 +3,15 @@ import { SITE } from "@/lib/constants";
 const FAQS = [
   {
     q: "¿Qué es NopalAI?",
-    a: "Un asistente de inteligencia artificial creado para LATAM que ayuda con respuestas, traducciones, tareas escolares y contenido para redes sociales.",
+    a: "La inteligencia artificial para Latinoamérica. Accede a respuestas de alta calidad, traducciones, apoyo académico, generación de contenido y asistencia profesional en segundos. Toda la potencia de los mejores modelos de IA del mundo, adaptada a las necesidades de LATAM y disponible a un precio accesible para todos.",
   },
   {
     q: "¿Es gratis?",
-    a: "Sí. Puedes empezar gratis. También hay agentes de IA Plus y Pro disponibles.",
+    a: "Empieza gratis, sin tarjeta de crédito. Cuando necesites más potencia, desbloquea Plus o Pro y accede a agentes de IA avanzados diseñados para tareas más exigentes, generación de contenido, productividad y trabajo profesional. Tecnología de primer nivel, con precios accesibles para Latinoamérica.",
   },
   {
     q: "¿Puedo cancelar cuando quiera?",
-    a: "Sí. Puedes cancelar tu suscripción en cualquier momento.",
+    a: "Sí. Tienes total libertad para cancelar tu suscripción cuando lo desees. Tu acceso permanecerá activo hasta el final del periodo de facturación ya pagado, sin penalizaciones ni cargos ocultos.",
   },
 ];
 

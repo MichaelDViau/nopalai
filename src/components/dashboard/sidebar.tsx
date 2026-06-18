@@ -8,12 +8,7 @@ import {
   MessageSquare,
   MoreHorizontal,
   Pencil,
-  PencilLine,
-  PanelLeft,
-  Pin,
-  PinOff,
   Plus,
-  Search,
   Trash2,
 } from "lucide-react";
 
@@ -39,8 +34,6 @@ import type { ChatSummary, UsageState } from "@/types/chat";
 
 interface SidebarProps {
   chats: ChatSummary[];
-  pinned?: boolean;
-  onPinnedChange?: (pinned: boolean) => void;
   activeChatId: string | null;
   usage: UsageState;
   onSelect: (id: string) => void;
@@ -52,8 +45,6 @@ interface SidebarProps {
 
 export function Sidebar({
   chats,
-  pinned = false,
-  onPinnedChange,
   activeChatId,
   usage,
   onSelect,
@@ -66,68 +57,7 @@ export function Sidebar({
   const [deleting, setDeleting] = useState<ChatSummary | null>(null);
   const [title, setTitle] = useState("");
 
-  const labelClass = cn(
-    "min-w-0 whitespace-nowrap transition-[opacity,width] duration-200 ease-out",
-    !pinned && "md:w-0 md:opacity-0 md:group-hover/sidebar:w-auto md:group-hover/sidebar:opacity-100 md:group-focus-within/sidebar:w-auto md:group-focus-within/sidebar:opacity-100",
-  );
-  const expandedOnlyClass = cn(
-    "transition-[opacity,max-height] duration-200 ease-out",
-    !pinned && "md:max-h-0 md:overflow-hidden md:opacity-0 md:group-hover/sidebar:max-h-[999px] md:group-hover/sidebar:opacity-100 md:group-focus-within/sidebar:max-h-[999px] md:group-focus-within/sidebar:opacity-100",
-  );
-
-  const railButtonClass =
-    "flex h-11 w-11 items-center justify-center rounded-2xl text-foreground/80 transition-all hover:bg-foreground/10 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring dark:text-white/90 dark:hover:bg-white/15";
-
-  if (!pinned) {
-    return (
-      <nav className="flex h-full w-full flex-col items-center border-r border-border/70 bg-background/50 px-3 py-4 backdrop-blur-xl dark:border-white/10 dark:bg-black/70">
-        <div className="flex flex-col items-center gap-4">
-          <button
-            type="button"
-            className={cn(railButtonClass, "bg-foreground/10 dark:bg-white/15")}
-            aria-label="Abrir barra lateral"
-            title="Abrir barra lateral"
-            onClick={() => onPinnedChange?.(true)}
-          >
-            <PanelLeft className="h-6 w-6" />
-          </button>
-          <button
-            type="button"
-            className={railButtonClass}
-            aria-label="Nuevo chat"
-            title="Nuevo chat"
-            onClick={onNewChat}
-          >
-            <PencilLine className="h-6 w-6" />
-          </button>
-          <button
-            type="button"
-            className={railButtonClass}
-            aria-label="Buscar chats"
-            title="Buscar chats"
-            onClick={() => onPinnedChange?.(true)}
-          >
-            <Search className="h-6 w-6" />
-          </button>
-          <button
-            type="button"
-            className={railButtonClass}
-            aria-label="Chats"
-            title="Chats"
-            onClick={() => onPinnedChange?.(true)}
-          >
-            <MessageSquare className="h-6 w-6" />
-          </button>
-        </div>
-        <div className="mt-auto flex h-11 w-11 items-center justify-center overflow-hidden rounded-full ring-1 ring-border/80 dark:ring-white/15">
-          <UserButton
-            appearance={{ elements: { avatarBox: "h-10 w-10" } }}
-            afterSignOutUrl="/"
-          />
-        </div>
-      </nav>
-    );
-  }
+  const labelClass = "min-w-0 whitespace-nowrap";
 
   return (
     <div className="flex h-full w-full flex-col bg-secondary/30 transition-all duration-300 ease-out dark:bg-black/20">
@@ -139,18 +69,6 @@ export function Sidebar({
             <span className={labelClass}>Inicio</span>
           </Link>
         </Button>
-        {onPinnedChange && (
-          <Button
-            variant="ghost"
-            size="icon"
-            className="shrink-0"
-            aria-label={pinned ? "Contraer barra lateral" : "Fijar barra lateral"}
-            title={pinned ? "Contraer barra lateral" : "Fijar barra lateral"}
-            onClick={() => onPinnedChange(!pinned)}
-          >
-            {pinned ? <PinOff className="h-4 w-4" /> : <Pin className="h-4 w-4" />}
-          </Button>
-        )}
       </div>
       <div className="px-3 pb-2">
         <Button onClick={onNewChat} className="h-10 w-full justify-start gap-2 rounded-xl">
@@ -160,9 +78,9 @@ export function Sidebar({
       </div>
 
       {/* Chat list */}
-      <div className={cn("flex-1 overflow-y-auto px-2 py-2", expandedOnlyClass)}>
+      <div className="flex-1 overflow-y-auto px-2 py-2">
         {chats.length === 0 ? (
-          <p className={cn("px-3 py-8 text-center text-sm text-muted-foreground", !pinned && "md:hidden md:group-hover/sidebar:block md:group-focus-within/sidebar:block")}>
+          <p className="px-3 py-8 text-center text-sm text-muted-foreground">
             Tus conversaciones aparecerán aquí.
           </p>
         ) : (
@@ -188,7 +106,7 @@ export function Sidebar({
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <button
-                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-opacity hover:bg-background group-hover:opacity-100 data-[state=open]:opacity-100"
+                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-background data-[state=open]:bg-background"
                         aria-label="Opciones del chat"
                       >
                         <MoreHorizontal className="h-4 w-4" />
@@ -222,9 +140,9 @@ export function Sidebar({
 
       {/* Footer */}
       <div className="space-y-3 border-t border-border p-3">
-        <UsageMeter usage={usage} onUpgrade={onUpgrade} compact={!pinned} />
+        <UsageMeter usage={usage} onUpgrade={onUpgrade} />
         {usage.plan === "free" && (
-          <div className={expandedOnlyClass}>
+          <div>
             <AdPlaceholder />
           </div>
         )}
