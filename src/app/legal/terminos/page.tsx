@@ -38,8 +38,9 @@ export default function TermsPage() {
 
       <h2>4. Planes y pagos</h2>
       <p>
-        El plan Gratis incluye 20 mensajes diarios. El plan Premium cuesta 99
-        MXN al mes e incluye mayores límites y funciones. Los pagos se procesan
+        El plan Gratis incluye 20 mensajes diarios. El plan Plus cuesta 69
+        MXN al mes y el plan Pro cuesta 199 MXN al mes; ambos incluyen
+        mayores límites y funciones. Los pagos se procesan
         con Stripe y puedes cancelar en cualquier momento; el acceso continúa
         hasta el final del periodo pagado.
       </p>

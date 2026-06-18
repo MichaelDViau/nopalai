@@ -43,8 +43,8 @@ export async function getOrCreateProfile(
   return created;
 }
 
-/** Is this profile on an active Premium subscription? */
-export function isPremium(profile: Pick<Profile, "plan" | "subscription_status">): boolean {
+/** Is this profile on an active Pro subscription? */
+export function isPro(profile: Pick<Profile, "plan" | "subscription_status">): boolean {
   return (
     profile.plan === "premium" &&
     (profile.subscription_status === "active" ||
@@ -55,5 +55,5 @@ export function isPremium(profile: Pick<Profile, "plan" | "subscription_status">
 export function planOf(
   profile: Pick<Profile, "plan" | "subscription_status">,
 ): Plan {
-  return isPremium(profile) ? "premium" : "free";
+  return isPro(profile) ? "premium" : "free";
 }

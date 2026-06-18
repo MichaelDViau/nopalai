@@ -3,10 +3,10 @@ import { getSupabaseAdmin } from "@/lib/supabase";
 import { FREE_DAILY_LIMIT, PREMIUM_DAILY_LIMIT } from "@/lib/constants";
 import type { Plan } from "@/types/database";
 
-/** Mexico City day boundary (UTC-6, no DST since 2023) used for daily limits. */
+/** LATAM City day boundary (UTC-6, no DST since 2023) used for daily limits. */
 export function mxToday(): string {
   const now = new Date();
-  // Shift to America/Mexico_City (UTC-6) then take the date portion.
+  // Shift to America/LATAM_City (UTC-6) then take the date portion.
   const mx = new Date(now.getTime() - 6 * 60 * 60 * 1000);
   return mx.toISOString().slice(0, 10);
 }

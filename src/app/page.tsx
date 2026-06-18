@@ -1,7 +1,6 @@
 import { Navbar } from "@/components/marketing/navbar";
 import { Footer } from "@/components/marketing/footer";
 import { Hero } from "@/components/marketing/hero";
-import { Assistants } from "@/components/marketing/assistants";
 import { Pricing } from "@/components/marketing/pricing";
 import { FAQ } from "@/components/marketing/faq";
 import { FinalCTA } from "@/components/marketing/cta";
@@ -14,7 +13,6 @@ export default function HomePage() {
       <Navbar />
       <main>
         <Hero />
-        <Assistants />
         <Pricing showComparison={false} />
         <FAQ />
         <FinalCTA />

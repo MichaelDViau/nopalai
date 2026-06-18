@@ -4,8 +4,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { esMX } from "@clerk/localizations";
 
 import { SITE } from "@/lib/constants";
+import { AppProviders } from "@/components/app-providers";
 import { Toaster } from "@/components/ui/sonner";
-import { PostHogProvider } from "@/components/analytics/posthog-provider";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import "./globals.css";
 
@@ -83,9 +83,9 @@ export default function RootLayout({
         },
       }}
     >
-      <html lang="es-MX" className={`${inter.variable} ${sora.variable}`}>
+      <html lang="es-MX" className={`${inter.variable} ${sora.variable}`} suppressHydrationWarning>
         <body className="min-h-dvh bg-background font-sans">
-          <PostHogProvider>{children}</PostHogProvider>
+          <AppProviders>{children}</AppProviders>
           <Toaster position="top-center" richColors />
           <GoogleAnalytics />
         </body>

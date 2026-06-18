@@ -53,10 +53,10 @@ export default function OpengraphImage() {
             maxWidth: 920,
           }}
         >
-          La IA que entiende México.
+          La IA que entiende LATAM.
         </div>
         <div style={{ marginTop: 28, fontSize: 32, color: "#4b5852", maxWidth: 880 }}>
-          Traducciones, tareas, contenido para redes y vida diaria — en español mexicano.
+          Traducciones, tareas, contenido para redes y vida diaria — en español latinoamericano.
         </div>
       </div>
     ),

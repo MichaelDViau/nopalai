@@ -15,7 +15,7 @@ interface UpgradeButtonProps extends ButtonProps {
 }
 
 export function UpgradeButton({
-  label = "Obtener Premium",
+  label = "Obtener Pro",
   source = "pricing",
   ...props
 }: UpgradeButtonProps) {
