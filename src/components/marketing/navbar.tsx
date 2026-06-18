@@ -46,11 +46,11 @@ export function Navbar() {
           </Button>
           <ThemeToggle />
           <SignedOut>
-            <Button variant="ghost" size="sm" asChild className="hidden sm:inline-flex">
+            <Button size="sm" asChild className="gap-1.5">
               <Link href="/sign-in">{t.nav.signIn}</Link>
             </Button>
           </SignedOut>
-          <Button asChild className="gap-1.5">
+          <Button size="sm" asChild className="gap-1.5">
             <Link href="/dashboard">
               <MessageSquare className="h-4 w-4" />
               {t.nav.chat}

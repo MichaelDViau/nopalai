@@ -8,14 +8,12 @@ type Dictionary = typeof dictionaries.es;
 
 const dictionaries = {
   es: {
-    nav: { signIn: "Entrar", chat: "Abrir chat", language: "English" },
+    nav: { signIn: "Iniciar Sesión", chat: "Abrir chat", language: "English" },
     hero: {
-      badge: "IA para LATAM",
       title: "La IA que entiende LATAM.",
       body: "Respuestas, traducciones, ayuda con tareas y contenido para redes. En español e inglés, al instante.",
       primary: "Comenzar gratis",
       secondary: "Ver demo",
-      note: "Gratis · Sin tarjeta · 20 mensajes al día",
     },
     pricing: {
       title: "Simple y transparente",
@@ -45,12 +43,10 @@ const dictionaries = {
   en: {
     nav: { signIn: "Sign in", chat: "Open chat", language: "Español" },
     hero: {
-      badge: "AI for LATAM",
       title: "AI that understands LATAM.",
       body: "Answers, translations, homework help, and social content. In English and Spanish, instantly.",
       primary: "Start free",
       secondary: "View demo",
-      note: "Free · No card · 20 messages per day",
     },
     pricing: {
       title: "Simple and transparent",
