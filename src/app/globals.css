@@ -78,6 +78,10 @@
   * {
     @apply border-border;
   }
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
@@ -91,11 +95,33 @@
 @layer utilities {
   /* Flat translucent surface for the sticky nav. */
   .glass {
-    @apply bg-white/85 backdrop-blur-md;
+    @apply bg-white/85 backdrop-blur-md backdrop-saturate-150;
+  }
+
+  /* Frosted-glass surface for app panels (sidebar, composer, header). */
+  .glass-panel {
+    @apply bg-secondary/40 backdrop-blur-xl backdrop-saturate-150;
   }
 
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* Hide scrollbar while keeping scroll behaviour. */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Safe-area helpers for mobile / notched devices. */
+  .pb-safe {
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  }
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
   }
 }
 
@@ -181,6 +207,29 @@
 
 @layer utilities {
   .dark .glass {
-    @apply bg-background/80 backdrop-blur-md;
+    @apply bg-background/75 backdrop-blur-md backdrop-saturate-150;
+  }
+  .dark .glass-panel {
+    @apply bg-background/60 backdrop-blur-xl backdrop-saturate-150;
+  }
+}
+
+/* Smooth, contained scrolling for chat + sidebar regions. */
+.chat-scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Respect reduced-motion preferences across the app. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

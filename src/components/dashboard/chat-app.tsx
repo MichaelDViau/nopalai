@@ -2,16 +2,16 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
-import { Plus } from "lucide-react";
+import { Menu, SquarePen } from "lucide-react";
 import { toast } from "sonner";
 
-import { deriveChatTitle } from "@/lib/utils";
+import { cn, deriveChatTitle } from "@/lib/utils";
 import { getMode, type ModeId } from "@/lib/modes";
 import { track, EVENTS } from "@/lib/analytics";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Logo } from "@/components/brand/logo";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { Sidebar } from "@/components/dashboard/sidebar";
 import { Composer } from "@/components/dashboard/composer";
 import { EmptyState } from "@/components/dashboard/empty-state";
@@ -29,6 +29,39 @@ interface ChatAppProps {
   initialUsage: UsageState;
 }
 
+const SIDEBAR_EXPANDED = 288;
+const SIDEBAR_RAIL = 72;
+const PIN_STORAGE_KEY = "nopal:sidebar-pinned";
+
+/** Lightweight shimmer shown while an existing conversation loads. */
+function ConversationSkeleton() {
+  return (
+    <div className="mx-auto w-full max-w-3xl space-y-8 px-4 py-6">
+      <div className="flex justify-end">
+        <Skeleton className="h-10 w-56 rounded-2xl" />
+      </div>
+      <div className="flex gap-3">
+        <Skeleton className="h-8 w-8 shrink-0 rounded-lg" />
+        <div className="w-full max-w-xl space-y-2.5">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-[92%]" />
+          <Skeleton className="h-4 w-3/4" />
+        </div>
+      </div>
+      <div className="flex justify-end">
+        <Skeleton className="h-10 w-40 rounded-2xl" />
+      </div>
+      <div className="flex gap-3">
+        <Skeleton className="h-8 w-8 shrink-0 rounded-lg" />
+        <div className="w-full max-w-md space-y-2.5">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-2/3" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
   const [chats, setChats] = useState<ChatSummary[]>(initialChats);
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
@@ -36,6 +69,15 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
   const [usage, setUsage] = useState<UsageState>(initialUsage);
   const [input, setInput] = useState("");
   const [loadingMessages, setLoadingMessages] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+  // Desktop sidebar: pinned (fixed-open) vs. auto-collapsing rail that
+  // expands to a floating overlay on hover.
+  const [pinned, setPinned] = useState(true);
+  const [hovered, setHovered] = useState(false);
+  const [interacting, setInteracting] = useState(false);
+  const [pinLoaded, setPinLoaded] = useState(false);
+
   const [upgrade, setUpgrade] = useState<{
     open: boolean;
     reason: "limit" | "manual";
@@ -45,6 +87,30 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
   activeChatIdRef.current = activeChatId;
 
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Restore the pinned preference.
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(PIN_STORAGE_KEY);
+      if (saved !== null) setPinned(saved === "1");
+    } catch {
+      /* ignore */
+    }
+    setPinLoaded(true);
+  }, []);
+
+  const togglePin = useCallback(() => {
+    setPinned((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem(PIN_STORAGE_KEY, next ? "1" : "0");
+      } catch {
+        /* ignore */
+      }
+      if (next) setHovered(false);
+      return next;
+    });
+  }, []);
 
   const refreshUsage = useCallback(async () => {
     try {
@@ -236,59 +302,118 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
   const activeMode = useMemo(() => getMode(mode), [mode]);
   const hasMessages = messages.length > 0;
 
+  const railExpanded = pinned || hovered || interacting;
+  const transitionCls = pinLoaded
+    ? "transition-[width,box-shadow] duration-300 ease-out"
+    : "";
+
   return (
-    <div className="grid h-dvh grid-cols-[280px_minmax(0,1fr)] overflow-hidden sm:grid-cols-[300px_minmax(0,1fr)]">
-      <aside
-        className="h-dvh min-w-0 overflow-hidden border-r border-border bg-secondary/30"
-        aria-label="Barra lateral de chats"
+    <div className="flex h-dvh overflow-hidden">
+      {/* Desktop sidebar — collapsible rail with hover-to-expand overlay */}
+      <div
+        className={cn("relative z-30 hidden shrink-0 md:block", transitionCls)}
+        style={{ width: pinned ? SIDEBAR_EXPANDED : SIDEBAR_RAIL }}
+        aria-label="Barra lateral"
       >
-        <Sidebar
-          chats={chats}
-          activeChatId={activeChatId}
-          usage={usage}
-          onSelect={selectChat}
-          onNewChat={newChat}
-          onRename={renameChat}
-          onDelete={deleteChat}
-          onUpgrade={openUpgrade}
-        />
-      </aside>
+        <div
+          onMouseEnter={() => {
+            if (!pinned) setHovered(true);
+          }}
+          onMouseLeave={() => setHovered(false)}
+          className={cn(
+            "glass-panel absolute inset-y-0 left-0 flex h-full flex-col overflow-hidden border-r border-border/60",
+            transitionCls,
+            !pinned && hovered && "shadow-2xl",
+          )}
+          style={{ width: railExpanded ? SIDEBAR_EXPANDED : SIDEBAR_RAIL }}
+        >
+          <Sidebar
+            chats={chats}
+            activeChatId={activeChatId}
+            usage={usage}
+            onSelect={selectChat}
+            onNewChat={newChat}
+            onRename={renameChat}
+            onDelete={deleteChat}
+            onUpgrade={openUpgrade}
+            collapsed={!railExpanded}
+            pinned={pinned}
+            onTogglePin={togglePin}
+            onInteractingChange={setInteracting}
+          />
+        </div>
+      </div>
+
+      {/* Mobile drawer */}
+      <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
+        <SheetContent
+          side="left"
+          className="w-[300px] max-w-[88vw] border-r border-border/60 bg-background/90 p-0 backdrop-blur-xl backdrop-saturate-150"
+        >
+          <SheetTitle className="sr-only">Navegación</SheetTitle>
+          <Sidebar
+            chats={chats}
+            activeChatId={activeChatId}
+            usage={usage}
+            onSelect={(id) => {
+              setMobileNavOpen(false);
+              void selectChat(id);
+            }}
+            onNewChat={() => {
+              setMobileNavOpen(false);
+              newChat();
+            }}
+            onRename={renameChat}
+            onDelete={deleteChat}
+            onUpgrade={openUpgrade}
+          />
+        </SheetContent>
+      </Sheet>
 
       {/* Main */}
-      <main className="flex min-w-0 flex-col">
+      <main className="flex min-w-0 flex-1 flex-col">
         {/* Top bar */}
-        <header className="flex h-14 items-center justify-between gap-2 border-b border-border px-3 md:px-5">
-          <div className="flex items-center gap-2">
-            <Badge variant="secondary" className="gap-1.5">
+        <header className="flex h-14 shrink-0 items-center gap-2 border-b border-border/60 bg-background/80 px-3 backdrop-blur md:px-4">
+          <div className="flex min-w-0 items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-9 w-9 md:hidden"
+              onClick={() => setMobileNavOpen(true)}
+              aria-label="Abrir menú"
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
+            <Badge variant="secondary" className="gap-1.5 px-2.5 py-1">
               <activeMode.icon className="h-3.5 w-3.5" />
               {activeMode.shortName}
             </Badge>
           </div>
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
+          <div className="ml-auto flex items-center gap-1">
             <Button
               variant="ghost"
-              size="sm"
-              className="gap-2 md:hidden"
+              size="icon"
+              className="h-9 w-9 md:hidden"
               onClick={newChat}
+              aria-label="Nuevo chat"
             >
-              <Plus className="h-4 w-4" />
-              <span className="hidden sm:inline">Nuevo</span>
+              <SquarePen className="h-[18px] w-[18px]" />
             </Button>
-            <Logo />
           </div>
         </header>
 
         {/* Conversation */}
-        <div ref={scrollRef} className="flex-1 overflow-y-auto">
-          {!hasMessages && !loadingMessages ? (
+        <div ref={scrollRef} className="chat-scroll min-h-0 flex-1">
+          {loadingMessages ? (
+            <ConversationSkeleton />
+          ) : !hasMessages ? (
             <EmptyState
               mode={mode}
               onModeChange={handleModeChange}
               onPick={send}
             />
           ) : (
-            <div className="mx-auto w-full max-w-3xl space-y-6 px-4 py-6">
+            <div className="mx-auto w-full max-w-3xl space-y-7 px-4 py-6 md:px-6">
               {messages.map((m) => (
                 <MessageBubble
                   key={m.id}
@@ -304,7 +429,7 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
         </div>
 
         {/* Composer */}
-        <div className="border-t border-border bg-background/80 px-4 py-4 backdrop-blur">
+        <div className="pb-safe shrink-0 border-t border-border/60 bg-background/80 px-3 pt-3 backdrop-blur md:px-6">
           <Composer
             value={input}
             onChange={setInput}
