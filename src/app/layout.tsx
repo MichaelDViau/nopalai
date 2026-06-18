@@ -6,7 +6,9 @@ import { esMX } from "@clerk/localizations";
 import { SITE } from "@/lib/constants";
 import { DICT, HTML_LANG } from "@/lib/i18n";
 import { getServerLang } from "@/lib/lang";
-import { Providers } from "@/components/providers";
+import { ThemeProvider } from "@/components/theme/theme-provider";
+import { LanguageProvider } from "@/components/i18n/language-provider";
+import { PostHogProvider } from "@/components/analytics/posthog-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import "./globals.css";
@@ -100,7 +102,16 @@ export default async function RootLayout({
         className={`${inter.variable} ${sora.variable}`}
       >
         <body className="min-h-dvh bg-background font-sans">
-          <Providers initialLang={lang}>{children}</Providers>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <LanguageProvider initialLang={lang}>
+              <PostHogProvider>{children}</PostHogProvider>
+            </LanguageProvider>
+          </ThemeProvider>
           <Toaster position="top-center" richColors />
           <GoogleAnalytics />
         </body>
