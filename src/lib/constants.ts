@@ -20,7 +20,7 @@ export const PLANS = {
     name: "Gratis",
     price: 0,
     dailyMessages: 20,
-    features: ["Agentes Plus y Pro disponibles", "Acceso al chat", "Historial de conversaciones", "Sin tarjeta de crédito"],
+    features: ["Límite de 20 mensajes al día", "Acceso al chat", "Historial de conversaciones", "Sin tarjeta de crédito"],
   },
   plus: {
     name: "Plus",

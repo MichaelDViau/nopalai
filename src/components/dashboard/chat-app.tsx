@@ -2,15 +2,14 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
-import { Menu, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { toast } from "sonner";
 
-import { cn, deriveChatTitle } from "@/lib/utils";
+import { deriveChatTitle } from "@/lib/utils";
 import { getMode, type ModeId } from "@/lib/modes";
 import { track, EVENTS } from "@/lib/analytics";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { Logo } from "@/components/brand/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Sidebar } from "@/components/dashboard/sidebar";
@@ -37,8 +36,6 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
   const [usage, setUsage] = useState<UsageState>(initialUsage);
   const [input, setInput] = useState("");
   const [loadingMessages, setLoadingMessages] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [sidebarPinned, setSidebarPinned] = useState(false);
   const [upgrade, setUpgrade] = useState<{
     open: boolean;
     reason: "limit" | "manual";
@@ -170,7 +167,6 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
 
   async function selectChat(id: string) {
     if (id === activeChatId || loadingMessages) return;
-    setSidebarOpen(false);
     setActiveChatId(id);
     activeChatIdRef.current = id;
     const chat = chats.find((c) => c.id === id);
@@ -202,7 +198,6 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
     setMessages([]);
     setInput("");
     setMode("general");
-    setSidebarOpen(false);
   }
 
   async function renameChat(id: string, title: string) {
@@ -244,21 +239,6 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
   const desktopSidebar = (
     <Sidebar
       chats={chats}
-      pinned={sidebarPinned}
-      onPinnedChange={setSidebarPinned}
-      activeChatId={activeChatId}
-      usage={usage}
-      onSelect={selectChat}
-      onNewChat={newChat}
-      onRename={renameChat}
-      onDelete={deleteChat}
-      onUpgrade={openUpgrade}
-    />
-  );
-  const mobileSidebar = (
-    <Sidebar
-      chats={chats}
-      pinned
       activeChatId={activeChatId}
       usage={usage}
       onSelect={selectChat}
@@ -271,39 +251,18 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
 
   return (
     <div className="flex h-dvh overflow-hidden">
-      {/* Desktop sidebar */}
       <aside
-        className={cn(
-          "hidden shrink-0 overflow-hidden border-r border-border bg-transparent transition-[width] duration-200 ease-out md:block",
-          sidebarPinned ? "w-[280px]" : "w-[72px]",
-        )}
+        className="w-[280px] shrink-0 overflow-hidden border-r border-border bg-transparent sm:w-[300px]"
         aria-label="Barra lateral de chats"
       >
         {desktopSidebar}
       </aside>
-
-      {/* Mobile sidebar */}
-      <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
-        <SheetContent side="left" className="w-[300px] p-0">
-          <SheetTitle className="sr-only">Menú de chats</SheetTitle>
-          {mobileSidebar}
-        </SheetContent>
-      </Sheet>
 
       {/* Main */}
       <main className="flex min-w-0 flex-1 flex-col">
         {/* Top bar */}
         <header className="flex h-14 items-center justify-between gap-2 border-b border-border px-3 md:px-5">
           <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="md:hidden"
-              onClick={() => setSidebarOpen(true)}
-              aria-label="Abrir menú"
-            >
-              <Menu className="h-5 w-5" />
-            </Button>
             <Badge variant="secondary" className="gap-1.5">
               <activeMode.icon className="h-3.5 w-3.5" />
               {activeMode.shortName}
