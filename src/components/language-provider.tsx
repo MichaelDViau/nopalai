@@ -8,14 +8,13 @@ type Dictionary = typeof dictionaries.es;
 
 const dictionaries = {
   es: {
-    nav: { signIn: "Entrar", chat: "Abrir chat", language: "English" },
+    nav: { signIn: "Iniciar Sesión", chat: "Abrir chat", language: "English" },
     hero: {
-      badge: "IA para LATAM",
       title: "La IA que entiende LATAM.",
       body: "Respuestas, traducciones, ayuda con tareas y contenido para redes. En español e inglés, al instante.",
       primary: "Comenzar gratis",
       secondary: "Ver demo",
-      note: "Gratis · Sin tarjeta · 20 mensajes al día",
+      availability: "Agentes de IA Plus y Pro también disponibles",
     },
     pricing: {
       title: "Simple y transparente",
@@ -24,7 +23,7 @@ const dictionaries = {
       ctaFree: "Comenzar gratis",
       ctaPlus: "Obtener Plus",
       ctaPro: "Obtener Pro",
-      freeDesc: "Para empezar a explorar la IA para LATAM.",
+      freeDesc: "Para empezar gratis con agentes Plus y Pro disponibles.",
       plusDesc: "Para quienes usan la IA todos los días.",
       proDesc: "Para usuarios avanzados y trabajo intensivo.",
       perMonth: "MXN / mes",
@@ -35,7 +34,7 @@ const dictionaries = {
       title: "Preguntas frecuentes",
       items: [
         ["¿Qué es NopalAI?", "Un asistente de inteligencia artificial creado para LATAM. Te ayuda con respuestas del día a día, traducciones, tareas escolares y contenido para redes sociales."],
-        ["¿Es gratis?", "Sí. El plan Gratis te da 20 mensajes al día, sin tarjeta de crédito. También puedes elegir Plus por 69 MXN al mes o Pro por 199 MXN al mes."],
+        ["¿Es gratis?", "Sí. Puedes empezar gratis sin tarjeta. También están disponibles agentes de IA Plus y Pro."],
         ["¿Puedo cancelar cuando quiera?", "Claro. Puedes cancelar tu suscripción en cualquier momento y seguirás teniendo acceso hasta el final del periodo pagado."],
       ],
     },
@@ -45,12 +44,11 @@ const dictionaries = {
   en: {
     nav: { signIn: "Sign in", chat: "Open chat", language: "Español" },
     hero: {
-      badge: "AI for LATAM",
       title: "AI that understands LATAM.",
       body: "Answers, translations, homework help, and social content. In English and Spanish, instantly.",
       primary: "Start free",
       secondary: "View demo",
-      note: "Free · No card · 20 messages per day",
+      availability: "Plus and Pro AI agents also available",
     },
     pricing: {
       title: "Simple and transparent",
@@ -59,7 +57,7 @@ const dictionaries = {
       ctaFree: "Start free",
       ctaPlus: "Get Plus",
       ctaPro: "Get Pro",
-      freeDesc: "For starting with AI for LATAM.",
+      freeDesc: "For starting free with Plus and Pro agents available.",
       plusDesc: "For people who use AI every day.",
       proDesc: "For advanced users and intensive work.",
       perMonth: "MXN / month",
@@ -70,7 +68,7 @@ const dictionaries = {
       title: "Frequently asked questions",
       items: [
         ["What is NopalAI?", "An artificial intelligence assistant created for LATAM. It helps with everyday answers, translations, schoolwork, and social media content."],
-        ["Is it free?", "Yes. The Free plan gives you 20 messages per day with no credit card. You can also choose Plus for 69 MXN/month or Pro for 199 MXN/month."],
+        ["Is it free?", "Yes. You can start free with no credit card. Plus and Pro AI agents are also available."],
         ["Can I cancel anytime?", "Yes. You can cancel your subscription at any time and keep access until the end of the paid period."],
       ],
     },

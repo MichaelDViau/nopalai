@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { Logo } from "@/components/brand/logo";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Sidebar } from "@/components/dashboard/sidebar";
 import { Composer } from "@/components/dashboard/composer";
 import { EmptyState } from "@/components/dashboard/empty-state";
@@ -295,17 +296,18 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
               {activeMode.shortName}
             </Badge>
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="gap-2 md:hidden"
-            onClick={newChat}
-          >
-            <Plus className="h-4 w-4" />
-            Nuevo
-          </Button>
-          <div className="hidden md:block">
-            <Logo showText={false} />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <Button
+              variant="ghost"
+              size="sm"
+              className="gap-2 md:hidden"
+              onClick={newChat}
+            >
+              <Plus className="h-4 w-4" />
+              <span className="hidden sm:inline">Nuevo</span>
+            </Button>
+            <Logo />
           </div>
         </header>
 

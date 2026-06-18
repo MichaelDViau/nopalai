@@ -7,7 +7,7 @@ const FAQS = [
   },
   {
     q: "¿Es gratis?",
-    a: "Sí. El plan Gratis incluye 20 mensajes al día. También hay planes Plus y Pro.",
+    a: "Sí. Puedes empezar gratis. También hay agentes de IA Plus y Pro disponibles.",
   },
   {
     q: "¿Puedo cancelar cuando quiera?",
