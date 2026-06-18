@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
 import {
+  Home,
+  MessageSquare,
   MoreHorizontal,
   Pencil,
   Pin,
@@ -28,7 +30,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Logo } from "@/components/brand/logo";
 import { UsageMeter } from "@/components/dashboard/usage-meter";
 import { AdPlaceholder } from "@/components/dashboard/ad-placeholder";
 import type { ChatSummary, UsageState } from "@/types/chat";
@@ -62,13 +63,25 @@ export function Sidebar({
   const [deleting, setDeleting] = useState<ChatSummary | null>(null);
   const [title, setTitle] = useState("");
 
+  const labelClass = cn(
+    "min-w-0 whitespace-nowrap transition-[opacity,width] duration-200 ease-out",
+    !pinned && "md:w-0 md:opacity-0 md:group-hover/sidebar:w-auto md:group-hover/sidebar:opacity-100 md:group-focus-within/sidebar:w-auto md:group-focus-within/sidebar:opacity-100",
+  );
+  const expandedOnlyClass = cn(
+    "transition-[opacity,max-height] duration-200 ease-out",
+    !pinned && "md:max-h-0 md:overflow-hidden md:opacity-0 md:group-hover/sidebar:max-h-[999px] md:group-hover/sidebar:opacity-100 md:group-focus-within/sidebar:max-h-[999px] md:group-focus-within/sidebar:opacity-100",
+  );
+
   return (
-    <div className="flex h-full w-[280px] flex-col bg-secondary/30 transition-all duration-300 ease-out">
+    <div className="flex h-full w-full flex-col bg-secondary/30 transition-all duration-300 ease-out">
       {/* Header */}
       <div className="flex items-center justify-between gap-2 p-3">
-        <Link href="/" aria-label="Inicio" className="min-w-0 overflow-hidden">
-          <Logo />
-        </Link>
+        <Button variant="ghost" asChild className="min-w-0 flex-1 justify-start gap-2 px-2">
+          <Link href="/" aria-label="Volver al sitio principal">
+            <Home className="h-4 w-4 shrink-0" />
+            <span className={labelClass}>Inicio</span>
+          </Link>
+        </Button>
         {onPinnedChange && (
           <Button
             variant="ghost"
@@ -83,16 +96,16 @@ export function Sidebar({
         )}
       </div>
       <div className="px-3 pb-2">
-        <Button onClick={onNewChat} className="w-full justify-start gap-2">
-          <Plus className="h-4 w-4" />
-          Nuevo chat
+        <Button onClick={onNewChat} className="h-10 w-full justify-start gap-2 rounded-xl">
+          <Plus className="h-4 w-4 shrink-0" />
+          <span className={labelClass}>Nuevo chat</span>
         </Button>
       </div>
 
       {/* Chat list */}
-      <div className="flex-1 overflow-y-auto px-2 py-2">
+      <div className={cn("flex-1 overflow-y-auto px-2 py-2", expandedOnlyClass)}>
         {chats.length === 0 ? (
-          <p className="px-3 py-8 text-center text-sm text-muted-foreground">
+          <p className={cn("px-3 py-8 text-center text-sm text-muted-foreground", !pinned && "md:hidden md:group-hover/sidebar:block md:group-focus-within/sidebar:block")}>
             Tus conversaciones aparecerán aquí.
           </p>
         ) : (
@@ -109,10 +122,11 @@ export function Sidebar({
                 >
                   <button
                     onClick={() => onSelect(chat.id)}
-                    className="flex-1 truncate px-3 py-2 text-left text-sm text-foreground"
+                    className="flex min-w-0 flex-1 items-center gap-2 px-3 py-2 text-left text-sm text-foreground"
                     title={chat.title}
                   >
-                    {chat.title || "Nuevo chat"}
+                    <MessageSquare className="h-4 w-4 shrink-0 text-muted-foreground" />
+                    <span className={cn("truncate", labelClass)}>{chat.title || "Nuevo chat"}</span>
                   </button>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -151,14 +165,18 @@ export function Sidebar({
 
       {/* Footer */}
       <div className="space-y-3 border-t border-border p-3">
-        <UsageMeter usage={usage} onUpgrade={onUpgrade} />
-        {usage.plan === "free" && <AdPlaceholder />}
+        <UsageMeter usage={usage} onUpgrade={onUpgrade} compact={!pinned} />
+        {usage.plan === "free" && (
+          <div className={expandedOnlyClass}>
+            <AdPlaceholder />
+          </div>
+        )}
         <div className="flex items-center gap-2 rounded-lg px-1 py-1">
           <UserButton
             appearance={{ elements: { avatarBox: "h-8 w-8" } }}
             afterSignOutUrl="/"
           />
-          <span className="text-sm font-medium text-muted-foreground">
+          <span className={cn("text-sm font-medium text-muted-foreground", labelClass)}>
             Mi cuenta
           </span>
         </div>

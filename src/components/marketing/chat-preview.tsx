@@ -48,19 +48,19 @@ export function ChatPreview() {
   const tab = TABS[active];
 
   return (
-    <div className="overflow-hidden rounded-xl border border-border bg-white">
+    <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-2xl shadow-primary/10 dark:border-white/10 dark:bg-gradient-to-br dark:from-card dark:via-secondary/35 dark:to-background dark:shadow-black/40">
       {/* window chrome */}
-      <div className="flex items-center gap-2 border-b border-border bg-secondary/60 px-4 py-3">
-        <span className="h-3 w-3 rounded-full bg-neutral-300" />
-        <span className="h-3 w-3 rounded-full bg-neutral-300" />
-        <span className="h-3 w-3 rounded-full bg-neutral-300" />
+      <div className="flex items-center gap-2 border-b border-border bg-secondary/60 px-4 py-3 dark:border-white/10 dark:bg-white/5">
+        <span className="h-3 w-3 rounded-full bg-red-300/80 dark:bg-red-400/80" />
+        <span className="h-3 w-3 rounded-full bg-amber-300/80 dark:bg-amber-400/80" />
+        <span className="h-3 w-3 rounded-full bg-emerald-300/80 dark:bg-emerald-400/80" />
         <div className="ml-3 hidden text-xs text-muted-foreground sm:block">
           nopalai.mx/dashboard
         </div>
       </div>
 
       {/* mode tabs */}
-      <div className="flex flex-wrap gap-2 border-b border-border px-4 py-3">
+      <div className="flex flex-wrap gap-2 border-b border-border bg-background/45 px-4 py-3 dark:border-white/10 dark:bg-black/10">
         {TABS.map((t, i) => (
           <button
             key={t.id}
@@ -68,8 +68,8 @@ export function ChatPreview() {
             className={cn(
               "inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
               i === active
-                ? "bg-primary/10 text-primary"
-                : "text-muted-foreground hover:bg-accent",
+                ? "bg-primary/10 text-primary ring-1 ring-primary/15 dark:bg-primary/20 dark:text-emerald-200 dark:ring-primary/30"
+                : "text-muted-foreground hover:bg-accent dark:hover:bg-white/10 dark:hover:text-foreground",
             )}
           >
             <t.icon className="h-3.5 w-3.5" />
@@ -81,7 +81,7 @@ export function ChatPreview() {
       {/* conversation */}
       <div className="space-y-5 p-5 sm:p-7">
         <div className="flex justify-end">
-          <div className="max-w-[80%] rounded-lg rounded-br-sm bg-secondary px-4 py-2.5 text-[15px] text-foreground">
+          <div className="max-w-[80%] rounded-2xl rounded-br-md bg-secondary px-4 py-2.5 text-[15px] text-foreground shadow-sm dark:bg-primary/20 dark:text-emerald-50 dark:ring-1 dark:ring-primary/25">
             {tab.q}
           </div>
         </div>
@@ -91,7 +91,7 @@ export function ChatPreview() {
           </div>
           <div
             key={tab.id}
-            className="max-w-[85%] animate-fade-in rounded-lg rounded-tl-sm bg-secondary/70 px-4 py-3 text-[15px] leading-7 text-foreground"
+            className="max-w-[85%] animate-fade-in rounded-2xl rounded-tl-md bg-secondary/70 px-4 py-3 text-[15px] leading-7 text-foreground shadow-sm dark:bg-white/[0.07] dark:text-foreground dark:ring-1 dark:ring-white/10"
           >
             {tab.a}
           </div>

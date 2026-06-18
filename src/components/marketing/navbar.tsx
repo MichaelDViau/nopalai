@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { SignedOut } from "@clerk/nextjs";
 import { Languages, MessageSquare } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -45,12 +44,10 @@ export function Navbar() {
             <span className="hidden sm:inline">{t.nav.language}</span>
           </Button>
           <ThemeToggle />
-          <SignedOut>
-            <Button variant="ghost" size="sm" asChild className="hidden sm:inline-flex">
-              <Link href="/sign-in">{t.nav.signIn}</Link>
-            </Button>
-          </SignedOut>
-          <Button asChild className="gap-1.5">
+          <Button size="sm" asChild className="gap-1.5">
+            <Link href="/sign-in">{t.nav.signIn}</Link>
+          </Button>
+          <Button size="sm" asChild className="gap-1.5">
             <Link href="/dashboard">
               <MessageSquare className="h-4 w-4" />
               {t.nav.chat}
