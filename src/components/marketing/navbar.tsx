@@ -3,19 +3,17 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { SignedOut } from "@clerk/nextjs";
-import { MessageSquare } from "lucide-react";
+import { Languages, MessageSquare } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/brand/logo";
-
-const NAV_LINKS = [
-  { href: "/#assistants", label: "Asistentes" },
-  { href: "/pricing", label: "Precios" },
-];
+import { ThemeToggle } from "@/components/theme-toggle";
+import { useLanguage } from "@/components/language-provider";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const { lang, setLang, t } = useLanguage();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -36,34 +34,26 @@ export function Navbar() {
           <Logo />
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-
-        {/* Right side — direct access to the AI chat */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="gap-1.5"
+            onClick={() => setLang(lang === "es" ? "en" : "es")}
+          >
+            <Languages className="h-4 w-4" />
+            <span className="hidden sm:inline">{t.nav.language}</span>
+          </Button>
+          <ThemeToggle />
           <SignedOut>
-            <Button
-              variant="ghost"
-              size="sm"
-              asChild
-              className="hidden sm:inline-flex"
-            >
-              <Link href="/sign-in">Entrar</Link>
+            <Button variant="ghost" size="sm" asChild className="hidden sm:inline-flex">
+              <Link href="/sign-in">{t.nav.signIn}</Link>
             </Button>
           </SignedOut>
           <Button asChild className="gap-1.5">
             <Link href="/dashboard">
               <MessageSquare className="h-4 w-4" />
-              Abrir chat
+              {t.nav.chat}
             </Link>
           </Button>
         </div>

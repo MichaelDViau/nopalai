@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 /**
  * Minimal, abstract nopal mark — two rounded paddles forming an "N".
- * Premium and geometric rather than literal/decorative.
+ * Pro and geometric rather than literal/decorative.
  */
 export function LogoMark({ className }: { className?: string }) {
   return (

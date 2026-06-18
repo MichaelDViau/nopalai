@@ -22,7 +22,7 @@ export function AdPlaceholder({ className }: { className?: string }) {
       </p>
       <div className="mt-2 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
         <Sparkles className="h-3.5 w-3.5 text-primary" />
-        Quita los anuncios con Premium
+        Quita los anuncios con Pro
       </div>
     </div>
   );

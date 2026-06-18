@@ -33,17 +33,17 @@ export function UpgradeDialog({
           <DialogTitle className="text-xl">
             {reason === "limit"
               ? "Llegaste a tu límite de hoy"
-              : "Desbloquea NopalAI Premium"}
+              : "Desbloquea NopalAI Pro"}
           </DialogTitle>
           <DialogDescription>
             {reason === "limit"
-              ? "Usaste tus 20 mensajes gratuitos de hoy. Mejora a Premium y sigue sin interrupciones."
-              : "Lleva tu productividad al siguiente nivel por solo 99 MXN al mes."}
+              ? "Usaste tus 20 mensajes gratuitos de hoy. Mejora a Pro y sigue sin interrupciones."
+              : "Lleva tu productividad al siguiente nivel por solo 199 MXN al mes."}
           </DialogDescription>
         </DialogHeader>
 
         <ul className="space-y-2.5 py-2">
-          {PLANS.premium.features.map((f) => (
+          {PLANS.pro.features.map((f) => (
             <li key={f} className="flex items-start gap-3 text-sm">
               <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
               <span>{f}</span>
@@ -52,14 +52,14 @@ export function UpgradeDialog({
         </ul>
 
         <div className="flex items-baseline gap-1">
-          <span className="text-3xl font-bold">$99</span>
+          <span className="text-3xl font-bold">$199</span>
           <span className="text-sm text-muted-foreground">MXN / mes</span>
         </div>
 
         <UpgradeButton
           size="lg"
           className="w-full"
-          label="Mejorar a Premium"
+          label="Mejorar a Pro"
           source={reason === "limit" ? "limit_dialog" : "dashboard"}
         />
         <p className="text-center text-xs text-muted-foreground">

@@ -5,7 +5,7 @@ import { useChat } from "@ai-sdk/react";
 import { Menu, Plus } from "lucide-react";
 import { toast } from "sonner";
 
-import { deriveChatTitle } from "@/lib/utils";
+import { cn, deriveChatTitle } from "@/lib/utils";
 import { getMode, type ModeId } from "@/lib/modes";
 import { track, EVENTS } from "@/lib/analytics";
 import { Button } from "@/components/ui/button";
@@ -37,6 +37,7 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
   const [input, setInput] = useState("");
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarPinned, setSidebarPinned] = useState(false);
   const [upgrade, setUpgrade] = useState<{
     open: boolean;
     reason: "limit" | "manual";
@@ -105,7 +106,7 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
     const params = new URLSearchParams(window.location.search);
     if (params.get("upgraded") === "1") {
       track(EVENTS.PREMIUM_UPGRADED);
-      toast.success("¡Bienvenido a Premium! 🎉 Disfruta sin límites.");
+      toast.success("¡Bienvenido a Pro! 🎉 Disfruta sin límites.");
       refreshUsage();
       window.history.replaceState({}, "", "/dashboard");
     }
@@ -242,6 +243,8 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
   const sidebar = (
     <Sidebar
       chats={chats}
+      pinned={sidebarPinned}
+      onPinnedChange={setSidebarPinned}
       activeChatId={activeChatId}
       usage={usage}
       onSelect={selectChat}
@@ -255,7 +258,13 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
   return (
     <div className="flex h-dvh overflow-hidden">
       {/* Desktop sidebar */}
-      <aside className="hidden w-[280px] shrink-0 border-r border-border md:block">
+      <aside
+        className={cn(
+          "group/sidebar hidden shrink-0 overflow-hidden border-r border-border bg-secondary/30 transition-[width] duration-300 ease-out md:block",
+          sidebarPinned ? "w-[280px]" : "w-[72px] hover:w-[280px] focus-within:w-[280px]",
+        )}
+        aria-label="Barra lateral de chats"
+      >
         {sidebar}
       </aside>
 

@@ -3,7 +3,7 @@ import type { PlanId } from "@/lib/constants";
 
 /**
  * OpenRouter client. We route Free users to a fast, low-cost model and
- * Premium users to a stronger model. All three requested model families
+ * Pro users to a stronger model. All three requested model families
  * (DeepSeek, Qwen, Llama) are available via OpenRouter and can be swapped
  * with env vars without a redeploy.
  */

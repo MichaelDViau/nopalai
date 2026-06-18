@@ -17,7 +17,7 @@ export function UsageMeter({ usage, onUpgrade }: UsageMeterProps) {
       <div className="rounded-xl border border-primary/20 bg-primary/5 p-3">
         <div className="flex items-center gap-2 text-sm font-medium text-primary">
           <Zap className="h-4 w-4 fill-primary" />
-          Premium activo
+          Pro activo
         </div>
         <p className="mt-1 text-xs text-muted-foreground">
           Mensajes ilimitados y respuestas más rápidas.
@@ -52,7 +52,7 @@ export function UsageMeter({ usage, onUpgrade }: UsageMeterProps) {
         onClick={onUpgrade}
       >
         <Zap className="h-3.5 w-3.5" />
-        Mejorar a Premium
+        Mejorar a Pro
       </Button>
     </div>
   );

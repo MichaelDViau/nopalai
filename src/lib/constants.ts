@@ -1,54 +1,43 @@
 export const SITE = {
   name: "NopalAI",
-  tagline: "La IA que entiende México.",
+  tagline: "La IA que entiende LATAM.",
   description:
-    "NopalAI es el asistente de inteligencia artificial creado para México. Entiende el español mexicano y te ayuda con respuestas, traducciones, tareas escolares y contenido para redes sociales y marketing.",
-  url: process.env.NEXT_PUBLIC_APP_URL || "https://nopalai.mx",
+    "NopalAI es el asistente de inteligencia artificial creado para LATAM. Te ayuda con respuestas, traducciones, tareas escolares y contenido para redes sociales y marketing.",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://nopalai.com",
   locale: "es_MX",
   twitter: "@nopalai",
   keywords: [
-    "IA México",
-    "inteligencia artificial México",
-    "ChatGPT México",
-    "AI para negocios México",
+    "IA LATAM",
+    "inteligencia artificial LATAM",
+    "ChatGPT LATAM",
+    "AI para LATAM",
     "asistente IA español",
-    "inteligencia artificial en español",
     "NopalAI",
   ],
 } as const;
 
 export const PLANS = {
   free: {
-    id: "free",
     name: "Gratis",
-    priceMXN: 0,
-    dailyMessageLimit: 20,
-    features: [
-      "20 mensajes por día",
-      "Los 4 asistentes especializados",
-      "Historial de conversaciones",
-      "Modelo DeepSeek",
-    ],
-    limitations: ["Con anuncios", "Velocidad estándar"],
+    price: 0,
+    dailyMessages: 20,
+    features: ["20 mensajes al día", "Acceso al chat", "Historial de conversaciones", "Sin tarjeta de crédito"],
   },
-  premium: {
-    id: "premium",
-    name: "Premium",
-    priceMXN: 99,
-    dailyMessageLimit: 1000,
-    features: [
-      "Mensajes ilimitados*",
-      "Sin anuncios",
-      "Respuestas más rápidas",
-      "Modelos premium (Qwen 72B)",
-      "Acceso prioritario",
-      "Soporte preferente",
-    ],
-    limitations: [],
+  plus: {
+    name: "Plus",
+    price: 69,
+    dailyMessages: 500,
+    features: ["500 mensajes al día", "Sin anuncios", "Respuestas más rápidas", "Historial de conversaciones"],
+  },
+  pro: {
+    name: "Pro",
+    price: 199,
+    dailyMessages: 1000,
+    features: ["Uso ampliado", "Modelos premium", "Acceso prioritario", "Soporte preferente"],
   },
 } as const;
 
-export type PlanId = keyof typeof PLANS;
 
-export const FREE_DAILY_LIMIT = PLANS.free.dailyMessageLimit;
-export const PREMIUM_DAILY_LIMIT = PLANS.premium.dailyMessageLimit;
+export type PlanId = "free" | "premium";
+export const FREE_DAILY_LIMIT = PLANS.free.dailyMessages;
+export const PREMIUM_DAILY_LIMIT = PLANS.pro.dailyMessages;

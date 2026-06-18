@@ -6,6 +6,8 @@ import { UserButton } from "@clerk/nextjs";
 import {
   MoreHorizontal,
   Pencil,
+  Pin,
+  PinOff,
   Plus,
   Trash2,
 } from "lucide-react";
@@ -33,6 +35,8 @@ import type { ChatSummary, UsageState } from "@/types/chat";
 
 interface SidebarProps {
   chats: ChatSummary[];
+  pinned?: boolean;
+  onPinnedChange?: (pinned: boolean) => void;
   activeChatId: string | null;
   usage: UsageState;
   onSelect: (id: string) => void;
@@ -44,6 +48,8 @@ interface SidebarProps {
 
 export function Sidebar({
   chats,
+  pinned = false,
+  onPinnedChange,
   activeChatId,
   usage,
   onSelect,
@@ -57,12 +63,24 @@ export function Sidebar({
   const [title, setTitle] = useState("");
 
   return (
-    <div className="flex h-full flex-col bg-secondary/30">
+    <div className="flex h-full w-[280px] flex-col bg-secondary/30 transition-all duration-300 ease-out">
       {/* Header */}
-      <div className="flex items-center justify-between p-3">
-        <Link href="/" aria-label="Inicio">
+      <div className="flex items-center justify-between gap-2 p-3">
+        <Link href="/" aria-label="Inicio" className="min-w-0 overflow-hidden">
           <Logo />
         </Link>
+        {onPinnedChange && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="shrink-0"
+            aria-label={pinned ? "Contraer barra lateral" : "Fijar barra lateral"}
+            title={pinned ? "Contraer barra lateral" : "Fijar barra lateral"}
+            onClick={() => onPinnedChange(!pinned)}
+          >
+            {pinned ? <PinOff className="h-4 w-4" /> : <Pin className="h-4 w-4" />}
+          </Button>
+        )}
       </div>
       <div className="px-3 pb-2">
         <Button onClick={onNewChat} className="w-full justify-start gap-2">
