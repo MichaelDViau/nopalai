@@ -18,7 +18,6 @@ import {
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Logo, LogoMark } from "@/components/brand/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import {
   DropdownMenu,
@@ -139,7 +138,7 @@ export function Sidebar({
   return (
     <TooltipProvider delayDuration={120}>
       <div className="flex h-full w-full flex-col">
-        {/* Header — brand + collapse/pin control */}
+        {/* Header — compact navigation icons + collapse/pin control */}
         <div
           className={cn(
             "flex h-14 items-center px-3",
@@ -147,16 +146,30 @@ export function Sidebar({
           )}
         >
           {!collapsed && (
-            <Link
-              href="/"
-              aria-label="NopalAI inicio"
-              className="min-w-0 rounded-lg px-1 transition-opacity hover:opacity-80"
-            >
-              <Logo />
-            </Link>
+            <div className="flex items-center gap-1">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-9 w-9 text-muted-foreground"
+                    asChild
+                  >
+                    <Link href="/" aria-label="Inicio">
+                      <Home className="h-[18px] w-[18px]" />
+                    </Link>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">Inicio</TooltipContent>
+              </Tooltip>
+              <ThemeToggle
+                variant="icon"
+                className="h-9 w-9 text-muted-foreground"
+              />
+            </div>
           )}
-          {onTogglePin ? (
-            collapsed ? (
+          {onTogglePin &&
+            (collapsed ? (
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
@@ -181,10 +194,7 @@ export function Sidebar({
               >
                 <ToggleIcon className="h-[18px] w-[18px]" />
               </Button>
-            )
-          ) : (
-            collapsed && <LogoMark className="h-8 w-8" />
-          )}
+            ))}
         </div>
 
         {/* Primary actions */}
@@ -218,8 +228,13 @@ export function Sidebar({
             </Button>
           )}
 
-          <NavRow icon={Home} label="Inicio" collapsed={collapsed} href="/" />
-          <ThemeToggle variant="nav" collapsed={collapsed} />
+          {/* In the collapsed rail, Home + theme live here as icons. */}
+          {collapsed && (
+            <>
+              <NavRow icon={Home} label="Inicio" collapsed href="/" />
+              <ThemeToggle variant="nav" collapsed />
+            </>
+          )}
         </div>
 
         {/* Chat list — hidden in the collapsed rail */}

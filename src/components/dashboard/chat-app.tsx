@@ -9,7 +9,7 @@ import { cn, deriveChatTitle } from "@/lib/utils";
 import { getMode, type ModeId } from "@/lib/modes";
 import { track, EVENTS } from "@/lib/analytics";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Logo } from "@/components/brand/logo";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { Sidebar } from "@/components/dashboard/sidebar";
@@ -384,10 +384,7 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
             >
               <Menu className="h-5 w-5" />
             </Button>
-            <Badge variant="secondary" className="gap-1.5 px-2.5 py-1">
-              <activeMode.icon className="h-3.5 w-3.5" />
-              {activeMode.shortName}
-            </Badge>
+            <Logo />
           </div>
           <div className="ml-auto flex items-center gap-1">
             <Button
