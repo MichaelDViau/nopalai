@@ -33,9 +33,9 @@ const dictionaries = {
     faq: {
       title: "Preguntas frecuentes",
       items: [
-        ["¿Qué es NopalAI?", "Un asistente de inteligencia artificial creado para LATAM. Te ayuda con respuestas del día a día, traducciones, tareas escolares y contenido para redes sociales."],
-        ["¿Es gratis?", "Sí. Puedes empezar gratis sin tarjeta. También están disponibles agentes de IA Plus y Pro."],
-        ["¿Puedo cancelar cuando quiera?", "Claro. Puedes cancelar tu suscripción en cualquier momento y seguirás teniendo acceso hasta el final del periodo pagado."],
+        ["¿Qué es NopalAI?", "La inteligencia artificial para Latinoamérica.\n\nAccede a respuestas de alta calidad, traducciones, apoyo académico, generación de contenido y asistencia profesional en segundos.\n\nToda la potencia de los mejores modelos de IA del mundo, adaptada a las necesidades de LATAM y disponible a un precio accesible para todos."],
+        ["¿Es gratis?", "Empieza gratis, sin tarjeta de crédito.\n\nCuando necesites más potencia, desbloquea Plus o Pro y accede a agentes de IA avanzados diseñados para tareas más exigentes, generación de contenido, productividad y trabajo profesional.\n\nTecnología de primer nivel, con precios accesibles para Latinoamérica."],
+        ["¿Puedo cancelar cuando quiera?", "Sí. Tienes total libertad para cancelar tu suscripción cuando lo desees.\n\nTu acceso permanecerá activo hasta el final del periodo de facturación ya pagado, sin penalizaciones ni cargos ocultos."],
       ],
     },
     cta: { title: "Prueba la IA que entiende LATAM", body: "Gratis para siempre. Sin tarjeta. Empieza en segundos.", prices: "Ver planes" },
