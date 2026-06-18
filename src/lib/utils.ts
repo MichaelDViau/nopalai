@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-/** Format a date for the chat history sidebar (es-MX). */
+/** Format a date for the chat history sidebar (Latin American Spanish). */
 export function formatRelativeDate(input: string | Date): string {
   const date = typeof input === "string" ? new Date(input) : input;
   const now = new Date();
@@ -16,7 +16,7 @@ export function formatRelativeDate(input: string | Date): string {
   if (diffDays === 1) return "Ayer";
   if (diffDays < 7) return `Hace ${diffDays} días`;
 
-  return date.toLocaleDateString("es-MX", {
+  return date.toLocaleDateString("es-419", {
     day: "numeric",
     month: "short",
   });

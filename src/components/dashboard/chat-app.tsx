@@ -5,9 +5,10 @@ import { useChat } from "@ai-sdk/react";
 import { Menu, Plus } from "lucide-react";
 import { toast } from "sonner";
 
-import { deriveChatTitle } from "@/lib/utils";
+import { cn, deriveChatTitle } from "@/lib/utils";
 import { getMode, type ModeId } from "@/lib/modes";
 import { track, EVENTS } from "@/lib/analytics";
+import { useLanguage } from "@/components/i18n/language-provider";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
@@ -30,6 +31,7 @@ interface ChatAppProps {
 }
 
 export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
+  const { t } = useLanguage();
   const [chats, setChats] = useState<ChatSummary[]>(initialChats);
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
   const [mode, setMode] = useState<ModeId>("general");
@@ -37,10 +39,27 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
   const [input, setInput] = useState("");
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [pinned, setPinned] = useState(false);
+  const [hovered, setHovered] = useState(false);
   const [upgrade, setUpgrade] = useState<{
     open: boolean;
     reason: "limit" | "manual";
   }>({ open: false, reason: "manual" });
+
+  const sidebarExpanded = pinned || hovered;
+
+  // Restore the pin preference set on a previous visit.
+  useEffect(() => {
+    setPinned(localStorage.getItem("sidebarPinned") === "1");
+  }, []);
+
+  const togglePin = useCallback(() => {
+    setPinned((prev) => {
+      const next = !prev;
+      localStorage.setItem("sidebarPinned", next ? "1" : "0");
+      return next;
+    });
+  }, []);
 
   const activeChatIdRef = useRef<string | null>(null);
   activeChatIdRef.current = activeChatId;
@@ -84,7 +103,7 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
         setUpgrade({ open: true, reason: "limit" });
         refreshUsage();
       } else {
-        toast.error("No se pudo generar la respuesta. Intenta de nuevo.");
+        toast.error(t.dashboard.toasts.genError);
       }
     },
   });
@@ -105,10 +124,11 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
     const params = new URLSearchParams(window.location.search);
     if (params.get("upgraded") === "1") {
       track(EVENTS.PREMIUM_UPGRADED);
-      toast.success("¡Bienvenido a Premium! 🎉 Disfruta sin límites.");
+      toast.success(t.dashboard.toasts.welcome);
       refreshUsage();
       window.history.replaceState({}, "", "/dashboard");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshUsage]);
 
   async function ensureChat(text: string): Promise<string | null> {
@@ -134,7 +154,7 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
       track(EVENTS.CHAT_STARTED, { mode });
       return chat.id;
     } catch {
-      toast.error("No se pudo crear el chat.");
+      toast.error(t.dashboard.toasts.createChatError);
       return null;
     }
   }
@@ -187,7 +207,7 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
         );
       }
     } catch {
-      toast.error("No se pudo abrir el chat.");
+      toast.error(t.dashboard.toasts.openChatError);
     } finally {
       setLoadingMessages(false);
     }
@@ -212,7 +232,7 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
         body: JSON.stringify({ title }),
       });
     } catch {
-      toast.error("No se pudo renombrar.");
+      toast.error(t.dashboard.toasts.renameError);
     }
   }
 
@@ -222,7 +242,7 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
     try {
       await fetch(`/api/chats/${id}`, { method: "DELETE" });
     } catch {
-      toast.error("No se pudo eliminar.");
+      toast.error(t.dashboard.toasts.deleteError);
     }
   }
 
@@ -239,31 +259,57 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
   const activeMode = useMemo(() => getMode(mode), [mode]);
   const hasMessages = messages.length > 0;
 
-  const sidebar = (
-    <Sidebar
-      chats={chats}
-      activeChatId={activeChatId}
-      usage={usage}
-      onSelect={selectChat}
-      onNewChat={newChat}
-      onRename={renameChat}
-      onDelete={deleteChat}
-      onUpgrade={openUpgrade}
-    />
-  );
+  const sidebarProps = {
+    chats,
+    activeChatId,
+    usage,
+    onSelect: selectChat,
+    onNewChat: newChat,
+    onRename: renameChat,
+    onDelete: deleteChat,
+    onUpgrade: openUpgrade,
+  };
 
   return (
     <div className="flex h-dvh overflow-hidden">
-      {/* Desktop sidebar */}
-      <aside className="hidden w-[280px] shrink-0 border-r border-border md:block">
-        {sidebar}
+      {/* Desktop sidebar — collapses to a compact rail, expands on hover,
+          and can be pinned permanently open. */}
+      <aside
+        className={cn(
+          "relative hidden shrink-0 transition-[width] duration-300 ease-in-out md:block",
+          pinned ? "w-[280px]" : "w-[68px]",
+        )}
+      >
+        <div
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          onFocusCapture={() => setHovered(true)}
+          onBlurCapture={(e) => {
+            if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+              setHovered(false);
+            }
+          }}
+          className={cn(
+            "absolute inset-y-0 left-0 z-40 overflow-hidden border-r border-border bg-background transition-[width] duration-300 ease-in-out",
+            sidebarExpanded ? "w-[280px]" : "w-[68px]",
+            !pinned && sidebarExpanded && "shadow-2xl",
+          )}
+        >
+          <Sidebar
+            {...sidebarProps}
+            expanded={sidebarExpanded}
+            pinned={pinned}
+            onTogglePin={togglePin}
+            showPin
+          />
+        </div>
       </aside>
 
       {/* Mobile sidebar */}
       <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
-        <SheetContent side="left" className="w-[300px] p-0">
-          <SheetTitle className="sr-only">Menú de chats</SheetTitle>
-          {sidebar}
+        <SheetContent side="left" className="w-[280px] p-0">
+          <SheetTitle className="sr-only">{t.dashboard.chatsMenu}</SheetTitle>
+          <Sidebar {...sidebarProps} expanded />
         </SheetContent>
       </Sheet>
 
@@ -277,13 +323,13 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
               size="icon"
               className="md:hidden"
               onClick={() => setSidebarOpen(true)}
-              aria-label="Abrir menú"
+              aria-label={t.dashboard.openMenu}
             >
               <Menu className="h-5 w-5" />
             </Button>
             <Badge variant="secondary" className="gap-1.5">
               <activeMode.icon className="h-3.5 w-3.5" />
-              {activeMode.shortName}
+              {t.modes[activeMode.id].short}
             </Badge>
           </div>
           <Button
@@ -293,7 +339,7 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
             onClick={newChat}
           >
             <Plus className="h-4 w-4" />
-            Nuevo
+            {t.dashboard.new}
           </Button>
           <div className="hidden md:block">
             <Logo showText={false} />
@@ -333,7 +379,9 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
             onStop={stop}
             isLoading={isStreaming}
             disabled={loadingMessages}
-            placeholder={`Pregúntale a ${activeMode.shortName}…`}
+            placeholder={t.dashboard.composer.placeholder(
+              t.modes[activeMode.id].short,
+            )}
           />
         </div>
       </main>

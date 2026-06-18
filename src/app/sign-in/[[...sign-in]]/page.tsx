@@ -2,13 +2,19 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SignIn } from "@clerk/nextjs";
 
+import { DICT } from "@/lib/i18n";
+import { getServerLang } from "@/lib/lang";
 import { Logo } from "@/components/brand/logo";
+import { AuthSwitch } from "@/components/auth/auth-switch";
 
-export const metadata: Metadata = {
-  title: "Iniciar sesión",
-  description: "Inicia sesión en NopalAI, la IA que entiende México.",
-  robots: { index: false, follow: true },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = DICT[await getServerLang()];
+  return {
+    title: t.meta.signInTitle,
+    description: t.meta.signInDescription,
+    robots: { index: false, follow: true },
+  };
+}
 
 export default function SignInPage() {
   return (
@@ -24,12 +30,7 @@ export default function SignInPage() {
           },
         }}
       />
-      <p className="mt-8 text-sm text-muted-foreground">
-        ¿No tienes cuenta?{" "}
-        <Link href="/sign-up" className="font-medium text-primary hover:underline">
-          Comienza gratis
-        </Link>
-      </p>
+      <AuthSwitch variant="sign-in" />
     </main>
   );
 }

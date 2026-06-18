@@ -1,16 +1,16 @@
 export const SITE = {
   name: "NopalAI",
-  tagline: "La IA que entiende México.",
+  tagline: "La IA que entiende LATAM.",
   description:
-    "NopalAI es el asistente de inteligencia artificial creado para México. Entiende el español mexicano y te ayuda con respuestas, traducciones, tareas escolares y contenido para redes sociales y marketing.",
+    "NopalAI es el asistente de inteligencia artificial creado para LATAM. Entiende el español de la región y te ayuda con respuestas, traducciones, tareas escolares y contenido para redes sociales y marketing.",
   url: process.env.NEXT_PUBLIC_APP_URL || "https://nopalai.mx",
-  locale: "es_MX",
+  locale: "es_419",
   twitter: "@nopalai",
   keywords: [
-    "IA México",
-    "inteligencia artificial México",
-    "ChatGPT México",
-    "AI para negocios México",
+    "IA LATAM",
+    "inteligencia artificial LATAM",
+    "AI para LATAM",
+    "AI para negocios LATAM",
     "asistente IA español",
     "inteligencia artificial en español",
     "NopalAI",

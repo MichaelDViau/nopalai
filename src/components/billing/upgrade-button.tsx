@@ -8,6 +8,7 @@ import { toast } from "sonner";
 
 import { Button, type ButtonProps } from "@/components/ui/button";
 import { track, EVENTS } from "@/lib/analytics";
+import { useLanguage } from "@/components/i18n/language-provider";
 
 interface UpgradeButtonProps extends ButtonProps {
   label?: string;
@@ -15,12 +16,13 @@ interface UpgradeButtonProps extends ButtonProps {
 }
 
 export function UpgradeButton({
-  label = "Obtener Premium",
+  label,
   source = "pricing",
   ...props
 }: UpgradeButtonProps) {
   const { isSignedIn } = useAuth();
   const router = useRouter();
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
 
   async function handleUpgrade() {
@@ -37,13 +39,13 @@ export function UpgradeButton({
       const res = await fetch("/api/stripe/checkout", { method: "POST" });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || "No se pudo iniciar el pago");
+        throw new Error(data.error || t.dashboard.toasts.genError);
       }
       const { url } = await res.json();
       if (url) window.location.href = url;
     } catch (err) {
       toast.error(
-        err instanceof Error ? err.message : "Algo salió mal. Intenta de nuevo.",
+        err instanceof Error ? err.message : t.dashboard.toasts.genError,
       );
       setLoading(false);
     }
@@ -52,7 +54,7 @@ export function UpgradeButton({
   return (
     <Button onClick={handleUpgrade} disabled={loading} {...props}>
       {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-      {label}
+      {label ?? t.dashboard.upgrade.cta}
     </Button>
   );
 }

@@ -72,7 +72,7 @@ export async function POST(req: Request) {
         message:
           plan === "premium"
             ? "Alcanzaste el límite diario de uso justo."
-            : "Alcanzaste tu límite gratuito de 20 mensajes hoy. Mejora a Premium para continuar.",
+            : "Alcanzaste tu límite gratuito de hoy. Mejora tu plan para continuar.",
         limit,
       },
       { status: 429 },

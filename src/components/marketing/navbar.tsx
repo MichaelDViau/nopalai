@@ -8,13 +8,12 @@ import { MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/brand/logo";
-
-const NAV_LINKS = [
-  { href: "/#assistants", label: "Asistentes" },
-  { href: "/pricing", label: "Precios" },
-];
+import { useLanguage } from "@/components/i18n/language-provider";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
+import { LanguageToggle } from "@/components/i18n/language-toggle";
 
 export function Navbar() {
+  const { t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -32,24 +31,14 @@ export function Navbar() {
       )}
     >
       <div className="container flex h-16 items-center justify-between gap-3">
-        <Link href="/" aria-label="NopalAI inicio">
+        <Link href="/" aria-label={`NopalAI ${t.nav.home}`}>
           <Logo />
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-
-        {/* Right side — direct access to the AI chat */}
-        <div className="flex items-center gap-2">
+        {/* Right side — controls + direct access to the AI chat */}
+        <div className="flex items-center gap-1 sm:gap-2">
+          <LanguageToggle />
+          <ThemeToggle />
           <SignedOut>
             <Button
               variant="ghost"
@@ -57,13 +46,13 @@ export function Navbar() {
               asChild
               className="hidden sm:inline-flex"
             >
-              <Link href="/sign-in">Entrar</Link>
+              <Link href="/sign-in">{t.nav.signIn}</Link>
             </Button>
           </SignedOut>
           <Button asChild className="gap-1.5">
             <Link href="/dashboard">
               <MessageSquare className="h-4 w-4" />
-              Abrir chat
+              {t.nav.openChat}
             </Link>
           </Button>
         </div>

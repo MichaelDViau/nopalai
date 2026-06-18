@@ -1,16 +1,17 @@
 import { SITE } from "@/lib/constants";
-import { FAQS } from "@/components/marketing/faq";
+import { DICT } from "@/lib/i18n";
 
 /** JSON-LD structured data for rich results (Organization, Product, FAQ). */
 export function StructuredData() {
+  const t = DICT.es;
   const data = [
     {
       "@context": "https://schema.org",
       "@type": "Organization",
       name: SITE.name,
       url: SITE.url,
-      slogan: SITE.tagline,
-      description: SITE.description,
+      slogan: t.tagline,
+      description: t.meta.description,
       logo: `${SITE.url}/icon.svg`,
       sameAs: ["https://twitter.com/nopalai"],
     },
@@ -20,22 +21,14 @@ export function StructuredData() {
       name: SITE.name,
       applicationCategory: "BusinessApplication",
       operatingSystem: "Web",
-      description: SITE.description,
-      inLanguage: "es-MX",
-      offers: [
-        {
-          "@type": "Offer",
-          name: "Gratis",
-          price: "0",
-          priceCurrency: "MXN",
-        },
-        {
-          "@type": "Offer",
-          name: "Premium",
-          price: "99",
-          priceCurrency: "MXN",
-        },
-      ],
+      description: t.meta.description,
+      inLanguage: "es",
+      offers: t.pricing.plans.map((plan) => ({
+        "@type": "Offer",
+        name: plan.name,
+        price: plan.price.replace(/[^0-9]/g, ""),
+        priceCurrency: "MXN",
+      })),
       aggregateRating: {
         "@type": "AggregateRating",
         ratingValue: "4.9",
@@ -45,7 +38,7 @@ export function StructuredData() {
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      mainEntity: FAQS.map((faq) => ({
+      mainEntity: t.faq.items.map((faq) => ({
         "@type": "Question",
         name: faq.q,
         acceptedAnswer: { "@type": "Answer", text: faq.a },

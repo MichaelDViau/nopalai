@@ -2,14 +2,19 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SignUp } from "@clerk/nextjs";
 
+import { DICT } from "@/lib/i18n";
+import { getServerLang } from "@/lib/lang";
 import { Logo } from "@/components/brand/logo";
+import { AuthSwitch } from "@/components/auth/auth-switch";
 
-export const metadata: Metadata = {
-  title: "Crear cuenta gratis",
-  description:
-    "Crea tu cuenta gratis en NopalAI y empieza a usar la IA que entiende México.",
-  robots: { index: false, follow: true },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = DICT[await getServerLang()];
+  return {
+    title: t.meta.signUpTitle,
+    description: t.meta.signUpDescription,
+    robots: { index: false, follow: true },
+  };
+}
 
 export default function SignUpPage() {
   return (
@@ -25,12 +30,7 @@ export default function SignUpPage() {
           },
         }}
       />
-      <p className="mt-8 text-sm text-muted-foreground">
-        ¿Ya tienes cuenta?{" "}
-        <Link href="/sign-in" className="font-medium text-primary hover:underline">
-          Inicia sesión
-        </Link>
-      </p>
+      <AuthSwitch variant="sign-up" />
     </main>
   );
 }

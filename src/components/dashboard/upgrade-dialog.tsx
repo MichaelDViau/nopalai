@@ -2,7 +2,6 @@
 
 import { Check, Zap } from "lucide-react";
 
-import { PLANS } from "@/lib/constants";
 import {
   Dialog,
   DialogContent,
@@ -11,6 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { UpgradeButton } from "@/components/billing/upgrade-button";
+import { useLanguage } from "@/components/i18n/language-provider";
 
 interface UpgradeDialogProps {
   open: boolean;
@@ -23,6 +23,10 @@ export function UpgradeDialog({
   onOpenChange,
   reason = "manual",
 }: UpgradeDialogProps) {
+  const { t } = useLanguage();
+  const plan =
+    t.pricing.plans.find((p) => p.id === "pro") ?? t.pricing.plans[0];
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
@@ -32,18 +36,18 @@ export function UpgradeDialog({
           </div>
           <DialogTitle className="text-xl">
             {reason === "limit"
-              ? "Llegaste a tu límite de hoy"
-              : "Desbloquea NopalAI Premium"}
+              ? t.dashboard.upgrade.limitTitle
+              : t.dashboard.upgrade.manualTitle}
           </DialogTitle>
           <DialogDescription>
             {reason === "limit"
-              ? "Usaste tus 20 mensajes gratuitos de hoy. Mejora a Premium y sigue sin interrupciones."
-              : "Lleva tu productividad al siguiente nivel por solo 99 MXN al mes."}
+              ? t.dashboard.upgrade.limitDesc
+              : t.dashboard.upgrade.manualDesc}
           </DialogDescription>
         </DialogHeader>
 
         <ul className="space-y-2.5 py-2">
-          {PLANS.premium.features.map((f) => (
+          {plan.features.map((f) => (
             <li key={f} className="flex items-start gap-3 text-sm">
               <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
               <span>{f}</span>
@@ -52,18 +56,20 @@ export function UpgradeDialog({
         </ul>
 
         <div className="flex items-baseline gap-1">
-          <span className="text-3xl font-bold">$99</span>
-          <span className="text-sm text-muted-foreground">MXN / mes</span>
+          <span className="text-3xl font-bold">{plan.price}</span>
+          <span className="text-sm text-muted-foreground">
+            {t.pricing.perMonth}
+          </span>
         </div>
 
         <UpgradeButton
           size="lg"
           className="w-full"
-          label="Mejorar a Premium"
+          label={t.dashboard.upgrade.cta}
           source={reason === "limit" ? "limit_dialog" : "dashboard"}
         />
         <p className="text-center text-xs text-muted-foreground">
-          Cancela cuando quieras · Pago seguro con Stripe
+          {t.dashboard.upgrade.secure}
         </p>
       </DialogContent>
     </Dialog>

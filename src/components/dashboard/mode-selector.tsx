@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { MODE_LIST, type ModeId } from "@/lib/modes";
+import { useLanguage } from "@/components/i18n/language-provider";
 
 interface ModeSelectorProps {
   value: ModeId;
@@ -10,6 +11,7 @@ interface ModeSelectorProps {
 }
 
 export function ModeSelector({ value, onChange, className }: ModeSelectorProps) {
+  const { t } = useLanguage();
   return (
     <div
       className={cn(
@@ -17,7 +19,7 @@ export function ModeSelector({ value, onChange, className }: ModeSelectorProps) 
         className,
       )}
       role="radiogroup"
-      aria-label="Tipo de asistente"
+      aria-label={t.dashboard.emptyState.assistantType}
     >
       {MODE_LIST.map((mode) => {
         const active = mode.id === value;
@@ -47,7 +49,7 @@ export function ModeSelector({ value, onChange, className }: ModeSelectorProps) 
             </span>
             <span className="min-w-0">
               <span className="block truncate text-sm font-medium text-foreground">
-                {mode.shortName}
+                {t.modes[mode.id].short}
               </span>
             </span>
           </button>

@@ -2,31 +2,34 @@
 
 # 🌵 NopalAI
 
-### La IA que entiende México.
+### La IA que entiende LATAM.
 
-El asistente de inteligencia artificial creado para México: negocios, turismo,
-bienes raíces y vida diaria — en español mexicano.
+El asistente de inteligencia artificial creado para LATAM: negocios, turismo,
+bienes raíces y vida diaria — en español, al instante.
 
 </div>
 
 ---
 
 NopalAI is a production-ready SaaS chat application built with Next.js 15, with a
-premium, minimalist design inspired by OpenAI, Linear and Stripe. It ships with
-authentication, a streaming AI chat dashboard, four specialized assistants,
-daily usage limits, a Stripe-powered Premium plan, analytics and full SEO.
+premium, minimalist design inspired by ChatGPT, Notion, Apple and Stripe. It
+ships with authentication, a streaming AI chat dashboard, four specialized
+assistants, daily usage limits, Stripe-powered paid plans, analytics and full
+SEO — with a polished dark theme and full English/Spanish localization.
 
 ## ✨ Features
 
-- **World-class landing page** — hero, features, assistants, pricing, testimonials, FAQ, structured data.
+- **World-class landing page** — hero, features, assistants, pricing, FAQ, structured data.
+- **Light & dark themes** — system-aware, high-contrast dark mode via `next-themes`.
+- **Bilingual (ES/EN)** — full English and Spanish versions with an instant in-app language switch.
 - **4 specialized assistants** — General, Traducción, Escuela y Tareas, Contenido y Marketing, each with a unique system prompt.
 - **Streaming AI chat** — ChatGPT-quality UX with markdown, copy, typing indicator, auto-titling.
+- **Collapsible chat sidebar** — compact icon rail that expands on hover, with a pin-open option and smooth animations.
 - **Chat management** — new chat, history, rename, delete, responsive sidebar, full mobile support.
 - **Auth** — sign up / login / logout / protected dashboard via Clerk.
-- **Free plan** — 20 messages/day tracked in the database, with ad placeholders.
-- **Premium plan** — 99 MXN/month via Stripe: no ads, faster responses, premium models, higher limits.
+- **Plans** — Free, Plus (69 MXN) and Pro (199 MXN) via Stripe: no ads, faster responses, premium models, higher limits.
 - **Analytics** — PostHog + Google Analytics 4 (signups, chats, conversions, upgrades).
-- **SEO** — metadata, sitemap, robots, JSON-LD, dynamic OG image, optimized for "IA México".
+- **SEO** — metadata, sitemap, robots, JSON-LD, dynamic OG image, optimized for "IA LATAM".
 - **Security** — rate limiting (daily usage), Zod input validation, XSS-safe rendering, secure server-only secrets, security headers.
 
 ## 🧱 Tech Stack
@@ -119,7 +122,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | `OPENROUTER_MODEL_PREMIUM` | – | Premium model (default `qwen/qwen-2.5-72b-instruct`) |
 | `STRIPE_SECRET_KEY` | ✅ | Stripe secret key |
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | ✅ | Stripe publishable key |
-| `STRIPE_PREMIUM_PRICE_ID` | ✅ | Price ID for the 99 MXN plan |
+| `STRIPE_PREMIUM_PRICE_ID` | ✅ | Price ID for the paid plan (Plus/Pro checkout) |
 | `STRIPE_WEBHOOK_SECRET` | ✅ | Stripe webhook signing secret |
 | `NEXT_PUBLIC_POSTHOG_KEY` | – | PostHog project key |
 | `NEXT_PUBLIC_POSTHOG_HOST` | – | PostHog host (default US cloud) |
@@ -147,8 +150,9 @@ Open [http://localhost:3000](http://localhost:3000).
    Premium users to **Qwen 72B**, with **Llama 3.1 70B** as a fallback family.
 
 ### Stripe (Payments)
-1. Create a **recurring** Product/Price of **99 MXN / month**; copy its price ID
-   to `STRIPE_PREMIUM_PRICE_ID`.
+1. Create a **recurring** Product/Price for the paid plan; copy its price ID
+   to `STRIPE_PREMIUM_PRICE_ID`. (The pricing page shows Free, Plus and Pro; the
+   paid buttons route to this checkout.)
 2. Add a webhook endpoint pointing to `/api/stripe/webhook` and subscribe to:
    `checkout.session.completed`, `customer.subscription.created`,
    `customer.subscription.updated`, `customer.subscription.deleted`.
@@ -217,5 +221,5 @@ npm run typecheck  # TypeScript (no emit)
 ---
 
 <div align="center">
-Hecho con orgullo para México 🇲🇽
+Hecho con orgullo para LATAM 🌎
 </div>

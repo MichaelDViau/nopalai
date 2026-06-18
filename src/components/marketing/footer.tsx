@@ -1,25 +1,28 @@
+"use client";
+
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
 import { SITE } from "@/lib/constants";
-
-const LINKS = [
-  { href: "/#assistants", label: "Asistentes" },
-  { href: "/pricing", label: "Precios" },
-  { href: "/legal/privacidad", label: "Privacidad" },
-  { href: "/legal/terminos", label: "Términos" },
-];
+import { useLanguage } from "@/components/i18n/language-provider";
 
 export function Footer() {
+  const { t } = useLanguage();
+
+  const links = [
+    { href: "/legal/privacidad", label: t.footer.privacy },
+    { href: "/legal/terminos", label: t.footer.terms },
+  ];
+
   return (
     <footer className="border-t border-border bg-secondary/30">
       <div className="container py-10">
         <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:justify-between sm:text-left">
-          <Link href="/" aria-label="NopalAI inicio">
+          <Link href="/" aria-label={`NopalAI ${t.nav.home}`}>
             <Logo />
           </Link>
 
           <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-            {LINKS.map((link) => (
+            {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -32,8 +35,7 @@ export function Footer() {
         </div>
 
         <p className="mt-8 text-center text-xs text-muted-foreground sm:text-left">
-          © {new Date().getFullYear()} {SITE.name} · {SITE.tagline} · Hecho para
-          México 🇲🇽
+          © {new Date().getFullYear()} {SITE.name} · {t.tagline} · {t.footer.madeFor}
         </p>
       </div>
     </footer>
