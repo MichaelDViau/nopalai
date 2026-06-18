@@ -10,7 +10,6 @@ export const SITE = {
     "IA LATAM",
     "inteligencia artificial LATAM",
     "ChatGPT LATAM",
-    "AI para LATAM",
     "asistente IA español",
     "NopalAI",
   ],
@@ -26,8 +25,8 @@ export const PLANS = {
   plus: {
     name: "Plus",
     price: 69,
-    dailyMessages: 500,
-    features: ["500 mensajes al día", "Sin anuncios", "Respuestas más rápidas", "Historial de conversaciones"],
+    dailyMessages: 1000,
+    features: ["Mensajes ilimitados", "Sin anuncios", "Respuestas más rápidas", "Historial de conversaciones"],
   },
   pro: {
     name: "Pro",

@@ -4,6 +4,9 @@
 
 @layer base {
   :root {
+    --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-display: "Sora", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
     /* Sage-green palette
        #DCE8D5 #AFC7A8 #7B9B78 #3F5B45 #1C2620 */
     --background: 96 28% 99%;
