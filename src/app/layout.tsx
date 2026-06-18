@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Sora } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { esMX } from "@clerk/localizations";
 
@@ -8,18 +7,6 @@ import { AppProviders } from "@/components/app-providers";
 import { Toaster } from "@/components/ui/sonner";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import "./globals.css";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  display: "swap",
-});
-
-const sora = Sora({
-  subsets: ["latin"],
-  variable: "--font-display",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -73,6 +60,20 @@ export const viewport: Viewport = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const page = (
+    <html lang="es-MX" suppressHydrationWarning>
+      <body className="min-h-dvh bg-background font-sans">
+        <AppProviders>{children}</AppProviders>
+        <Toaster position="top-center" richColors />
+        <GoogleAnalytics />
+      </body>
+    </html>
+  );
+
+  if (!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
+    return page;
+  }
+
   return (
     <ClerkProvider
       localization={esMX}
@@ -83,13 +84,7 @@ export default function RootLayout({
         },
       }}
     >
-      <html lang="es-MX" className={`${inter.variable} ${sora.variable}`} suppressHydrationWarning>
-        <body className="min-h-dvh bg-background font-sans">
-          <AppProviders>{children}</AppProviders>
-          <Toaster position="top-center" richColors />
-          <GoogleAnalytics />
-        </body>
-      </html>
+      {page}
     </ClerkProvider>
   );
 }

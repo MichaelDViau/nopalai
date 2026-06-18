@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { Logo } from "@/components/brand/logo";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Sidebar } from "@/components/dashboard/sidebar";
 import { Composer } from "@/components/dashboard/composer";
 import { EmptyState } from "@/components/dashboard/empty-state";
@@ -240,11 +241,24 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
   const activeMode = useMemo(() => getMode(mode), [mode]);
   const hasMessages = messages.length > 0;
 
-  const sidebar = (
+  const desktopSidebar = (
     <Sidebar
       chats={chats}
       pinned={sidebarPinned}
       onPinnedChange={setSidebarPinned}
+      activeChatId={activeChatId}
+      usage={usage}
+      onSelect={selectChat}
+      onNewChat={newChat}
+      onRename={renameChat}
+      onDelete={deleteChat}
+      onUpgrade={openUpgrade}
+    />
+  );
+  const mobileSidebar = (
+    <Sidebar
+      chats={chats}
+      pinned
       activeChatId={activeChatId}
       usage={usage}
       onSelect={selectChat}
@@ -260,19 +274,19 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
       {/* Desktop sidebar */}
       <aside
         className={cn(
-          "group/sidebar hidden shrink-0 overflow-hidden border-r border-border bg-secondary/30 transition-[width] duration-300 ease-out md:block",
-          sidebarPinned ? "w-[280px]" : "w-[72px] hover:w-[280px] focus-within:w-[280px]",
+          "hidden shrink-0 overflow-hidden border-r border-border bg-transparent transition-[width] duration-200 ease-out md:block",
+          sidebarPinned ? "w-[280px]" : "w-[72px]",
         )}
         aria-label="Barra lateral de chats"
       >
-        {sidebar}
+        {desktopSidebar}
       </aside>
 
       {/* Mobile sidebar */}
       <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
         <SheetContent side="left" className="w-[300px] p-0">
           <SheetTitle className="sr-only">Menú de chats</SheetTitle>
-          {sidebar}
+          {mobileSidebar}
         </SheetContent>
       </Sheet>
 
@@ -295,17 +309,18 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
               {activeMode.shortName}
             </Badge>
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="gap-2 md:hidden"
-            onClick={newChat}
-          >
-            <Plus className="h-4 w-4" />
-            Nuevo
-          </Button>
-          <div className="hidden md:block">
-            <Logo showText={false} />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <Button
+              variant="ghost"
+              size="sm"
+              className="gap-2 md:hidden"
+              onClick={newChat}
+            >
+              <Plus className="h-4 w-4" />
+              <span className="hidden sm:inline">Nuevo</span>
+            </Button>
+            <Logo />
           </div>
         </header>
 
