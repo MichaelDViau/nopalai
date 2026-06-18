@@ -10,7 +10,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "clean": "node -e \"require('fs').rmSync('.next',{recursive:true,force:true,maxRetries:5,retryDelay:200})\""
+    "clean": "node -e \"['.next','node_modules/.cache','.turbo'].forEach(d=>require('fs').rmSync(d,{recursive:true,force:true,maxRetries:5,retryDelay:200}))\""
   },
   "dependencies": {
     "@ai-sdk/react": "1.2.12",
