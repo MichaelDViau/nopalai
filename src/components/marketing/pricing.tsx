@@ -11,7 +11,7 @@ import { UpgradeButton } from "@/components/billing/upgrade-button";
 import { useLanguage } from "@/components/language-provider";
 
 const COMPARISON = [
-  { label: "Mensajes por día / Messages per day", free: "20", plus: "500", pro: "Ilimitados*" },
+  { label: "Mensajes por día / Messages per day", free: "20", plus: "Ilimitados", pro: "Ilimitados*" },
   { label: "Historial de conversaciones / Chat history", free: true, plus: true, pro: true },
   { label: "Sin anuncios / No ads", free: false, plus: true, pro: true },
   { label: "Respuestas más rápidas / Faster responses", free: false, plus: true, pro: true },
@@ -53,7 +53,7 @@ export function Pricing({ showComparison = true }: { showComparison?: boolean })
               {card.href ? (
                 <Button variant="outline" size="lg" asChild className="mt-8"><Link href={card.href}>{card.cta}</Link></Button>
               ) : (
-                <UpgradeButton size="lg" className="mt-8" label={card.cta} />
+                <UpgradeButton size="lg" className="mt-8" label={card.cta} plan={card.key === "plus" ? "plus" : "pro"} />
               )}
               <ul className="mt-8 space-y-3">
                 {card.plan.features.map((f) => (
