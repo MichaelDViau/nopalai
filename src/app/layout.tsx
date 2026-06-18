@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Sora } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
+import { esMX } from "@clerk/localizations";
 
 import { SITE } from "@/lib/constants";
 import { DICT, HTML_LANG } from "@/lib/i18n";
@@ -83,16 +85,26 @@ export default async function RootLayout({
   const lang = await getServerLang();
 
   return (
-    <html
-      lang={HTML_LANG[lang]}
-      suppressHydrationWarning
-      className={`${inter.variable} ${sora.variable}`}
+    <ClerkProvider
+      localization={esMX}
+      appearance={{
+        variables: {
+          colorPrimary: "#1c825b",
+          borderRadius: "0.75rem",
+        },
+      }}
     >
-      <body className="min-h-dvh bg-background font-sans">
-        <Providers initialLang={lang}>{children}</Providers>
-        <Toaster position="top-center" richColors />
-        <GoogleAnalytics />
-      </body>
-    </html>
+      <html
+        lang={HTML_LANG[lang]}
+        suppressHydrationWarning
+        className={`${inter.variable} ${sora.variable}`}
+      >
+        <body className="min-h-dvh bg-background font-sans">
+          <Providers initialLang={lang}>{children}</Providers>
+          <Toaster position="top-center" richColors />
+          <GoogleAnalytics />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
