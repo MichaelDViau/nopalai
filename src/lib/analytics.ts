@@ -26,8 +26,8 @@ declare global {
 }
 
 /**
- * Fire an analytics event to every configured provider. Safe to call on
- * the server (no-op) and when a provider isn't configured.
+ * Fire an analytics event to every configured provider.
+ * Safe to call on the server (no-op) and when a provider isn't configured.
  */
 export function track(
   event: AnalyticsEvent,

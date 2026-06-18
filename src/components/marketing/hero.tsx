@@ -27,9 +27,13 @@ export function Hero() {
               size="lg"
               asChild
               className="w-full sm:w-auto"
-              onClick={() => track(EVENTS.CTA_CLICKED, { cta: "hero_primary" })}
             >
-              <Link href="/dashboard">
+              <Link
+                href="/dashboard"
+                onClick={() =>
+                  track(EVENTS.CTA_CLICKED, { cta: "hero_primary" })
+                }
+              >
                 Comenzar gratis
                 <ArrowRight className="h-4 w-4" />
               </Link>
