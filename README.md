@@ -115,8 +115,8 @@ Open [http://localhost:3000](http://localhost:3000).
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | ✅ | Supabase anon key |
 | `SUPABASE_SERVICE_ROLE_KEY` | ✅ | Supabase service role (server only) |
 | `OPENROUTER_API_KEY` | ✅ | OpenRouter API key |
-| `OPENROUTER_MODEL_FREE` | – | Free-tier model (default `deepseek/deepseek-chat`) |
-| `OPENROUTER_MODEL_PREMIUM` | – | Premium model (default `qwen/qwen-2.5-72b-instruct`) |
+| `OPENROUTER_MODEL_FREE` | – | Free-tier model (default `google/gemma-4-31b-it:free`) |
+| `OPENROUTER_MODEL_PREMIUM` | – | Premium model (default `google/gemma-4-31b-it:free`) |
 | `STRIPE_SECRET_KEY` | ✅ | Stripe secret key |
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | ✅ | Stripe publishable key |
 | `STRIPE_PREMIUM_PRICE_ID` | ✅ | Price ID for the 99 MXN plan |
