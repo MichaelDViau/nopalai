@@ -2,10 +2,8 @@ import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import type { PlanId } from "@/lib/constants";
 
 /**
- * OpenRouter client. We route Free users to a fast, low-cost model and
- * Pro users to a stronger model. All three requested model families
- * (DeepSeek, Qwen, Llama) are available via OpenRouter and can be swapped
- * with env vars without a redeploy.
+ * OpenRouter client. We route every plan through OpenRouter to Google Gemma 4
+ * 31B (free), which OpenRouter exposes through its OpenAI-compatible chat API.
  */
 function getClient() {
   const apiKey = process.env.OPENROUTER_API_KEY;
@@ -16,26 +14,20 @@ function getClient() {
     apiKey,
     headers: {
       "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL || "https://nopalai.mx",
-      "X-Title": "NopalAI",
+      "X-OpenRouter-Title": "NopalAI",
     },
   });
 }
 
-const MODEL_FREE = process.env.OPENROUTER_MODEL_FREE || "deepseek/deepseek-chat";
-const MODEL_PREMIUM =
-  process.env.OPENROUTER_MODEL_PREMIUM || "qwen/qwen-2.5-72b-instruct";
+export const OPENROUTER_MODEL = "google/gemma-4-31b-it:free";
 
-/** Fallback model if the primary is unavailable on OpenRouter. */
-export const MODEL_FALLBACK = "meta-llama/llama-3.1-70b-instruct";
-
-export function modelForPlan(plan: PlanId) {
+export function modelForPlan(_plan: PlanId) {
   const openrouter = getClient();
-  const id = plan === "premium" ? MODEL_PREMIUM : MODEL_FREE;
-  return openrouter.chat(id);
+  return openrouter.chat(OPENROUTER_MODEL);
 }
 
 export const AVAILABLE_MODELS = {
-  free: MODEL_FREE,
-  premium: MODEL_PREMIUM,
-  fallback: MODEL_FALLBACK,
+  free: OPENROUTER_MODEL,
+  premium: OPENROUTER_MODEL,
+  fallback: OPENROUTER_MODEL,
 };
