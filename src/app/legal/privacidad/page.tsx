@@ -47,13 +47,13 @@ export default function PrivacyPage() {
       <p>
         Puedes ejercer tus derechos de Acceso, Rectificación, Cancelación y
         Oposición escribiéndonos a{" "}
-        <a href="mailto:hola@nopalai.mx">hola@nopalai.mx</a>.
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
       </p>
 
       <h2>6. Contacto</h2>
       <p>
         Para cualquier duda sobre este aviso, escríbenos a{" "}
-        <a href="mailto:hola@nopalai.mx">hola@nopalai.mx</a>.
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
       </p>
     </>
   );

@@ -15,13 +15,21 @@ export interface ChatMessage {
 
 function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
+
+  async function copy() {
+    try {
+      // `navigator.clipboard` is undefined on insecure origins / old browsers.
+      await navigator.clipboard?.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      /* clipboard blocked — fail silently rather than throw in the UI */
+    }
+  }
+
   return (
     <button
-      onClick={() => {
-        navigator.clipboard.writeText(text);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 1500);
-      }}
+      onClick={copy}
       className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-muted-foreground opacity-0 transition-opacity hover:bg-accent group-hover:opacity-100"
       aria-label="Copiar respuesta"
     >

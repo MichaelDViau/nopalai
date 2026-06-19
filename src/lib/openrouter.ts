@@ -1,33 +1,44 @@
-import { createOpenRouter } from "@openrouter/ai-sdk-provider";
+import {
+  createOpenRouter,
+  type OpenRouterProvider,
+} from "@openrouter/ai-sdk-provider";
 import type { PlanId } from "@/lib/constants";
+import { SITE } from "@/lib/constants";
 
 /**
- * OpenRouter client. We route every plan through OpenRouter to Google Gemma 4
- * 31B (free), which OpenRouter exposes through its OpenAI-compatible chat API.
+ * OpenRouter chat model.
+ *
+ * Every plan is currently served by the same model — Google Gemma 4 31B
+ * (free tier) — which OpenRouter exposes through its OpenAI-compatible chat
+ * API. When paid plans get dedicated models, branch inside `modelForPlan`.
  */
-function getClient() {
+export const OPENROUTER_MODEL = "google/gemma-4-31b-it:free";
+
+// The provider is stateless and safe to reuse across requests, so we build it
+// once instead of on every chat turn.
+let cachedProvider: OpenRouterProvider | null = null;
+
+function getProvider(): OpenRouterProvider {
+  if (cachedProvider) return cachedProvider;
+
   const apiKey = process.env.OPENROUTER_API_KEY;
   if (!apiKey) {
     throw new Error("OPENROUTER_API_KEY no está configurado.");
   }
-  return createOpenRouter({
+
+  cachedProvider = createOpenRouter({
     apiKey,
     headers: {
-      "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL || "https://nopalai.mx",
-      "X-OpenRouter-Title": "NopalAI",
+      // OpenRouter attribution headers — surface our app on their dashboard.
+      "HTTP-Referer": SITE.url,
+      "X-Title": SITE.name,
     },
   });
+  return cachedProvider;
 }
 
-export const OPENROUTER_MODEL = "google/gemma-4-31b-it:free";
-
+// `_plan` is reserved for future per-tier model selection; underscore-prefixed
+// so the linter treats it as intentionally unused.
 export function modelForPlan(_plan: PlanId) {
-  const openrouter = getClient();
-  return openrouter.chat(OPENROUTER_MODEL);
+  return getProvider().chat(OPENROUTER_MODEL);
 }
-
-export const AVAILABLE_MODELS = {
-  free: OPENROUTER_MODEL,
-  premium: OPENROUTER_MODEL,
-  fallback: OPENROUTER_MODEL,
-};

@@ -54,7 +54,7 @@ export default function TermsPage() {
       <h2>6. Contacto</h2>
       <p>
         Dudas sobre estos términos:{" "}
-        <a href="mailto:hola@nopalai.mx">hola@nopalai.mx</a>.
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
       </p>
     </>
   );

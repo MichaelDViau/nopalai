@@ -55,7 +55,7 @@ export function ChatPreview() {
         <span className="h-3 w-3 rounded-full bg-amber-300/80 dark:bg-amber-400/80" />
         <span className="h-3 w-3 rounded-full bg-emerald-300/80 dark:bg-emerald-400/80" />
         <div className="ml-3 hidden text-xs text-muted-foreground sm:block">
-          nopalai.mx/dashboard
+          nopal-ai.com/dashboard
         </div>
       </div>
 

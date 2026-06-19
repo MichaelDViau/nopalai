@@ -4,8 +4,9 @@
 
 @layer base {
   :root {
+    /* System font stack — no web-font download means instant text and zero
+       font-driven layout shift (CLS). */
     --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    --font-display: "Sora", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
     /* Sage-green palette
        #DCE8D5 #AFC7A8 #7B9B78 #3F5B45 #1C2620 */

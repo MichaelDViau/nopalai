@@ -60,7 +60,7 @@ export function UpgradeDialog({
             <UpgradeButton
               size="sm"
               className="mt-4 w-full"
-              label="Plus — $69 MXN/month"
+              label="Plus — $69 MXN/mes"
               plan="plus"
               source={reason === "limit" ? "limit_dialog_plus" : "dashboard_plus"}
             />
@@ -83,7 +83,7 @@ export function UpgradeDialog({
             <UpgradeButton
               size="sm"
               className="mt-4 w-full"
-              label="Pro — $199 MXN/month"
+              label="Pro — $199 MXN/mes"
               plan="pro"
               source={reason === "limit" ? "limit_dialog_pro" : "dashboard_pro"}
             />
