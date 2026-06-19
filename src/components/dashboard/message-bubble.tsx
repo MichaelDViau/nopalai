@@ -44,7 +44,7 @@ function MessageBubbleImpl({ message }: { message: ChatMessage }) {
   if (isUser) {
     return (
       <div className="flex justify-end">
-        <div className="max-w-[85%] whitespace-pre-wrap rounded-lg rounded-br-sm bg-secondary px-4 py-2.5 text-[15px] leading-7 text-foreground">
+        <div className="max-w-[85%] whitespace-pre-wrap break-words rounded-2xl rounded-br-md bg-secondary px-4 py-2.5 text-[15px] leading-7 text-foreground shadow-sm">
           {message.content}
         </div>
       </div>
@@ -57,7 +57,7 @@ function MessageBubbleImpl({ message }: { message: ChatMessage }) {
         <LogoMark className="h-8 w-8" />
       </div>
       <div className="min-w-0 flex-1">
-        <div className="prose-chat max-w-none pt-0.5 text-foreground">
+        <div className="prose-chat max-w-none break-words pt-0.5 text-foreground">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
             {message.content}
           </ReactMarkdown>

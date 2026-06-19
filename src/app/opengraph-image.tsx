@@ -46,17 +46,17 @@ export default function OpengraphImage() {
         <div
           style={{
             marginTop: 48,
-            fontSize: 76,
+            fontSize: 64,
             fontWeight: 800,
             color: "#16201c",
             lineHeight: 1.05,
-            maxWidth: 920,
+            maxWidth: 980,
           }}
         >
-          La IA que entiende LATAM.
+          La inteligencia artificial para Latinoamérica.
         </div>
         <div style={{ marginTop: 28, fontSize: 32, color: "#4b5852", maxWidth: 880 }}>
-          Traducciones, tareas, contenido para redes y vida diaria — en español latinoamericano.
+          Respuestas, aprendizaje, traducciones y contenido. Simple y accesible, en español e inglés.
         </div>
       </div>
     ),

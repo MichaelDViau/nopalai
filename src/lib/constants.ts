@@ -1,8 +1,8 @@
 export const SITE = {
   name: "NopalAI",
-  tagline: "La IA que entiende LATAM.",
+  tagline: "La inteligencia artificial para Latinoamérica.",
   description:
-    "NopalAI es el asistente de inteligencia artificial creado para LATAM. Te ayuda con respuestas, traducciones, tareas escolares y contenido para redes sociales y marketing.",
+    "NopalAI es la inteligencia artificial para Latinoamérica. Obtén respuestas, traduce, estudia, crea contenido para redes y sé más productivo, todo en español e inglés.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://nopalai.com",
   locale: "es_MX",
   twitter: "@nopalai",

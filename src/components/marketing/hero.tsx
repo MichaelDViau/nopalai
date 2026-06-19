@@ -10,14 +10,16 @@ import { useLanguage } from "@/components/language-provider";
 
 export function Hero() {
   const { t } = useLanguage();
-  const [before, highlight] = t.hero.title.split("LATAM");
+  const [before, after] = t.hero.title.split(t.hero.highlight);
 
   return (
     <section className="bg-secondary/30">
       <div className="container pb-14 pt-12 sm:pb-20 sm:pt-20">
         <div className="mx-auto max-w-2xl text-center">
           <h1 className="text-balance text-[2.5rem] font-bold leading-[1.08] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
-            {before}<span className="text-primary">LATAM</span>{highlight}
+            {before}
+            <span className="text-primary">{t.hero.highlight}</span>
+            {after}
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg">
             {t.hero.body}

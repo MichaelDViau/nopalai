@@ -7,7 +7,7 @@ import { Logo } from "@/components/brand/logo";
 export const metadata: Metadata = {
   title: "Crear cuenta gratis",
   description:
-    "Crea tu cuenta gratis en NopalAI y empieza a usar la IA que entiende LATAM.",
+    "Crea tu cuenta gratis en NopalAI y empieza a usar la inteligencia artificial para Latinoamérica.",
   robots: { index: false, follow: true },
 };
 
