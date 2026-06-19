@@ -1,18 +1,29 @@
 import "server-only";
 import { getSupabaseAdmin } from "@/lib/supabase";
-import { FREE_DAILY_LIMIT, PREMIUM_DAILY_LIMIT } from "@/lib/constants";
+import { DAILY_LIMITS } from "@/lib/constants";
 import type { Plan } from "@/types/database";
 
-/** LATAM City day boundary (UTC-6, no DST since 2023) used for daily limits. */
-export function mxToday(): string {
-  const now = new Date();
-  // Shift to America/LATAM_City (UTC-6) then take the date portion.
-  const mx = new Date(now.getTime() - 6 * 60 * 60 * 1000);
-  return mx.toISOString().slice(0, 10);
+// Single reference timezone for the daily-limit reset. We anchor on Mexico
+// City so every user's quota rolls over at the same wall-clock moment,
+// regardless of where they are in LATAM.
+const RESET_TIMEZONE = "America/Mexico_City";
+
+// `en-CA` formats as YYYY-MM-DD, which is exactly the `date` shape Postgres
+// expects — and Intl handles any future DST rule changes for us.
+const dayFormatter = new Intl.DateTimeFormat("en-CA", {
+  timeZone: RESET_TIMEZONE,
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+/** Today's date (YYYY-MM-DD) in the reset timezone, used for daily limits. */
+export function resetDay(): string {
+  return dayFormatter.format(new Date());
 }
 
 export function limitForPlan(plan: Plan): number {
-  return plan === "premium" ? PREMIUM_DAILY_LIMIT : FREE_DAILY_LIMIT;
+  return DAILY_LIMITS[plan] ?? DAILY_LIMITS.free;
 }
 
 export interface UsageStatus {
@@ -25,7 +36,7 @@ export interface UsageStatus {
 /** Read today's usage without mutating it (for the dashboard meter). */
 export async function getUsage(userId: string, plan: Plan): Promise<UsageStatus> {
   const supabase = getSupabaseAdmin();
-  const day = mxToday();
+  const day = resetDay();
   const limit = limitForPlan(plan);
 
   const { data } = await supabase
@@ -46,7 +57,7 @@ export async function getUsage(userId: string, plan: Plan): Promise<UsageStatus>
  */
 export async function incrementUsage(userId: string): Promise<number> {
   const supabase = getSupabaseAdmin();
-  const day = mxToday();
+  const day = resetDay();
 
   const { data, error } = await supabase.rpc("increment_usage", {
     p_user_id: userId,
@@ -55,6 +66,20 @@ export async function incrementUsage(userId: string): Promise<number> {
 
   if (error) throw error;
   return data ?? 0;
+}
+
+/**
+ * Atomically give one message back to today's counter (floored at 0). Used to
+ * refund a consumed message when generation fails before producing any output,
+ * so transient provider errors don't burn a user's daily quota.
+ */
+export async function refundDailyMessage(userId: string): Promise<void> {
+  const supabase = getSupabaseAdmin();
+  const { error } = await supabase.rpc("decrement_usage", {
+    p_user_id: userId,
+    p_day: resetDay(),
+  });
+  if (error) throw error;
 }
 
 /**

@@ -2,7 +2,6 @@
 
 import { Check, Zap } from "lucide-react";
 
-import { PLANS } from "@/lib/constants";
 import {
   Dialog,
   DialogContent,
@@ -11,6 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { UpgradeButton } from "@/components/billing/upgrade-button";
+import { useLanguage } from "@/components/language-provider";
 
 interface UpgradeDialogProps {
   open: boolean;
@@ -23,6 +23,10 @@ export function UpgradeDialog({
   onOpenChange,
   reason = "manual",
 }: UpgradeDialogProps) {
+  const { t } = useLanguage();
+  const p = t.pricing;
+  const d = t.dash;
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
@@ -31,26 +35,22 @@ export function UpgradeDialog({
             <Zap className="h-5 w-5 fill-primary" />
           </div>
           <DialogTitle className="text-xl">
-            {reason === "limit"
-              ? "Llegaste a tu límite de hoy"
-              : "Elige tu mejora"}
+            {reason === "limit" ? d.limitTitle : d.chooseTitle}
           </DialogTitle>
           <DialogDescription>
-            {reason === "limit"
-              ? "Usaste tus mensajes gratuitos de hoy. Elige Plus o Pro para seguir sin interrupciones."
-              : "Selecciona el plan que mejor se adapte a tu ritmo de trabajo."}
+            {reason === "limit" ? d.limitDesc : d.chooseDesc}
           </DialogDescription>
         </DialogHeader>
 
         <div className="grid gap-3 py-2 sm:grid-cols-2">
           <div className="rounded-xl border border-border bg-card p-4">
-            <div className="text-sm font-semibold">Plus</div>
+            <div className="text-sm font-semibold">{p.plusName}</div>
             <div className="mt-1 flex items-baseline gap-1">
               <span className="text-2xl font-bold">$69</span>
-              <span className="text-xs text-muted-foreground">MXN / mes</span>
+              <span className="text-xs text-muted-foreground">{d.perMonth}</span>
             </div>
             <ul className="mt-3 space-y-2">
-              {PLANS.plus.features.slice(0, 3).map((f) => (
+              {p.plusFeatures.slice(0, 3).map((f) => (
                 <li key={f} className="flex items-start gap-2 text-xs">
                   <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
                   <span>{f}</span>
@@ -60,20 +60,20 @@ export function UpgradeDialog({
             <UpgradeButton
               size="sm"
               className="mt-4 w-full"
-              label="Plus — $69 MXN/month"
+              label={`${p.plusName} — $69`}
               plan="plus"
               source={reason === "limit" ? "limit_dialog_plus" : "dashboard_plus"}
             />
           </div>
 
           <div className="rounded-xl border-2 border-primary bg-primary/5 p-4">
-            <div className="text-sm font-semibold text-primary">Pro</div>
+            <div className="text-sm font-semibold text-primary">{p.proName}</div>
             <div className="mt-1 flex items-baseline gap-1">
               <span className="text-2xl font-bold">$199</span>
-              <span className="text-xs text-muted-foreground">MXN / mes</span>
+              <span className="text-xs text-muted-foreground">{d.perMonth}</span>
             </div>
             <ul className="mt-3 space-y-2">
-              {PLANS.pro.features.slice(0, 3).map((f) => (
+              {p.proFeatures.slice(0, 3).map((f) => (
                 <li key={f} className="flex items-start gap-2 text-xs">
                   <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
                   <span>{f}</span>
@@ -83,14 +83,14 @@ export function UpgradeDialog({
             <UpgradeButton
               size="sm"
               className="mt-4 w-full"
-              label="Pro — $199 MXN/month"
+              label={`${p.proName} — $199`}
               plan="pro"
               source={reason === "limit" ? "limit_dialog_pro" : "dashboard_pro"}
             />
           </div>
         </div>
         <p className="text-center text-xs text-muted-foreground">
-          Cancela cuando quieras · Pago seguro con Stripe
+          {d.secureNote}
         </p>
       </DialogContent>
     </Dialog>

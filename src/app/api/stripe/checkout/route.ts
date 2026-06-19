@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 
 import { isSameOrigin } from "@/lib/http";
-import { getStripe, PLUS_PRICE_ID, PREMIUM_PRICE_ID } from "@/lib/stripe";
+import { getStripe, priceIdForPlan } from "@/lib/stripe";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import { getOrCreateProfile } from "@/lib/profile";
 import { SITE } from "@/lib/constants";
@@ -20,8 +20,11 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json().catch(() => ({}));
-  const plan = body?.plan === "plus" ? "plus" : "pro";
-  const priceId = plan === "plus" ? PLUS_PRICE_ID : PREMIUM_PRICE_ID;
+  // Default to "pro" for any unrecognized value so checkout never silently
+  // bills the wrong tier. The tier is echoed into Stripe metadata below and
+  // read back by the webhook to set the user's plan.
+  const plan: "plus" | "pro" = body?.plan === "plus" ? "plus" : "pro";
+  const priceId = priceIdForPlan(plan);
 
   if (!priceId) {
     return NextResponse.json(

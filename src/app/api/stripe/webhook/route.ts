@@ -3,15 +3,25 @@ import type Stripe from "stripe";
 
 import { getStripe } from "@/lib/stripe";
 import { getSupabaseAdmin } from "@/lib/supabase";
+import type { Plan } from "@/types/database";
 
 export const runtime = "nodejs";
 // Stripe needs the raw body to verify the signature.
 export const dynamic = "force-dynamic";
 
+/**
+ * The tier a checkout was for is carried in the subscription's metadata (set
+ * in the checkout route). Map it to a backend plan, defaulting to "pro" for
+ * any legacy/unknown value so an active payer is never silently downgraded.
+ */
+function planFromMetadata(metadata: Stripe.Metadata | null | undefined): Plan {
+  return metadata?.plan === "plus" ? "plus" : "pro";
+}
+
 async function setPlanByCustomer(
   customerId: string,
   data: {
-    plan: "free" | "premium";
+    plan: Plan;
     subscription_status: string | null;
     stripe_subscription_id: string | null;
     current_period_end: string | null;
@@ -57,8 +67,10 @@ export async function POST(req: Request) {
           const sub = await stripe.subscriptions.retrieve(
             session.subscription as string,
           );
+          // Prefer the subscription metadata, fall back to the session's.
+          const tier = planFromMetadata(sub.metadata ?? session.metadata);
           await setPlanByCustomer(sub.customer as string, {
-            plan: "premium",
+            plan: tier,
             subscription_status: sub.status,
             stripe_subscription_id: sub.id,
             current_period_end: new Date(
@@ -74,7 +86,7 @@ export async function POST(req: Request) {
         const sub = event.data.object as Stripe.Subscription;
         const active = sub.status === "active" || sub.status === "trialing";
         await setPlanByCustomer(sub.customer as string, {
-          plan: active ? "premium" : "free",
+          plan: active ? planFromMetadata(sub.metadata) : "free",
           subscription_status: sub.status,
           stripe_subscription_id: sub.id,
           current_period_end: new Date(

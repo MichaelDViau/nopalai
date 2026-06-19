@@ -17,5 +17,12 @@ export function getStripe(): Stripe {
   return cached;
 }
 
+// Plus → STRIPE_PLUS_PRICE_ID, Pro → STRIPE_PREMIUM_PRICE_ID. The "PREMIUM"
+// env var name is kept for backwards compatibility with existing deployments.
 export const PLUS_PRICE_ID = process.env.STRIPE_PLUS_PRICE_ID || "";
-export const PREMIUM_PRICE_ID = process.env.STRIPE_PREMIUM_PRICE_ID || "";
+export const PRO_PRICE_ID = process.env.STRIPE_PREMIUM_PRICE_ID || "";
+
+/** Resolve the Stripe price id for a paid plan. */
+export function priceIdForPlan(plan: "plus" | "pro"): string {
+  return plan === "plus" ? PLUS_PRICE_ID : PRO_PRICE_ID;
+}

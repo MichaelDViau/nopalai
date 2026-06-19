@@ -42,12 +42,15 @@ const FAQS = [
 /** JSON-LD structured data for rich results (Organization, Product, FAQ). */
 export function StructuredData() {
   const data = [
-    { "@context": "https://schema.org", "@type": "Organization", name: SITE.name, url: SITE.url, slogan: SITE.tagline, description: SITE.description, logo: `${SITE.url}/icon.svg`, sameAs: ["https://twitter.com/nopalai"] },
+    { "@context": "https://schema.org", "@type": "Organization", name: SITE.name, url: SITE.url, slogan: SITE.tagline, description: SITE.description, logo: `${SITE.url}/icon.svg`, email: SITE.email, sameAs: [`https://twitter.com/${SITE.twitter.replace("@", "")}`] },
+    // NOTE: no `aggregateRating` here on purpose — fabricated review markup
+    // violates Google's structured-data policies and risks manual penalties.
+    // Add it back only when backed by real, verifiable reviews.
     { "@context": "https://schema.org", "@type": "SoftwareApplication", name: SITE.name, applicationCategory: "BusinessApplication", operatingSystem: "Web", description: SITE.description, inLanguage: ["es-MX", "en"], offers: [
       { "@type": "Offer", name: "Gratis", price: "0", priceCurrency: "MXN" },
       { "@type": "Offer", name: "Plus", price: "69", priceCurrency: "MXN" },
       { "@type": "Offer", name: "Pro", price: "199", priceCurrency: "MXN" },
-    ], aggregateRating: { "@type": "AggregateRating", ratingValue: "4.9", ratingCount: "2000" } },
+    ] },
     { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQS.map((faq) => ({ "@type": "Question", name: faq.q, acceptedAnswer: { "@type": "Answer", text: faq.a } })) },
   ];
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />;

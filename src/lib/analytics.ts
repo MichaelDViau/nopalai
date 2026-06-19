@@ -4,7 +4,6 @@ import posthog from "posthog-js";
 
 /** Canonical analytics events tracked across PostHog + GA4. */
 export const EVENTS = {
-  SIGNUP_STARTED: "signup_started",
   SIGNUP_COMPLETED: "signup_completed",
   CHAT_STARTED: "chat_started",
   MESSAGE_SENT: "message_sent",

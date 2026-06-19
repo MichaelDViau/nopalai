@@ -8,7 +8,7 @@
  * typed client collapses query results to `never`.
  */
 
-export type Plan = "free" | "premium";
+export type Plan = "free" | "plus" | "pro";
 export type MessageRole = "user" | "assistant";
 
 type ProfileInsert = {
@@ -103,6 +103,10 @@ export interface Database {
     Views: Record<string, never>;
     Functions: {
       increment_usage: {
+        Args: { p_user_id: string; p_day: string };
+        Returns: number;
+      };
+      decrement_usage: {
         Args: { p_user_id: string; p_day: string };
         Returns: number;
       };

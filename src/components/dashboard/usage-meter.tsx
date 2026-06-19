@@ -4,6 +4,7 @@ import { Zap } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/components/language-provider";
 import type { UsageState } from "@/types/chat";
 
 interface UsageMeterProps {
@@ -12,15 +13,20 @@ interface UsageMeterProps {
 }
 
 export function UsageMeter({ usage, onUpgrade }: UsageMeterProps) {
-  if (usage.plan === "premium") {
+  const { t } = useLanguage();
+
+  if (usage.plan !== "free") {
+    const planName = usage.plan === "pro" ? "Pro" : "Plus";
     return (
       <div className="rounded-xl border border-primary/20 bg-primary/5 p-3">
         <div className="flex items-center gap-2 text-sm font-medium text-primary">
           <Zap className="h-4 w-4 shrink-0 fill-primary" />
-          <span>Pro activo</span>
+          <span>
+            {planName} {t.dash.activeSuffix}
+          </span>
         </div>
         <p className="mt-1 text-xs text-muted-foreground">
-          Mensajes ilimitados y respuestas más rápidas.
+          {t.dash.unlimitedDesc}
         </p>
       </div>
     );
@@ -32,7 +38,7 @@ export function UsageMeter({ usage, onUpgrade }: UsageMeterProps) {
   return (
     <div className="rounded-xl border border-border bg-card p-3">
       <div className="flex items-center justify-between text-xs">
-        <span className="font-medium text-foreground">Uso de hoy</span>
+        <span className="font-medium text-foreground">{t.dash.todayUsage}</span>
         <span className={cn("tabular-nums", low ? "text-destructive" : "text-muted-foreground")}>
           {Math.min(usage.used, usage.limit)}/{usage.limit}
         </span>
@@ -50,10 +56,10 @@ export function UsageMeter({ usage, onUpgrade }: UsageMeterProps) {
         size="sm"
         className="mt-3 w-full"
         onClick={onUpgrade}
-        aria-label="Mejorar plan"
+        aria-label={t.dash.upgrade}
       >
         <Zap className="h-3.5 w-3.5 shrink-0" />
-        <span>Mejorar</span>
+        <span>{t.dash.improve}</span>
       </Button>
     </div>
   );

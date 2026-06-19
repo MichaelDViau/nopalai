@@ -39,6 +39,7 @@ export function Navbar() {
             size="sm"
             className="gap-1.5"
             onClick={() => setLang(lang === "es" ? "en" : "es")}
+            aria-label={t.nav.language}
           >
             <Languages className="h-4 w-4" />
             <span className="hidden sm:inline">{t.nav.language}</span>

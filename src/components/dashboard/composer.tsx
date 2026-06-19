@@ -5,6 +5,7 @@ import { ArrowUp, Square } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/components/language-provider";
 
 interface ComposerProps {
   value: string;
@@ -23,8 +24,9 @@ export function Composer({
   onStop,
   isLoading,
   disabled,
-  placeholder = "Escribe tu mensaje…",
+  placeholder,
 }: ComposerProps) {
+  const { t } = useLanguage();
   const ref = useRef<HTMLTextAreaElement>(null);
 
   // Auto-grow the textarea up to a max height.
@@ -57,7 +59,7 @@ export function Composer({
           disabled={disabled}
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder={placeholder}
+          placeholder={placeholder ?? `${t.dash.askPrefix}…`}
           enterKeyHint="send"
           className="max-h-[200px] flex-1 resize-none bg-transparent px-3 py-2.5 text-base leading-6 outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
         />
@@ -67,7 +69,7 @@ export function Composer({
             variant="secondary"
             className="h-10 w-10 shrink-0 rounded-xl"
             onClick={onStop}
-            aria-label="Detener"
+            aria-label={t.dash.stop}
           >
             <Square className="h-4 w-4 fill-current" />
           </Button>
@@ -77,14 +79,14 @@ export function Composer({
             className="h-10 w-10 shrink-0 rounded-xl transition-transform"
             onClick={onSubmit}
             disabled={disabled || !value.trim()}
-            aria-label="Enviar"
+            aria-label={t.dash.send}
           >
             <ArrowUp className="h-[18px] w-[18px]" />
           </Button>
         )}
       </div>
       <p className="mt-2 text-center text-[11px] leading-4 text-muted-foreground sm:text-xs">
-        NopalAI puede cometer errores. Verifica la información importante.
+        {t.dash.disclaimer}
       </p>
     </div>
   );

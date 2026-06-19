@@ -10,18 +10,15 @@ export type ModeId = "general" | "translation" | "school" | "content";
 
 export interface AssistantMode {
   id: ModeId;
-  name: string;
-  shortName: string;
-  description: string;
-  /** One-line marketing blurb for the landing page. */
-  blurb: string;
+  /** Icon shown in the mode selector and chat avatar contexts. */
   icon: LucideIcon;
-  /** Accent emoji used in compact UI. */
-  emoji: string;
+  /** Server-side system prompt that steers the model for this mode. */
   systemPrompt: string;
-  /** Suggested starter prompts shown on an empty chat. */
-  suggestions: string[];
 }
+
+// Display strings (mode labels + starter suggestions) live in the translation
+// dictionary (see `language-provider.tsx`, `dash.modes`) so they switch with
+// the UI language. This module owns only the AI-facing system prompts.
 
 const SHARED_GUIDELINES = `
 Reglas generales:
@@ -35,18 +32,7 @@ Reglas generales:
 export const MODES: Record<ModeId, AssistantMode> = {
   general: {
     id: "general",
-    name: "Asistente General",
-    shortName: "General",
-    description: "Preguntas, escritura, ideas y ayuda para el día a día.",
-    blurb: "Tu copiloto para cualquier pregunta, texto o idea.",
     icon: MessageSquare,
-    emoji: "💬",
-    suggestions: [
-      "Escríbeme un mensaje de WhatsApp para felicitar a un cliente",
-      "Ayúdame a redactar un correo formal para pedir una cotización",
-      "Dame ideas para organizar mejor mi semana",
-      "Resúmeme este texto en 3 puntos clave",
-    ],
     systemPrompt: `Eres NopalAI, un asistente de inteligencia artificial creado para LATAM. Eres servicial, directo y culturalmente cercano.
 
 Ayudas con preguntas generales, redacción de mensajes y correos, lluvia de ideas, resúmenes, organización, explicaciones y cualquier tarea del día a día.
@@ -56,18 +42,7 @@ ${SHARED_GUIDELINES}`,
 
   translation: {
     id: "translation",
-    name: "Traducción",
-    shortName: "Traducción",
-    description: "Traducciones naturales entre español, inglés y más idiomas.",
-    blurb: "Traducciones naturales entre español, inglés y más.",
     icon: Languages,
-    emoji: "🌐",
-    suggestions: [
-      "Traduce 'la cuenta, por favor' al inglés para un turista",
-      "Traduce este correo al inglés de forma formal",
-      "¿Cómo se dice 'estoy en la chamba' en inglés natural?",
-      "Tradúceme este mensaje del inglés al español",
-    ],
     systemPrompt: `Eres NopalAI en modo Traducción, un traductor experto y bilingüe, especializado en español latinoamericano e inglés (y otros idiomas comunes como francés, portugués e italiano).
 
 Traduces de forma natural y fluida, no literal: respetas el tono, el contexto y la intención. Cuando sea útil, ofreces una versión formal y una informal, y explicas brevemente algún matiz cultural o modismo. Para frases que un turista o cliente diría, busca que suenen como las diría un nativo.
@@ -79,18 +54,7 @@ ${SHARED_GUIDELINES}`,
 
   school: {
     id: "school",
-    name: "Escuela y Tareas",
-    shortName: "Escuela",
-    description: "Ayuda con tareas y estudio, explicada paso a paso.",
-    blurb: "Ayuda con tareas y estudio, explicada paso a paso.",
     icon: GraduationCap,
-    emoji: "🎓",
-    suggestions: [
-      "Explícame el teorema de Pitágoras con un ejemplo sencillo",
-      "Ayúdame a hacer un resumen de la Revolución Mexicana",
-      "¿Cómo resuelvo una ecuación de segundo grado?",
-      "Corrige y mejora mi ensayo",
-    ],
     systemPrompt: `Eres NopalAI en modo Escuela y Tareas, un tutor paciente para estudiantes en LATAM, desde primaria y secundaria hasta preparatoria y universidad.
 
 Ayudas con matemáticas, ciencias, español, historia, geografía, inglés, redacción de ensayos y técnicas de estudio. Explicas paso a paso y con ejemplos claros, adaptando el lenguaje al nivel del estudiante. Cuando el plan de estudios latinoamericano (SEP) sea relevante, tenlo en cuenta.
@@ -102,19 +66,7 @@ ${SHARED_GUIDELINES}`,
 
   content: {
     id: "content",
-    name: "Contenido y Marketing",
-    shortName: "Contenido",
-    description:
-      "Ideas, textos y guiones para redes sociales y marketing.",
-    blurb: "Ideas, copys y guiones para redes y marketing.",
     icon: Megaphone,
-    emoji: "📣",
-    suggestions: [
-      "Dame 5 ideas de contenido para Instagram esta semana",
-      "Escribe un guion para un Reel de TikTok de 30 segundos",
-      "Crea captions con hashtags para mi negocio",
-      "Hazme un calendario de contenido para 7 días",
-    ],
     systemPrompt: `Eres NopalAI en modo Contenido y Marketing, un experto en redes sociales y marketing digital para audiencias latinoamericanas.
 
 Creas contenido listo para publicar en Instagram, TikTok, Facebook, WhatsApp Business y YouTube: captions, hooks (ganchos), guiones para Reels y videos, ideas virales, hashtags relevantes, calendarios de contenido, copys para anuncios y campañas. Conoces las tendencias y el lenguaje de cada plataforma.

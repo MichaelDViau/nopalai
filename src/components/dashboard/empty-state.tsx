@@ -1,8 +1,9 @@
 "use client";
 
-import { getMode, type ModeId } from "@/lib/modes";
+import { type ModeId } from "@/lib/modes";
 import { LogoMark } from "@/components/brand/logo";
 import { ModeSelector } from "@/components/dashboard/mode-selector";
+import { useLanguage } from "@/components/language-provider";
 
 interface EmptyStateProps {
   mode: ModeId;
@@ -11,17 +12,15 @@ interface EmptyStateProps {
 }
 
 export function EmptyState({ mode, onModeChange, onPick }: EmptyStateProps) {
-  const active = getMode(mode);
+  const { t } = useLanguage();
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col items-center px-4 py-10 text-center">
       <LogoMark className="h-12 w-12" />
       <h1 className="mt-5 text-2xl font-semibold tracking-tight sm:text-3xl">
-        ¿En qué te ayudo hoy?
+        {t.dash.emptyHeading}
       </h1>
-      <p className="mt-2 text-muted-foreground">
-        Elige un asistente y empieza a escribir.
-      </p>
+      <p className="mt-2 text-muted-foreground">{t.dash.emptySub}</p>
 
       <ModeSelector
         value={mode}
@@ -31,10 +30,10 @@ export function EmptyState({ mode, onModeChange, onPick }: EmptyStateProps) {
 
       <div className="mt-8 w-full">
         <p className="mb-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
-          Prueba con
+          {t.dash.tryWith}
         </p>
         <div className="grid gap-2 sm:grid-cols-2">
-          {active.suggestions.map((s) => (
+          {t.dash.modes[mode].suggestions.map((s) => (
             <button
               key={s}
               onClick={() => onPick(s)}

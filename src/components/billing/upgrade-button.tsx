@@ -8,6 +8,7 @@ import { toast } from "sonner";
 
 import { Button, type ButtonProps } from "@/components/ui/button";
 import { track, EVENTS } from "@/lib/analytics";
+import { useLanguage } from "@/components/language-provider";
 
 interface UpgradeButtonProps extends ButtonProps {
   label?: string;
@@ -22,6 +23,7 @@ export function UpgradeButton({
   ...props
 }: UpgradeButtonProps) {
   const { isSignedIn } = useAuth();
+  const { t } = useLanguage();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -43,14 +45,12 @@ export function UpgradeButton({
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || "No se pudo iniciar el pago");
+        throw new Error(data.error || t.dash.errCheckout);
       }
       const { url } = await res.json();
       if (url) window.location.href = url;
     } catch (err) {
-      toast.error(
-        err instanceof Error ? err.message : "Algo salió mal. Intenta de nuevo.",
-      );
+      toast.error(err instanceof Error ? err.message : t.dash.errGeneric);
       setLoading(false);
     }
   }

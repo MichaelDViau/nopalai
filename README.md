@@ -2,10 +2,10 @@
 
 # 🌵 NopalAI
 
-### La IA que entiende México.
+### La inteligencia artificial para Latinoamérica.
 
-El asistente de inteligencia artificial creado para México: negocios, turismo,
-bienes raíces y vida diaria — en español mexicano.
+El asistente de inteligencia artificial creado para Latinoamérica: negocios,
+estudio, traducción, contenido y vida diaria — en español e inglés.
 
 </div>
 
@@ -14,7 +14,9 @@ bienes raíces y vida diaria — en español mexicano.
 NopalAI is a production-ready SaaS chat application built with Next.js 15, with a
 premium, minimalist design inspired by OpenAI, Linear and Stripe. It ships with
 authentication, a streaming AI chat dashboard, four specialized assistants,
-daily usage limits, a Stripe-powered Premium plan, analytics and full SEO.
+daily usage limits, Stripe-powered paid plans (Plus & Pro), analytics and full SEO.
+
+> **Canonical domain:** `https://nopal-ai.com` — set via `NEXT_PUBLIC_APP_URL`.
 
 ## ✨ Features
 
@@ -24,9 +26,18 @@ daily usage limits, a Stripe-powered Premium plan, analytics and full SEO.
 - **Chat management** — new chat, history, rename, delete, responsive sidebar, full mobile support.
 - **Auth** — sign up / login / logout / protected dashboard via Clerk.
 - **Free plan** — 20 messages/day tracked in the database, with ad placeholders.
-- **Premium plan** — 99 MXN/month via Stripe: no ads, faster responses, premium models, higher limits.
+- **Paid plans** — Plus (69 MXN/mo) & Pro (199 MXN/mo) via Stripe. The three
+  tiers are distinct end-to-end: the Stripe webhook records the purchased tier
+  from checkout metadata, and each plan has its own daily limits (Free 20 ·
+  Plus 1,000 · Pro 2,000) and model (Pro can use `OPENROUTER_PRO_MODEL`).
 - **Analytics** — PostHog + Google Analytics 4 (signups, chats, conversions, upgrades).
-- **SEO** — metadata, sitemap, robots, JSON-LD, dynamic OG image, optimized for "IA México".
+- **SEO** — metadata, sitemap, robots, JSON-LD, dynamic OG image, optimized for "IA Latinoamérica".
+
+> **⬆️ Upgrading an existing deployment?** Run
+> [`supabase/migrations/0001_three_tier_plans.sql`](./supabase/migrations/0001_three_tier_plans.sql)
+> once in the Supabase SQL Editor. It migrates legacy `premium` rows to `pro`,
+> widens the plan constraint to `free/plus/pro`, and adds the `decrement_usage`
+> refund function. Fresh installs get everything from `schema.sql`.
 - **Security** — rate limiting (daily usage), Zod input validation, XSS-safe rendering, secure server-only secrets, security headers.
 
 ## 🧱 Tech Stack
@@ -37,7 +48,7 @@ daily usage limits, a Stripe-powered Premium plan, analytics and full SEO.
 | Styling     | Tailwind CSS · shadcn/ui (Radix primitives)           |
 | Auth        | Clerk                                                  |
 | Database    | Supabase (Postgres)                                   |
-| AI          | OpenRouter (DeepSeek · Qwen · Llama) via Vercel AI SDK |
+| AI          | OpenRouter (Google Gemma 4 31B) via Vercel AI SDK     |
 | Payments    | Stripe Subscriptions                                  |
 | Analytics   | PostHog · Google Analytics 4                          |
 | Hosting     | Vercel                                                 |
@@ -114,10 +125,12 @@ Open [http://localhost:3000](http://localhost:3000).
 | `NEXT_PUBLIC_SUPABASE_URL` | ✅ | Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | ✅ | Supabase anon key |
 | `SUPABASE_SERVICE_ROLE_KEY` | ✅ | Supabase service role (server only) |
-| `OPENROUTER_API_KEY` | ✅ | OpenRouter API key; chat uses `google/gemma-4-31b-it:free` |
+| `OPENROUTER_API_KEY` | ✅ | OpenRouter API key; Free/Plus use `google/gemma-4-31b-it:free` |
+| `OPENROUTER_PRO_MODEL` | – | Optional stronger model for the Pro plan (falls back to the base model) |
 | `STRIPE_SECRET_KEY` | ✅ | Stripe secret key |
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | ✅ | Stripe publishable key |
-| `STRIPE_PREMIUM_PRICE_ID` | ✅ | Price ID for the 99 MXN plan |
+| `STRIPE_PLUS_PRICE_ID` | ✅ | Price ID for the Plus plan (69 MXN) |
+| `STRIPE_PREMIUM_PRICE_ID` | ✅ | Price ID for the Pro plan (199 MXN) |
 | `STRIPE_WEBHOOK_SECRET` | ✅ | Stripe webhook signing secret |
 | `NEXT_PUBLIC_POSTHOG_KEY` | – | PostHog project key |
 | `NEXT_PUBLIC_POSTHOG_HOST` | – | PostHog host (default US cloud) |
@@ -141,12 +154,14 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ### OpenRouter (AI)
 1. Create a key at [openrouter.ai/keys](https://openrouter.ai/keys).
-2. Models are configurable via env. Defaults route Free users to **DeepSeek** and
-   Premium users to **Qwen 72B**, with **Llama 3.1 70B** as a fallback family.
+2. Every plan is served by **Google Gemma 4 31B** (`google/gemma-4-31b-it:free`),
+   fixed in [`src/lib/openrouter.ts`](./src/lib/openrouter.ts). Branch inside
+   `modelForPlan()` to add per-tier models later.
 
 ### Stripe (Payments)
-1. Create a **recurring** Product/Price of **99 MXN / month**; copy its price ID
-   to `STRIPE_PREMIUM_PRICE_ID`.
+1. Create two **recurring** Products/Prices — **Plus (69 MXN/mo)** and
+   **Pro (199 MXN/mo)** — and copy their price IDs to `STRIPE_PLUS_PRICE_ID`
+   and `STRIPE_PREMIUM_PRICE_ID` respectively.
 2. Add a webhook endpoint pointing to `/api/stripe/webhook` and subscribe to:
    `checkout.session.completed`, `customer.subscription.created`,
    `customer.subscription.updated`, `customer.subscription.deleted`.
@@ -161,11 +176,12 @@ stripe listen --forward-to localhost:3000/api/stripe/webhook
 
 See [`supabase/schema.sql`](./supabase/schema.sql). Tables:
 
-- **profiles** — `id` (Clerk user id), `plan`, Stripe customer/subscription, status.
+- **profiles** — `id` (Clerk user id), `plan` (`free`/`plus`/`pro`), Stripe customer/subscription, status.
 - **chats** — `id`, `user_id`, `title`, `mode`, timestamps.
 - **messages** — `id`, `chat_id`, `user_id`, `role`, `content`.
 - **usage_daily** — `(user_id, day)` → `message_count` for daily limits.
 - **increment_usage(user_id, day)** — atomic counter to prevent races past the limit.
+- **decrement_usage(user_id, day)** — atomic refund (floored at 0) when generation fails before producing output.
 
 ## 📈 Analytics Events
 
@@ -215,5 +231,5 @@ npm run typecheck  # TypeScript (no emit)
 ---
 
 <div align="center">
-Hecho con orgullo para México 🇲🇽
+Hecho con orgullo para Latinoamérica 🌎
 </div>
