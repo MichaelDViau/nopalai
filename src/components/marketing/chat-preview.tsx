@@ -45,8 +45,6 @@ export function ChatPreview() {
     return () => clearInterval(t);
   }, []);
 
-  const tab = TABS[active];
-
   return (
     <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-2xl shadow-primary/10 dark:border-white/10 dark:bg-gradient-to-br dark:from-card dark:via-secondary/35 dark:to-background dark:shadow-black/40">
       {/* window chrome */}
@@ -78,23 +76,38 @@ export function ChatPreview() {
         ))}
       </div>
 
-      {/* conversation */}
-      <div className="space-y-5 p-5 sm:p-7">
-        <div className="flex justify-end">
-          <div className="max-w-[80%] rounded-2xl rounded-br-md bg-secondary px-4 py-2.5 text-[15px] text-foreground shadow-sm dark:bg-primary/20 dark:text-emerald-50 dark:ring-1 dark:ring-primary/25">
-            {tab.q}
-          </div>
-        </div>
-        <div className="flex gap-3">
-          <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center">
-            <LogoMark className="h-8 w-8" />
-          </div>
-          <div
-            key={tab.id}
-            className="max-w-[85%] animate-fade-in rounded-2xl rounded-tl-md bg-secondary/70 px-4 py-3 text-[15px] leading-7 text-foreground shadow-sm dark:bg-white/[0.07] dark:text-foreground dark:ring-1 dark:ring-white/10"
-          >
-            {tab.a}
-          </div>
+      {/* conversation — every state is stacked in the same grid cell, so the
+          panel is always as tall as the longest message and never resizes or
+          reflows when switching tabs. Only opacity changes between states. */}
+      <div className="p-5 sm:p-7">
+        <div className="grid">
+          {TABS.map((t, i) => {
+            const isActive = i === active;
+            return (
+              <div
+                key={t.id}
+                aria-hidden={!isActive}
+                className={cn(
+                  "col-start-1 row-start-1 space-y-5 transition-opacity duration-500 ease-out",
+                  isActive ? "opacity-100" : "pointer-events-none opacity-0",
+                )}
+              >
+                <div className="flex justify-end">
+                  <div className="max-w-[80%] rounded-2xl rounded-br-md bg-secondary px-4 py-2.5 text-[15px] text-foreground shadow-sm dark:bg-primary/20 dark:text-emerald-50 dark:ring-1 dark:ring-primary/25">
+                    {t.q}
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center">
+                    <LogoMark className="h-8 w-8" />
+                  </div>
+                  <div className="max-w-[85%] rounded-2xl rounded-tl-md bg-secondary/70 px-4 py-3 text-[15px] leading-7 text-foreground shadow-sm dark:bg-white/[0.07] dark:text-foreground dark:ring-1 dark:ring-white/10">
+                    {t.a}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
