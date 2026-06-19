@@ -183,6 +183,41 @@
   @apply border border-border px-3 py-1.5 text-left;
 }
 
+/* Long-form legal documents (privacy policy, terms of service). */
+.prose-legal {
+  @apply text-[15px] leading-7 text-muted-foreground;
+}
+.prose-legal h1 {
+  @apply mb-2 mt-0 text-3xl font-bold tracking-tight text-foreground sm:text-4xl;
+}
+.prose-legal h2 {
+  @apply mb-3 mt-10 scroll-mt-20 text-xl font-semibold tracking-tight text-foreground sm:text-2xl;
+}
+.prose-legal h3 {
+  @apply mb-2 mt-6 text-lg font-semibold text-foreground;
+}
+.prose-legal p {
+  @apply my-4;
+}
+.prose-legal ul {
+  @apply my-4 list-disc space-y-1.5 pl-6;
+}
+.prose-legal ol {
+  @apply my-4 list-decimal space-y-1.5 pl-6;
+}
+.prose-legal li {
+  @apply pl-1;
+}
+.prose-legal strong {
+  @apply font-semibold text-foreground;
+}
+.prose-legal a {
+  @apply font-medium text-primary underline underline-offset-2;
+}
+.prose-legal hr {
+  @apply my-8 border-border;
+}
+
 .typing-dot {
   @apply inline-block h-1.5 w-1.5 rounded-full bg-muted-foreground/60;
   animation: typing 1.2s infinite ease-in-out;
