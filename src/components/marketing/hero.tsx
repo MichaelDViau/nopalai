@@ -34,13 +34,16 @@ export function Hero() {
         />
       </div>
       <div className="container relative z-10 pb-14 pt-12 sm:pb-20 sm:pt-20">
-        <div className="mx-auto max-w-2xl text-center">
-          <h1 className="text-[2.5rem] font-bold leading-[1.08] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
-            {firstLine}
-            <br />
-            {secondLineLead}
-            <span className="text-primary">{t.hero.highlight}</span>
-            {after}
+        <div className="mx-auto max-w-4xl text-center">
+          {/* Fluid size keeps each line on a single row across viewports, so the
+              heading always reads as two lines (never wrapping to three). */}
+          <h1 className="text-[clamp(1rem,6vw,3.75rem)] font-bold leading-[1.05] tracking-tight text-foreground">
+            <span className="block whitespace-nowrap">{firstLine}</span>
+            <span className="block whitespace-nowrap">
+              {secondLineLead}
+              <span className="text-primary">{t.hero.highlight}</span>
+              {after}
+            </span>
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg">
             {t.hero.body}
