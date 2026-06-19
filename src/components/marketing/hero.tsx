@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
@@ -12,12 +13,32 @@ export function Hero() {
   const { t } = useLanguage();
   const [before, after] = t.hero.title.split(t.hero.highlight);
 
+  // Force the title onto exactly two lines. The highlighted region and the word
+  // that precedes it ("para" / "for") share the second line, so the heading
+  // reads "La inteligencia artificial" / "para Latinoamérica."
+  const lead = before.trimEnd();
+  const splitAt = lead.lastIndexOf(" ");
+  const firstLine = splitAt === -1 ? lead : lead.slice(0, splitAt);
+  const secondLineLead = splitAt === -1 ? "" : `${lead.slice(splitAt + 1)} `;
+
   return (
-    <section className="bg-secondary/30">
-      <div className="container pb-14 pt-12 sm:pb-20 sm:pt-20">
+    <section className="relative overflow-hidden bg-secondary/30">
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <Image
+          src="/cactus-hero.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover opacity-10 dark:opacity-20"
+        />
+      </div>
+      <div className="container relative z-10 pb-14 pt-12 sm:pb-20 sm:pt-20">
         <div className="mx-auto max-w-2xl text-center">
-          <h1 className="text-balance text-[2.5rem] font-bold leading-[1.08] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
-            {before}
+          <h1 className="text-[2.5rem] font-bold leading-[1.08] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+            {firstLine}
+            <br />
+            {secondLineLead}
             <span className="text-primary">{t.hero.highlight}</span>
             {after}
           </h1>
