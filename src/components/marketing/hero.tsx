@@ -7,6 +7,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { track, EVENTS } from "@/lib/analytics";
 import { ChatPreview } from "@/components/marketing/chat-preview";
+import { GooglePlayIcon, AppleIcon } from "@/components/brand/store-icons";
 import { useLanguage } from "@/components/language-provider";
 
 export function Hero() {
@@ -56,6 +57,33 @@ export function Hero() {
               <Link href="#demo">{t.hero.secondary}</Link>
             </Button>
           </div>
+
+          {/* App download. TODO: replace the empty hrefs with the Play Store /
+              App Store URLs once the apps are published. */}
+          <div className="mt-6">
+            <p className="text-sm text-muted-foreground">{t.hero.downloadApp}</p>
+            <div className="mt-2 flex items-center justify-center gap-6">
+              <a
+                href=""
+                onClick={(e) => e.preventDefault()}
+                aria-label="Android"
+                className="inline-flex items-center gap-1.5 font-semibold text-primary transition-opacity hover:opacity-80"
+              >
+                Android
+                <GooglePlayIcon className="h-5 w-5" />
+              </a>
+              <a
+                href=""
+                onClick={(e) => e.preventDefault()}
+                aria-label="Apple"
+                className="inline-flex items-center gap-1.5 font-semibold text-primary transition-opacity hover:opacity-80"
+              >
+                Apple
+                <AppleIcon className="h-5 w-5" />
+              </a>
+            </div>
+          </div>
+
           <p className="mt-4 text-sm font-medium text-primary">
             {t.hero.availability}
           </p>

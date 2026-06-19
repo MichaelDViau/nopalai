@@ -16,6 +16,7 @@ const dictionaries = {
       primary: "Comenzar gratis",
       secondary: "Ver demo",
       availability: "Agentes de IA Plus y Pro también disponibles",
+      downloadApp: "Descarga nuestra app en tu teléfono",
     },
     pricing: {
       title: "Simple, flexible y transparente",
@@ -57,6 +58,7 @@ const dictionaries = {
       primary: "Start free",
       secondary: "View demo",
       availability: "Plus and Pro AI agents also available",
+      downloadApp: "Download our app on your phone",
     },
     pricing: {
       title: "Simple, flexible, and transparent",
