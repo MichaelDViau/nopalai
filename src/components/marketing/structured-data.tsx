@@ -43,6 +43,7 @@ const FAQS = [
 export function StructuredData() {
   const data = [
     { "@context": "https://schema.org", "@type": "Organization", name: SITE.name, url: SITE.url, slogan: SITE.tagline, description: SITE.description, logo: `${SITE.url}/icon.svg`, email: SITE.email, sameAs: [`https://twitter.com/${SITE.twitter.replace("@", "")}`] },
+    { "@context": "https://schema.org", "@type": "WebSite", name: SITE.name, url: SITE.url, description: SITE.description, inLanguage: ["es", "en"], publisher: { "@type": "Organization", name: SITE.name, url: SITE.url } },
     // NOTE: no `aggregateRating` here on purpose — fabricated review markup
     // violates Google's structured-data policies and risks manual penalties.
     // Add it back only when backed by real, verifiable reviews.

@@ -9,11 +9,7 @@ export default function LegalLayout({
   return (
     <>
       <Navbar />
-      <main className="container max-w-3xl py-16">
-        <article className="prose-chat prose-headings:font-semibold">
-          {children}
-        </article>
-      </main>
+      <main className="container max-w-3xl py-16">{children}</main>
       <Footer />
     </>
   );

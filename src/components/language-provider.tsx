@@ -56,7 +56,7 @@ const dictionaries = {
       ],
     },
     cta: { title: "Prueba la inteligencia artificial para Latinoamérica", body: "Gratis para siempre. Sin tarjeta. Empieza en segundos.", prices: "Ver planes" },
-    footer: { privacy: "Privacidad", terms: "Términos", made: "Hecho para LATAM" },
+    footer: { privacy: "Privacidad", terms: "Términos", made: "Hecho para LATAM", solutions: "Soluciones", allSolutions: "Ver todas las soluciones", legal: "Legal", product: "Producto", home: "Inicio", pricing: "Precios" },
     dash: {
       openMenu: "Abrir menú",
       newChat: "Nuevo chat",
@@ -166,7 +166,7 @@ const dictionaries = {
       ],
     },
     cta: { title: "Try artificial intelligence for Latin America", body: "Free forever. No card. Start in seconds.", prices: "View plans" },
-    footer: { privacy: "Privacy", terms: "Terms", made: "Made for LATAM" },
+    footer: { privacy: "Privacy", terms: "Terms", made: "Made for LATAM", solutions: "Solutions", allSolutions: "View all solutions", legal: "Legal", product: "Product", home: "Home", pricing: "Pricing" },
     dash: {
       openMenu: "Open menu",
       newChat: "New chat",

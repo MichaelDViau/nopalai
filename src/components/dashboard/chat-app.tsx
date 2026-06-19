@@ -6,7 +6,7 @@ import { Menu, SquarePen } from "lucide-react";
 import { toast } from "sonner";
 
 import { cn, deriveChatTitle } from "@/lib/utils";
-import { getMode, type ModeId } from "@/lib/modes";
+import { getMode, isModeId, type ModeId } from "@/lib/modes";
 import { track, EVENTS } from "@/lib/analytics";
 import { useLanguage } from "@/components/language-provider";
 import { Button } from "@/components/ui/button";
@@ -98,6 +98,13 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
       /* ignore */
     }
     setPinLoaded(true);
+  }, []);
+
+  // Honor a `?mode=` deep-link from the marketing/landing CTAs so the assistant
+  // intent carries into a fresh chat. Read once on mount; ignored if invalid.
+  useEffect(() => {
+    const param = new URLSearchParams(window.location.search).get("mode");
+    if (param && isModeId(param)) setMode(param);
   }, []);
 
   const togglePin = useCallback(() => {
