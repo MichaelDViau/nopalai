@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { Menu, SquarePen } from "lucide-react";
 import { toast } from "sonner";
@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { cn, deriveChatTitle } from "@/lib/utils";
 import { getMode, type ModeId } from "@/lib/modes";
 import { track, EVENTS } from "@/lib/analytics";
+import { useLanguage } from "@/components/language-provider";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/brand/logo";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -63,6 +64,7 @@ function ConversationSkeleton() {
 }
 
 export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
+  const { t } = useLanguage();
   const [chats, setChats] = useState<ChatSummary[]>(initialChats);
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
   const [mode, setMode] = useState<ModeId>("general");
@@ -149,7 +151,7 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
         setUpgrade({ open: true, reason: "limit" });
         refreshUsage();
       } else {
-        toast.error("No se pudo generar la respuesta. Intenta de nuevo.");
+        toast.error(t.dash.errSend);
       }
     },
   });
@@ -170,11 +172,11 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
     const params = new URLSearchParams(window.location.search);
     if (params.get("upgraded") === "1") {
       track(EVENTS.PREMIUM_UPGRADED);
-      toast.success("¡Bienvenido a Pro! 🎉 Disfruta sin límites.");
+      toast.success(t.dash.upgraded);
       refreshUsage();
       window.history.replaceState({}, "", "/dashboard");
     }
-  }, [refreshUsage]);
+  }, [refreshUsage, t.dash.upgraded]);
 
   async function ensureChat(text: string): Promise<string | null> {
     if (activeChatId) return activeChatId;
@@ -199,7 +201,7 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
       track(EVENTS.CHAT_STARTED, { mode });
       return chat.id;
     } catch {
-      toast.error("No se pudo crear el chat.");
+      toast.error(t.dash.errCreate);
       return null;
     }
   }
@@ -251,7 +253,7 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
         );
       }
     } catch {
-      toast.error("No se pudo abrir el chat.");
+      toast.error(t.dash.errOpen);
     } finally {
       setLoadingMessages(false);
     }
@@ -275,7 +277,7 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
         body: JSON.stringify({ title }),
       });
     } catch {
-      toast.error("No se pudo renombrar.");
+      toast.error(t.dash.errRename);
     }
   }
 
@@ -285,7 +287,7 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
     try {
       await fetch(`/api/chats/${id}`, { method: "DELETE" });
     } catch {
-      toast.error("No se pudo eliminar.");
+      toast.error(t.dash.errDelete);
     }
   }
 
@@ -299,7 +301,6 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
     track(EVENTS.MODE_SELECTED, { mode: next });
   }
 
-  const activeMode = useMemo(() => getMode(mode), [mode]);
   const hasMessages = messages.length > 0;
 
   const railExpanded = pinned || hovered || interacting;
@@ -350,7 +351,7 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
           side="left"
           className="w-[300px] max-w-[88vw] border-r border-border/60 bg-background/90 p-0 backdrop-blur-xl backdrop-saturate-150"
         >
-          <SheetTitle className="sr-only">Navegación</SheetTitle>
+          <SheetTitle className="sr-only">{t.dash.openMenu}</SheetTitle>
           <Sidebar
             chats={chats}
             activeChatId={activeChatId}
@@ -380,7 +381,7 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
               size="icon"
               className="h-9 w-9 md:hidden"
               onClick={() => setMobileNavOpen(true)}
-              aria-label="Abrir menú"
+              aria-label={t.dash.openMenu}
             >
               <Menu className="h-5 w-5" />
             </Button>
@@ -392,7 +393,7 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
               size="icon"
               className="h-9 w-9 md:hidden"
               onClick={newChat}
-              aria-label="Nuevo chat"
+              aria-label={t.dash.newChat}
             >
               <SquarePen className="h-[18px] w-[18px]" />
             </Button>
@@ -434,7 +435,7 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
             onStop={stop}
             isLoading={isStreaming}
             disabled={loadingMessages}
-            placeholder={`Pregúntale a ${activeMode.shortName}…`}
+            placeholder={`${t.dash.askPrefix} ${t.dash.modes[mode].name}…`}
           />
         </div>
       </main>

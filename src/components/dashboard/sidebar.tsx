@@ -5,6 +5,7 @@ import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
 import {
   Home,
+  Languages,
   MessageSquare,
   MoreHorizontal,
   PanelLeftClose,
@@ -19,6 +20,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { useLanguage } from "@/components/language-provider";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -128,12 +130,14 @@ export function Sidebar({
   onTogglePin,
   onInteractingChange,
 }: SidebarProps) {
+  const { t, lang, setLang } = useLanguage();
   const [renaming, setRenaming] = useState<ChatSummary | null>(null);
   const [deleting, setDeleting] = useState<ChatSummary | null>(null);
   const [title, setTitle] = useState("");
 
   const ToggleIcon = pinned ? PanelLeftClose : PanelLeftOpen;
-  const toggleLabel = pinned ? "Contraer barra lateral" : "Fijar barra lateral";
+  const toggleLabel = pinned ? t.dash.collapse : t.dash.pin;
+  const toggleLang = () => setLang(lang === "es" ? "en" : "es");
 
   return (
     <TooltipProvider delayDuration={120}>
@@ -155,17 +159,31 @@ export function Sidebar({
                     className="h-9 w-9 text-muted-foreground"
                     asChild
                   >
-                    <Link href="/" aria-label="Inicio">
+                    <Link href="/" aria-label={t.dash.home}>
                       <Home className="h-[18px] w-[18px]" />
                     </Link>
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent side="bottom">Inicio</TooltipContent>
+                <TooltipContent side="bottom">{t.dash.home}</TooltipContent>
               </Tooltip>
               <ThemeToggle
                 variant="icon"
                 className="h-9 w-9 text-muted-foreground"
               />
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-9 w-9 text-muted-foreground"
+                    onClick={toggleLang}
+                    aria-label={t.nav.language}
+                  >
+                    <Languages className="h-[18px] w-[18px]" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">{t.nav.language}</TooltipContent>
+              </Tooltip>
             </div>
           )}
           {onTogglePin &&
@@ -210,13 +228,13 @@ export function Sidebar({
                 <button
                   type="button"
                   onClick={onNewChat}
-                  aria-label="Nuevo chat"
+                  aria-label={t.dash.newChat}
                   className="flex h-10 w-10 items-center justify-center self-center rounded-lg bg-primary text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
                 >
                   <Plus className="h-[18px] w-[18px]" />
                 </button>
               </TooltipTrigger>
-              <TooltipContent side="right">Nuevo chat</TooltipContent>
+              <TooltipContent side="right">{t.dash.newChat}</TooltipContent>
             </Tooltip>
           ) : (
             <Button
@@ -224,15 +242,21 @@ export function Sidebar({
               className="h-10 w-full justify-start gap-3 rounded-lg shadow-sm"
             >
               <Plus className="h-[18px] w-[18px] shrink-0" />
-              <span className="truncate">Nuevo chat</span>
+              <span className="truncate">{t.dash.newChat}</span>
             </Button>
           )}
 
-          {/* In the collapsed rail, Home + theme live here as icons. */}
+          {/* In the collapsed rail, Home + theme + language live here as icons. */}
           {collapsed && (
             <>
-              <NavRow icon={Home} label="Inicio" collapsed href="/" />
+              <NavRow icon={Home} label={t.dash.home} collapsed href="/" />
               <ThemeToggle variant="nav" collapsed />
+              <NavRow
+                icon={Languages}
+                label={t.nav.language}
+                collapsed
+                onClick={toggleLang}
+              />
             </>
           )}
         </div>
@@ -242,12 +266,12 @@ export function Sidebar({
           <div className="chat-scroll min-h-0 flex-1 px-2 py-2">
             {chats.length === 0 ? (
               <p className="px-3 py-8 text-center text-sm text-muted-foreground">
-                Tus conversaciones aparecerán aquí.
+                {t.dash.emptyChats}
               </p>
             ) : (
               <>
                 <p className="px-3 pb-1.5 pt-1 text-xs font-medium uppercase tracking-wider text-muted-foreground/70">
-                  Recientes
+                  {t.dash.recents}
                 </p>
                 <ul className="space-y-0.5">
                   {chats.map((chat) => (
@@ -267,14 +291,14 @@ export function Sidebar({
                         >
                           <MessageSquare className="h-4 w-4 shrink-0 text-muted-foreground" />
                           <span className="min-w-0 flex-1 truncate">
-                            {chat.title || "Nuevo chat"}
+                            {chat.title || t.dash.newChat}
                           </span>
                         </button>
                         <DropdownMenu onOpenChange={onInteractingChange}>
                           <DropdownMenuTrigger asChild>
                             <button
                               className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-all hover:bg-background focus:opacity-100 group-hover:opacity-100 data-[state=open]:bg-background data-[state=open]:opacity-100"
-                              aria-label="Opciones del chat"
+                              aria-label={t.dash.chatOptions}
                             >
                               <MoreHorizontal className="h-4 w-4" />
                             </button>
@@ -287,14 +311,14 @@ export function Sidebar({
                               }}
                             >
                               <Pencil className="h-4 w-4" />
-                              Renombrar
+                              {t.dash.rename}
                             </DropdownMenuItem>
                             <DropdownMenuItem
                               className="text-destructive focus:text-destructive"
                               onClick={() => setDeleting(chat)}
                             >
                               <Trash2 className="h-4 w-4" />
-                              Eliminar
+                              {t.dash.delete}
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -318,19 +342,19 @@ export function Sidebar({
         >
           {collapsed ? (
             <>
-              {usage.plan !== "premium" && (
+              {usage.plan === "free" && (
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <button
                       type="button"
                       onClick={onUpgrade}
-                      aria-label="Mejorar plan"
+                      aria-label={t.dash.upgrade}
                       className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors hover:bg-primary/20"
                     >
                       <Zap className="h-[18px] w-[18px]" />
                     </button>
                   </TooltipTrigger>
-                  <TooltipContent side="right">Mejorar plan</TooltipContent>
+                  <TooltipContent side="right">{t.dash.upgrade}</TooltipContent>
                 </Tooltip>
               )}
               <UserButton
@@ -348,7 +372,7 @@ export function Sidebar({
                   afterSignOutUrl="/"
                 />
                 <span className="truncate text-sm font-medium text-muted-foreground">
-                  Mi cuenta
+                  {t.dash.account}
                 </span>
               </div>
             </>
@@ -359,13 +383,13 @@ export function Sidebar({
         <Dialog open={!!renaming} onOpenChange={(o) => !o && setRenaming(null)}>
           <DialogContent className="max-w-sm">
             <DialogHeader>
-              <DialogTitle>Renombrar chat</DialogTitle>
+              <DialogTitle>{t.dash.renameTitle}</DialogTitle>
             </DialogHeader>
             <Input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               maxLength={80}
-              placeholder="Nombre del chat"
+              placeholder={t.dash.chatNamePlaceholder}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && renaming && title.trim()) {
                   onRename(renaming.id, title.trim());
@@ -376,7 +400,7 @@ export function Sidebar({
             />
             <DialogFooter>
               <Button variant="outline" onClick={() => setRenaming(null)}>
-                Cancelar
+                {t.dash.cancel}
               </Button>
               <Button
                 disabled={!title.trim()}
@@ -385,7 +409,7 @@ export function Sidebar({
                   setRenaming(null);
                 }}
               >
-                Guardar
+                {t.dash.save}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -395,15 +419,16 @@ export function Sidebar({
         <Dialog open={!!deleting} onOpenChange={(o) => !o && setDeleting(null)}>
           <DialogContent className="max-w-sm">
             <DialogHeader>
-              <DialogTitle>¿Eliminar este chat?</DialogTitle>
+              <DialogTitle>{t.dash.deleteTitle}</DialogTitle>
             </DialogHeader>
             <p className="text-sm text-muted-foreground">
-              Se eliminará “{deleting?.title}” y todos sus mensajes. Esta acción
-              no se puede deshacer.
+              {t.dash.deleteBodyPre}
+              {deleting?.title}
+              {t.dash.deleteBodyPost}
             </p>
             <DialogFooter>
               <Button variant="outline" onClick={() => setDeleting(null)}>
-                Cancelar
+                {t.dash.cancel}
               </Button>
               <Button
                 variant="destructive"
@@ -412,7 +437,7 @@ export function Sidebar({
                   setDeleting(null);
                 }}
               >
-                Eliminar
+                {t.dash.delete}
               </Button>
             </DialogFooter>
           </DialogContent>

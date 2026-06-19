@@ -16,7 +16,7 @@ export interface StoredMessage {
 }
 
 export interface UsageState {
-  plan: "free" | "premium";
+  plan: "free" | "plus" | "pro";
   used: number;
   limit: number;
   remaining: number;

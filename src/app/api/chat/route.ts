@@ -7,7 +7,11 @@ import { chatRequestSchema } from "@/lib/validation";
 import { getMode } from "@/lib/modes";
 import { modelForPlan } from "@/lib/openrouter";
 import { getOrCreateProfile, planOf } from "@/lib/profile";
-import { consumeDailyMessage, limitForPlan } from "@/lib/usage";
+import {
+  consumeDailyMessage,
+  limitForPlan,
+  refundDailyMessage,
+} from "@/lib/usage";
 import {
   appendMessage,
   ensureChatOwnership,
@@ -66,13 +70,16 @@ export async function POST(req: Request) {
   // ---- Daily limit (atomic, race-free) ----
   const { allowed } = await consumeDailyMessage(userId, limit);
   if (!allowed) {
+    // We incremented to detect the breach; give that message back so the
+    // counter reflects reality and the user isn't charged for a blocked turn.
+    await refundDailyMessage(userId).catch(() => {});
     return NextResponse.json(
       {
         error: "limit_reached",
         message:
-          plan === "premium"
-            ? "Alcanzaste el límite diario de uso justo."
-            : "Alcanzaste tu límite gratuito de 20 mensajes hoy. Mejora a Pro para continuar.",
+          plan === "free"
+            ? "Alcanzaste tu límite gratuito de 20 mensajes hoy. Mejora a Plus o Pro para continuar."
+            : "Alcanzaste el límite diario de uso justo.",
         limit,
       },
       { status: 429 },
@@ -90,17 +97,31 @@ export async function POST(req: Request) {
     .filter((m) => m.role === "user" || m.role === "assistant")
     .map((m) => ({ role: m.role, content: m.content }));
 
+  const maxTokens = plan === "pro" ? 2048 : plan === "plus" ? 1536 : 1024;
+
+  // Refund the consumed message at most once if generation yields nothing,
+  // whether that surfaces via onError or an empty onFinish.
+  let refunded = false;
+  const refundOnce = async () => {
+    if (refunded) return;
+    refunded = true;
+    await refundDailyMessage(userId).catch(() => {});
+  };
+
   const result = streamText({
     model: modelForPlan(plan),
     system: assistant.systemPrompt,
     messages: coreMessages,
     temperature: 0.6,
-    maxTokens: plan === "premium" ? 2048 : 1024,
+    maxTokens,
     maxRetries: 2,
     // Stop generating (and stop paying) if the user navigates away.
     abortSignal: req.signal,
     async onFinish({ text }) {
-      if (!text.trim()) return;
+      if (!text.trim()) {
+        await refundOnce();
+        return;
+      }
       await Promise.all([
         appendMessage(userId, chatId, "assistant", text),
         lastUser
@@ -108,6 +129,8 @@ export async function POST(req: Request) {
           : Promise.resolve(),
       ]);
     },
+    // Provider/stream failure produced no usable answer — refund.
+    onError: refundOnce,
   });
 
   return result.toDataStreamResponse({

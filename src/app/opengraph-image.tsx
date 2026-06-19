@@ -28,7 +28,7 @@ export default function OpengraphImage() {
               width: 72,
               height: 72,
               borderRadius: 18,
-              background: "#1c825b",
+              background: SITE.brandColor,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -40,7 +40,7 @@ export default function OpengraphImage() {
             N
           </div>
           <div style={{ fontSize: 40, fontWeight: 700, color: "#16201c" }}>
-            Nopal<span style={{ color: "#1c825b" }}>AI</span>
+            Nopal<span style={{ color: SITE.brandColor }}>AI</span>
           </div>
         </div>
         <div

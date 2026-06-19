@@ -1,6 +1,6 @@
 import "server-only";
 import { getSupabaseAdmin } from "@/lib/supabase";
-import { FREE_DAILY_LIMIT, PREMIUM_DAILY_LIMIT } from "@/lib/constants";
+import { DAILY_LIMITS } from "@/lib/constants";
 import type { Plan } from "@/types/database";
 
 // Single reference timezone for the daily-limit reset. We anchor on Mexico
@@ -23,7 +23,7 @@ export function resetDay(): string {
 }
 
 export function limitForPlan(plan: Plan): number {
-  return plan === "premium" ? PREMIUM_DAILY_LIMIT : FREE_DAILY_LIMIT;
+  return DAILY_LIMITS[plan] ?? DAILY_LIMITS.free;
 }
 
 export interface UsageStatus {
@@ -66,6 +66,20 @@ export async function incrementUsage(userId: string): Promise<number> {
 
   if (error) throw error;
   return data ?? 0;
+}
+
+/**
+ * Atomically give one message back to today's counter (floored at 0). Used to
+ * refund a consumed message when generation fails before producing any output,
+ * so transient provider errors don't burn a user's daily quota.
+ */
+export async function refundDailyMessage(userId: string): Promise<void> {
+  const supabase = getSupabaseAdmin();
+  const { error } = await supabase.rpc("decrement_usage", {
+    p_user_id: userId,
+    p_day: resetDay(),
+  });
+  if (error) throw error;
 }
 
 /**

@@ -43,17 +43,25 @@ export async function getOrCreateProfile(
   return created;
 }
 
-/** Is this profile on an active Pro subscription? */
-export function isPro(profile: Pick<Profile, "plan" | "subscription_status">): boolean {
+/** Does this profile have an active (or trialing) paid subscription? */
+export function hasActiveSubscription(
+  profile: Pick<Profile, "plan" | "subscription_status">,
+): boolean {
   return (
-    profile.plan === "premium" &&
+    (profile.plan === "plus" || profile.plan === "pro") &&
     (profile.subscription_status === "active" ||
       profile.subscription_status === "trialing")
   );
 }
 
+/**
+ * The plan a user is *effectively* on right now. We honor the stored tier
+ * (plus/pro) only while the Stripe subscription is active/trialing; otherwise
+ * the user falls back to free (e.g. past-due or canceled but row not yet
+ * cleared). This is the value every limit/feature gate should use.
+ */
 export function planOf(
   profile: Pick<Profile, "plan" | "subscription_status">,
 ): Plan {
-  return isPro(profile) ? "premium" : "free";
+  return hasActiveSubscription(profile) ? profile.plan : "free";
 }

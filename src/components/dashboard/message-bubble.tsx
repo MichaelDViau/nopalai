@@ -6,6 +6,7 @@ import remarkGfm from "remark-gfm";
 import { Check, Copy } from "lucide-react";
 
 import { LogoMark } from "@/components/brand/logo";
+import { useLanguage } from "@/components/language-provider";
 
 export interface ChatMessage {
   id: string;
@@ -14,6 +15,7 @@ export interface ChatMessage {
 }
 
 function CopyButton({ text }: { text: string }) {
+  const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
 
   async function copy() {
@@ -31,15 +33,15 @@ function CopyButton({ text }: { text: string }) {
     <button
       onClick={copy}
       className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-muted-foreground opacity-0 transition-opacity hover:bg-accent group-hover:opacity-100"
-      aria-label="Copiar respuesta"
+      aria-label={t.dash.copyAria}
     >
       {copied ? (
         <>
-          <Check className="h-3 w-3" /> Copiado
+          <Check className="h-3 w-3" /> {t.dash.copied}
         </>
       ) : (
         <>
-          <Copy className="h-3 w-3" /> Copiar
+          <Copy className="h-3 w-3" /> {t.dash.copy}
         </>
       )}
     </button>

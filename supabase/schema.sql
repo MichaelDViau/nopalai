@@ -10,7 +10,7 @@
 create table if not exists public.profiles (
   id                    text primary key,            -- Clerk user id
   email                 text,
-  plan                  text not null default 'free' check (plan in ('free','premium')),
+  plan                  text not null default 'free' check (plan in ('free','plus','pro')),
   stripe_customer_id    text unique,
   stripe_subscription_id text,
   subscription_status   text,
@@ -74,6 +74,27 @@ begin
   returning message_count into new_count;
 
   return new_count;
+end;
+$$;
+
+-- =====================================================================
+-- Atomic usage decrement — refunds a message when generation fails
+-- before producing output. Floored at 0 so it can never go negative.
+-- =====================================================================
+create or replace function public.decrement_usage(p_user_id text, p_day date)
+returns integer
+language plpgsql
+security definer
+as $$
+declare
+  new_count integer;
+begin
+  update public.usage_daily
+    set message_count = greatest(0, message_count - 1)
+    where user_id = p_user_id and day = p_day
+    returning message_count into new_count;
+
+  return coalesce(new_count, 0);
 end;
 $$;
 

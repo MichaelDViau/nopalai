@@ -26,15 +26,18 @@ daily usage limits, Stripe-powered paid plans (Plus & Pro), analytics and full S
 - **Chat management** — new chat, history, rename, delete, responsive sidebar, full mobile support.
 - **Auth** — sign up / login / logout / protected dashboard via Clerk.
 - **Free plan** — 20 messages/day tracked in the database, with ad placeholders.
-- **Paid plans** — Plus (69 MXN/mo) & Pro (199 MXN/mo) via Stripe: no ads, faster responses, higher limits.
+- **Paid plans** — Plus (69 MXN/mo) & Pro (199 MXN/mo) via Stripe. The three
+  tiers are distinct end-to-end: the Stripe webhook records the purchased tier
+  from checkout metadata, and each plan has its own daily limits (Free 20 ·
+  Plus 1,000 · Pro 2,000) and model (Pro can use `OPENROUTER_PRO_MODEL`).
 - **Analytics** — PostHog + Google Analytics 4 (signups, chats, conversions, upgrades).
 - **SEO** — metadata, sitemap, robots, JSON-LD, dynamic OG image, optimized for "IA Latinoamérica".
 
-> **ℹ️ Pricing note:** the marketing site presents three tiers (Free / Plus / Pro),
-> but the backend currently maps every paid subscription to a single `premium`
-> plan with identical limits — i.e. Plus and Pro behave the same today. Making
-> the tiers behave distinctly (schema + webhook + limits) is the top product
-> follow-up. See [`src/lib/constants.ts`](./src/lib/constants.ts).
+> **⬆️ Upgrading an existing deployment?** Run
+> [`supabase/migrations/0001_three_tier_plans.sql`](./supabase/migrations/0001_three_tier_plans.sql)
+> once in the Supabase SQL Editor. It migrates legacy `premium` rows to `pro`,
+> widens the plan constraint to `free/plus/pro`, and adds the `decrement_usage`
+> refund function. Fresh installs get everything from `schema.sql`.
 - **Security** — rate limiting (daily usage), Zod input validation, XSS-safe rendering, secure server-only secrets, security headers.
 
 ## 🧱 Tech Stack
@@ -122,7 +125,8 @@ Open [http://localhost:3000](http://localhost:3000).
 | `NEXT_PUBLIC_SUPABASE_URL` | ✅ | Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | ✅ | Supabase anon key |
 | `SUPABASE_SERVICE_ROLE_KEY` | ✅ | Supabase service role (server only) |
-| `OPENROUTER_API_KEY` | ✅ | OpenRouter API key; chat uses `google/gemma-4-31b-it:free` |
+| `OPENROUTER_API_KEY` | ✅ | OpenRouter API key; Free/Plus use `google/gemma-4-31b-it:free` |
+| `OPENROUTER_PRO_MODEL` | – | Optional stronger model for the Pro plan (falls back to the base model) |
 | `STRIPE_SECRET_KEY` | ✅ | Stripe secret key |
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | ✅ | Stripe publishable key |
 | `STRIPE_PLUS_PRICE_ID` | ✅ | Price ID for the Plus plan (69 MXN) |
@@ -172,11 +176,12 @@ stripe listen --forward-to localhost:3000/api/stripe/webhook
 
 See [`supabase/schema.sql`](./supabase/schema.sql). Tables:
 
-- **profiles** — `id` (Clerk user id), `plan`, Stripe customer/subscription, status.
+- **profiles** — `id` (Clerk user id), `plan` (`free`/`plus`/`pro`), Stripe customer/subscription, status.
 - **chats** — `id`, `user_id`, `title`, `mode`, timestamps.
 - **messages** — `id`, `chat_id`, `user_id`, `role`, `content`.
 - **usage_daily** — `(user_id, day)` → `message_count` for daily limits.
 - **increment_usage(user_id, day)** — atomic counter to prevent races past the limit.
+- **decrement_usage(user_id, day)** — atomic refund (floored at 0) when generation fails before producing output.
 
 ## 📈 Analytics Events
 

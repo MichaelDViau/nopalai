@@ -10,6 +10,10 @@ export const SITE = {
   locale: "es_MX",
   twitter: "@nopalai",
   email: "hola@nopal-ai.com",
+  // Single brand hue. Matches the light-theme `--primary` token (deep forest
+  // green) so the browser chrome, PWA manifest, OG image and Clerk widget all
+  // agree with the in-app UI.
+  brandColor: "#3F5B45",
   keywords: [
     "IA LATAM",
     "inteligencia artificial LATAM",
@@ -23,32 +27,36 @@ export const PLANS = {
   free: {
     name: "Gratis",
     price: 0,
+    // Hard daily cap for the free tier.
     dailyMessages: 20,
     features: ["Límite de 20 mensajes al día", "Acceso al chat", "Historial de conversaciones", "Sin tarjeta de crédito"],
   },
   plus: {
     name: "Plus",
     price: 69,
+    // "Unlimited" in marketing terms — a generous fair-use ceiling.
     dailyMessages: 1000,
     features: ["Mensajes ilimitados", "Sin anuncios", "Respuestas más rápidas", "Historial de conversaciones"],
   },
   pro: {
     name: "Pro",
     price: 199,
-    dailyMessages: 1000,
+    // Higher fair-use ceiling than Plus ("uso ampliado") + premium model.
+    dailyMessages: 2000,
     features: ["Uso ampliado", "Modelos premium", "Acceso prioritario", "Soporte preferente"],
   },
 } as const;
 
-
 /**
- * Backend plan identity. NOTE: the marketing site presents three tiers
- * (Free / Plus / Pro), but the database and billing currently collapse every
- * *paid* subscription into a single "premium" plan. Plus and Pro therefore
- * share the same limits today; making them behave distinctly is a tracked
- * follow-up (see the audit report). Keep this type as the source of truth for
- * anything that gates features by plan.
+ * Backend plan identity — the source of truth for anything that gates features
+ * or limits by plan. Mirrors the three marketing tiers end-to-end: the Stripe
+ * webhook records the purchased tier from checkout metadata, and Plus/Pro have
+ * distinct limits (and models, via `modelForPlan`).
  */
-export type PlanId = "free" | "premium";
-export const FREE_DAILY_LIMIT = PLANS.free.dailyMessages;
-export const PREMIUM_DAILY_LIMIT = PLANS.pro.dailyMessages;
+export type PlanId = "free" | "plus" | "pro";
+
+export const DAILY_LIMITS: Record<PlanId, number> = {
+  free: PLANS.free.dailyMessages,
+  plus: PLANS.plus.dailyMessages,
+  pro: PLANS.pro.dailyMessages,
+};
