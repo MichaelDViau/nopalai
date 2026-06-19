@@ -3,15 +3,39 @@ import { SITE } from "@/lib/constants";
 const FAQS = [
   {
     q: "¿Qué es NopalAI?",
-    a: "La inteligencia artificial para Latinoamérica. Accede a respuestas de alta calidad, traducciones, apoyo académico, generación de contenido y asistencia profesional en segundos. Toda la potencia de los mejores modelos de IA del mundo, adaptada a las necesidades de LATAM y disponible a un precio accesible para todos.",
+    a: "La inteligencia artificial para Latinoamérica. Nopal te ayuda a obtener respuestas, aprender, traducir, crear contenido y ser más productivo, todo desde una sola plataforma. Simple, rápido y accesible, está diseñado para acompañarte en tus estudios, trabajo y proyectos, con una experiencia pensada para las necesidades de Latinoamérica.",
   },
   {
     q: "¿Es gratis?",
-    a: "Empieza gratis, sin tarjeta de crédito. Cuando necesites más potencia, desbloquea Plus o Pro y accede a agentes de IA avanzados diseñados para tareas más exigentes, generación de contenido, productividad y trabajo profesional. Tecnología de primer nivel, con precios accesibles para Latinoamérica.",
+    a: "Empieza gratis y descubre todo lo que Nopal puede hacer por ti. Sin tarjeta de crédito. Cuando necesites más, desbloquea Plus o Pro para obtener mayor velocidad, más capacidad y una experiencia diseñada para quienes usan la inteligencia artificial todos los días. Potente, simple y accesible. Pensado para Latinoamérica.",
   },
   {
     q: "¿Puedo cancelar cuando quiera?",
-    a: "Sí. Tienes total libertad para cancelar tu suscripción cuando lo desees. Tu acceso permanecerá activo hasta el final del periodo de facturación ya pagado, sin penalizaciones ni cargos ocultos.",
+    a: "Sí. Puedes cancelar en cualquier momento. Tu suscripción seguirá activa hasta el final del periodo ya pagado. Sin contratos, sin cargos ocultos y con total libertad para volver cuando quieras.",
+  },
+  {
+    q: "¿Necesito una tarjeta de crédito para empezar?",
+    a: "No. Puedes comenzar a usar Nopal gratis sin necesidad de ingresar una tarjeta de crédito. Regístrate y empieza a conversar en segundos.",
+  },
+  {
+    q: "¿Cuál es la diferencia entre Gratis, Plus y Pro?",
+    a: "El plan Gratis es ideal para comenzar y descubrir todo lo que Nopal puede hacer por ti. Plus ofrece una experiencia más rápida y mayor capacidad para quienes usan la inteligencia artificial todos los días. Pro está diseñado para usuarios que necesitan el máximo rendimiento para trabajo, estudio y proyectos más exigentes.",
+  },
+  {
+    q: "¿Mis conversaciones son privadas?",
+    a: "Sí. La privacidad y seguridad de tus datos son importantes para nosotros. Tus conversaciones se manejan de forma segura para ofrecerte la mejor experiencia posible.",
+  },
+  {
+    q: "¿Puedo usar Nopal desde mi celular?",
+    a: "Sí. Nopal funciona perfectamente en teléfonos, tabletas y computadoras, para que puedas acceder a tus conversaciones y herramientas desde cualquier lugar.",
+  },
+  {
+    q: "¿Qué métodos de pago aceptan?",
+    a: "Aceptamos múltiples métodos de pago para que puedas elegir el que mejor se adapte a ti. Puedes pagar con tarjetas de crédito y débito, PayPal, Mercado Pago, OXXO y otras opciones disponibles en tu región. Todas las transacciones son seguras y puedes administrar o cancelar tu suscripción en cualquier momento.",
+  },
+  {
+    q: "¿Habrá nuevas funciones en el futuro?",
+    a: "Sí. Estamos mejorando Nopal constantemente y trabajamos en nuevas funciones y herramientas para ayudarte a estudiar, trabajar, crear contenido y ser más productivo cada día.",
   },
 ];
 
