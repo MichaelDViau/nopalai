@@ -62,12 +62,12 @@ export function Hero() {
               App Store URLs once the apps are published. */}
           <div className="mt-6">
             <p className="text-sm text-muted-foreground">{t.hero.downloadApp}</p>
-            <div className="mt-2 flex items-center justify-center gap-6">
+            <div className="mt-3 flex items-center justify-center gap-4">
               <a
                 href=""
                 onClick={(e) => e.preventDefault()}
                 aria-label="Android"
-                className="inline-flex items-center gap-1.5 font-semibold text-primary transition-opacity hover:opacity-80"
+                className="glass inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2.5 font-semibold text-primary transition hover:border-primary/40 hover:shadow-sm"
               >
                 Android
                 <GooglePlayIcon className="h-5 w-5" />
@@ -76,7 +76,7 @@ export function Hero() {
                 href=""
                 onClick={(e) => e.preventDefault()}
                 aria-label="Apple"
-                className="inline-flex items-center gap-1.5 font-semibold text-primary transition-opacity hover:opacity-80"
+                className="glass inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2.5 font-semibold text-primary transition hover:border-primary/40 hover:shadow-sm"
               >
                 Apple
                 <AppleIcon className="h-5 w-5" />
