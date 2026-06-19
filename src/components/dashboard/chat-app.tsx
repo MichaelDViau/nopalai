@@ -73,11 +73,10 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
-  // Desktop sidebar: pinned (fixed-open) vs. auto-collapsing rail that
-  // expands to a floating overlay on hover.
+  // Desktop sidebar: pinned (fixed-open) vs. collapsed icon rail. The state is
+  // fully user-controlled via the collapse/expand button — there is no
+  // hover-to-expand, so the rail never changes width on its own.
   const [pinned, setPinned] = useState(true);
-  const [hovered, setHovered] = useState(false);
-  const [interacting, setInteracting] = useState(false);
   const [pinLoaded, setPinLoaded] = useState(false);
 
   const [upgrade, setUpgrade] = useState<{
@@ -109,7 +108,6 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
       } catch {
         /* ignore */
       }
-      if (next) setHovered(false);
       return next;
     });
   }, []);
@@ -303,28 +301,23 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
 
   const hasMessages = messages.length > 0;
 
-  const railExpanded = pinned || hovered || interacting;
+  const railExpanded = pinned;
   const transitionCls = pinLoaded
     ? "transition-[width,box-shadow] duration-300 ease-out"
     : "";
 
   return (
     <div className="flex h-dvh overflow-hidden">
-      {/* Desktop sidebar — collapsible rail with hover-to-expand overlay */}
+      {/* Desktop sidebar — collapsible icon rail, toggled by the user only */}
       <div
         className={cn("relative z-30 hidden shrink-0 md:block", transitionCls)}
         style={{ width: pinned ? SIDEBAR_EXPANDED : SIDEBAR_RAIL }}
         aria-label="Barra lateral"
       >
         <div
-          onMouseEnter={() => {
-            if (!pinned) setHovered(true);
-          }}
-          onMouseLeave={() => setHovered(false)}
           className={cn(
             "glass-panel absolute inset-y-0 left-0 flex h-full flex-col overflow-hidden border-r border-border/60",
             transitionCls,
-            !pinned && hovered && "shadow-2xl",
           )}
           style={{ width: railExpanded ? SIDEBAR_EXPANDED : SIDEBAR_RAIL }}
         >
@@ -340,7 +333,6 @@ export function ChatApp({ initialChats, initialUsage }: ChatAppProps) {
             collapsed={!railExpanded}
             pinned={pinned}
             onTogglePin={togglePin}
-            onInteractingChange={setInteracting}
           />
         </div>
       </div>
