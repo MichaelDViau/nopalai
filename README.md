@@ -29,7 +29,7 @@ daily usage limits, Stripe-powered paid plans (Plus & Pro), analytics and full S
 - **Paid plans** — Plus (69 MXN/mo) & Pro (199 MXN/mo) via Stripe. The three
   tiers are distinct end-to-end: the Stripe webhook records the purchased tier
   from checkout metadata, and each plan has its own daily limits (Free 20 ·
-  Plus 1,000 · Pro 2,000) and model (Pro can use `OPENROUTER_PRO_MODEL`).
+  Plus 1,000 · Pro 2,000). For this test, every plan uses the same pinned Qwythos model.
 - **Analytics** — PostHog + Google Analytics 4 (signups, chats, conversions, upgrades).
 - **SEO** — metadata, sitemap, robots, JSON-LD, dynamic OG image, optimized for "IA Latinoamérica".
 
@@ -78,7 +78,7 @@ src/
 │   ├── billing/                # Upgrade button
 │   ├── analytics/              # PostHog provider + GA
 │   └── brand/                  # Logo
-├── lib/                        # supabase, openrouter, stripe, modes, usage, validation…
+├── lib/                        # supabase, AI provider, stripe, modes, usage, validation…
 ├── types/                      # database + chat types
 └── middleware.ts               # Clerk route protection
 supabase/schema.sql             # Database schema + RLS + RPC
@@ -125,8 +125,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | `NEXT_PUBLIC_SUPABASE_URL` | ✅ | Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | ✅ | Supabase anon key |
 | `SUPABASE_SERVICE_ROLE_KEY` | ✅ | Supabase service role (server only) |
-| `OPENROUTER_API_KEY` | ✅ | OpenRouter API key; Free/Plus use `google/gemma-4-31b-it:free` |
-| `OPENROUTER_PRO_MODEL` | – | Optional stronger model for the Pro plan (falls back to the base model) |
+| `HF_TOKEN` | ✅ | Hugging Face access token; all plans use the pinned `empero-ai/Qwythos-9B-Claude-Mythos-5-1M:fastest` model |
 | `STRIPE_SECRET_KEY` | ✅ | Stripe secret key |
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | ✅ | Stripe publishable key |
 | `STRIPE_PLUS_PRICE_ID` | ✅ | Price ID for the Plus plan (69 MXN) |
@@ -152,11 +151,11 @@ Open [http://localhost:3000](http://localhost:3000).
 > Identity is owned by Clerk; the server talks to Supabase with the service-role
 > key. RLS is enabled so the anon key cannot read/write app tables.
 
-### OpenRouter (AI)
-1. Create a key at [openrouter.ai/keys](https://openrouter.ai/keys).
-2. Every plan is served by **Google Gemma 4 31B** (`google/gemma-4-31b-it:free`),
-   fixed in [`src/lib/openrouter.ts`](./src/lib/openrouter.ts). Branch inside
-   `modelForPlan()` to add per-tier models later.
+### Hugging Face Router (AI)
+1. Create a token at [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
+2. Add it to `.env.local` as `HF_TOKEN`. Do **not** commit real tokens.
+3. Every plan is served by the pinned **Qwythos-9B-Claude-Mythos-5-1M** model (`empero-ai/Qwythos-9B-Claude-Mythos-5-1M:fastest`),
+   fixed in [`src/lib/openrouter.ts`](./src/lib/openrouter.ts) with no fallback or per-plan override for this test.
 
 ### Stripe (Payments)
 1. Create two **recurring** Products/Prices — **Plus (69 MXN/mo)** and
