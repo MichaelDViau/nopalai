@@ -129,8 +129,13 @@ export async function POST(req: Request) {
           : Promise.resolve(),
       ]);
     },
-    // Provider/stream failure produced no usable answer — refund.
-    onError: refundOnce,
+    // Provider/stream failure produced no usable answer — refund. Log the real
+    // cause to the server console so misconfig (bad HF_TOKEN, missing model
+    // access, 404s) is visible instead of failing silently.
+    onError: async ({ error }) => {
+      console.error("[api/chat] generación falló:", error);
+      await refundOnce();
+    },
   });
 
   return result.toDataStreamResponse({
